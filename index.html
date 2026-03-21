@@ -3,93 +3,91 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mes Téléphones</title>
+<title>in.stock — Téléphones</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --green:#1D9E75;
-  --green-light:#E1F5EE;
-  --green-mid:#9FE1CB;
-  --green-dark:#0F6E56;
-  --text:#1a1a1a;
-  --text-muted:#6b7280;
-  --border:#e5e7eb;
-  --bg:#f9fafb;
-  --white:#ffffff;
+  --green:#1D9E75;--green-light:#E1F5EE;--green-mid:#9FE1CB;--green-dark:#0F6E56;
+  --amber:#BA7517;--amber-light:#FAEEDA;
+  --red:#A32D2D;--red-light:#FCEBEB;
+  --text:#1a1a1a;--text-muted:#6b7280;--border:#e5e7eb;--bg:#f9fafb;--white:#fff;
 }
 body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh}
-.header{background:var(--white);border-bottom:1.5px solid var(--border);padding:18px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.header{background:var(--white);border-bottom:1.5px solid var(--border);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .brand{display:flex;align-items:center;gap:10px}
 .brand-dot{width:10px;height:10px;background:var(--green);border-radius:50%;flex-shrink:0}
-.brand-name{font-size:17px;font-weight:600;color:var(--text)}
+.brand-name{font-size:18px;font-weight:700;color:var(--text)}
 .brand-sub{font-size:12px;color:var(--text-muted)}
-.header-badge{background:var(--green-light);color:var(--green-dark);font-size:12px;font-weight:500;padding:5px 12px;border-radius:20px;white-space:nowrap}
-.tabs{display:flex;background:var(--white);border-bottom:1px solid var(--border);padding:0 20px}
-.tab{padding:13px 18px;font-size:13px;font-weight:500;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;white-space:nowrap}
+.hbadge{background:var(--green-light);color:var(--green-dark);font-size:12px;font-weight:600;padding:5px 14px;border-radius:20px;white-space:nowrap}
+.tabs{display:flex;background:var(--white);border-bottom:1px solid var(--border);padding:0 16px;overflow-x:auto}
+.tab{padding:12px 16px;font-size:13px;font-weight:500;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;white-space:nowrap}
 .tab.active{color:var(--green);border-bottom-color:var(--green)}
 .tab:hover:not(.active){color:var(--text)}
-.view{display:none;padding:20px;max-width:900px;margin:0 auto}
+.view{display:none;padding:16px;max-width:1000px;margin:0 auto}
 .view.active{display:block}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
-.stat{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center}
-.stat-num{font-size:24px;font-weight:700}
-.stat-lbl{font-size:11px;color:var(--text-muted);margin-top:2px;text-transform:uppercase;letter-spacing:0.6px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-bottom:16px}
+.stat{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
+.stat-num{font-size:22px;font-weight:700}
+.stat-lbl{font-size:10px;color:var(--text-muted);margin-top:2px;text-transform:uppercase;letter-spacing:0.5px}
+.search-bar{margin-bottom:14px}
+.search-bar input{width:100%;background:var(--white);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:8px;font-size:14px;font-family:inherit}
+.search-bar input:focus{outline:none;border-color:var(--green-mid)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
 .card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px;transition:box-shadow 0.2s}
 .card:hover{box-shadow:0 4px 16px rgba(0,0,0,0.07)}
-.card.vendu{opacity:0.45}
-.card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
 .card-brand{font-size:11px;font-weight:600;color:var(--green);text-transform:uppercase;letter-spacing:1px}
 .badge{font-size:11px;font-weight:500;padding:3px 9px;border-radius:20px}
 .b-dispo{background:var(--green-light);color:var(--green-dark)}
-.b-vendu{background:#fee2e2;color:#b91c1c}
-.b-reserve{background:#fef3c7;color:#92400e}
-.card-name{font-size:15px;font-weight:600;margin-bottom:8px}
+.card-name{font-size:15px;font-weight:600;margin-bottom:8px;line-height:1.3}
 .card-specs{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
 .spec{background:var(--bg);border:1px solid var(--border);border-radius:6px;font-size:11px;color:var(--text-muted);padding:3px 8px}
 .card-footer{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);padding-top:12px}
-.price{font-size:20px;font-weight:700;color:var(--text)}
+.price{font-size:20px;font-weight:700}
 .price small{font-size:12px;font-weight:400;color:var(--text-muted)}
 .wa-btn{background:var(--green);color:#fff;border:none;border-radius:7px;padding:7px 13px;font-size:12px;font-weight:500;cursor:pointer;transition:background 0.2s}
 .wa-btn:hover{background:var(--green-dark)}
-.wa-btn.off{background:var(--border);color:var(--text-muted);cursor:default}
-.section-label{font-size:13px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:12px}
-.add-form{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:20px}
-.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:12px}
-.fg label{display:block;font-size:11px;color:var(--text-muted);font-weight:500;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.6px}
-.fg input,.fg select{width:100%;background:#f9fafb;border:1px solid var(--border);color:var(--text);padding:8px 11px;border-radius:7px;font-size:13px;font-family:inherit}
+.section-label{font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px}
+.card-form{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:18px}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:10px}
+.fg label{display:block;font-size:11px;color:var(--text-muted);font-weight:500;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.5px}
+.fg input,.fg select{width:100%;background:#f9fafb;border:1px solid var(--border);color:var(--text);padding:8px 10px;border-radius:7px;font-size:13px;font-family:inherit}
 .fg input:focus,.fg select:focus{outline:none;border-color:var(--green-mid)}
-.btn-add{background:var(--green);color:#fff;border:none;padding:9px 20px;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;transition:background 0.2s}
-.btn-add:hover{background:var(--green-dark)}
-.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text-muted);padding:9px 16px;border-radius:7px;font-size:13px;cursor:pointer}
+.consigne-field input{background:#FAEEDA !important;border-color:#EF9F27 !important}
+.btn-green{background:var(--green);color:#fff;border:none;padding:9px 18px;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer}
+.btn-green:hover{background:var(--green-dark)}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text-muted);padding:9px 14px;border-radius:7px;font-size:13px;cursor:pointer}
 .btn-ghost:hover{border-color:#aaa;color:var(--text)}
-.inv-item{background:var(--white);border:1px solid var(--border);border-radius:9px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;flex-wrap:wrap}
-.inv-info .name{font-size:14px;font-weight:600}
-.inv-info .meta{font-size:12px;color:var(--text-muted);margin-top:2px}
-.inv-actions{display:flex;gap:7px;align-items:center}
-.btn-status{font-size:11px;padding:5px 12px;border-radius:5px;border:none;cursor:pointer;font-weight:500}
+.inv-item{background:var(--white);border:1px solid var(--border);border-radius:9px;padding:11px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:7px;flex-wrap:wrap}
+.inv-item.is-consigne{border-left:3px solid #EF9F27}
+.iname{font-size:13px;font-weight:600}
+.imeta{font-size:11px;color:var(--text-muted);margin-top:2px}
+.consigne-tag{display:inline-block;background:var(--amber-light);color:var(--amber);font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;margin-left:6px;text-transform:uppercase}
+.inv-actions{display:flex;gap:6px;align-items:center;flex-shrink:0}
+.btn-status{font-size:11px;padding:5px 10px;border-radius:5px;border:none;cursor:pointer;font-weight:500;white-space:nowrap}
 .st-dispo{background:var(--green-light);color:var(--green-dark)}
-.st-reserve{background:#fef3c7;color:#92400e}
-.st-vendu{background:#fee2e2;color:#b91c1c}
-.btn-del{background:none;border:none;color:#d1d5db;font-size:16px;cursor:pointer;padding:2px 6px;line-height:1}
+.st-vendu{background:var(--red-light);color:var(--red)}
+.btn-del{background:none;border:none;color:#d1d5db;font-size:15px;cursor:pointer;padding:2px 5px}
 .btn-del:hover{color:#ef4444}
-.settings-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:20px}
-.settings-hint{font-size:12px;color:var(--text-muted);margin-top:8px;line-height:1.5}
-.wa-preview{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:18px;font-size:13px;color:var(--text);line-height:1.75;white-space:pre-wrap;word-break:break-word;margin-bottom:14px;font-family:'Courier New',monospace}
-.copy-btn{background:var(--green);color:#fff;border:none;padding:10px 22px;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;transition:background 0.2s}
+.vente-item{background:var(--white);border:1px solid var(--border);border-radius:9px;padding:11px 14px;margin-bottom:7px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.vname{font-size:13px;font-weight:600}
+.vmeta{font-size:11px;color:var(--text-muted);margin-top:2px}
+.profit-badge{background:var(--green-light);color:var(--green-dark);font-size:12px;font-weight:700;padding:4px 10px;border-radius:6px}
+.profit-neg{background:var(--red-light) !important;color:var(--red) !important}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:100;align-items:center;justify-content:center;padding:16px}
+.modal-bg.open{display:flex}
+.modal{background:var(--white);border-radius:14px;padding:24px;width:100%;max-width:460px;max-height:90vh;overflow-y:auto}
+.modal-title{font-size:16px;font-weight:600;margin-bottom:14px}
+.modal-actions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.wa-preview{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:16px;font-size:13px;color:var(--text);line-height:1.75;white-space:pre-wrap;word-break:break-word;margin-bottom:14px;font-family:'Courier New',monospace}
+.copy-btn{background:var(--green);color:#fff;border:none;padding:10px 20px;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer}
 .copy-btn:hover{background:var(--green-dark)}
-.info-box{background:var(--green-light);border:1px solid var(--green-mid);border-radius:10px;padding:16px;margin-bottom:16px;font-size:13px;color:var(--green-dark);line-height:1.6}
-.info-box strong{display:block;margin-bottom:4px;font-size:14px}
+.info-box{background:var(--green-light);border:1px solid var(--green-mid);border-radius:10px;padding:12px 14px;margin-bottom:14px;font-size:12px;color:var(--green-dark);line-height:1.6}
+.settings-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:18px;margin-top:20px}
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(60px);background:#1a1a1a;color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;z-index:999;opacity:0;transition:all 0.3s;white-space:nowrap}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
-.empty-state{text-align:center;padding:40px 20px;color:var(--text-muted);font-size:14px}
-@media(max-width:520px){
-  .grid{grid-template-columns:1fr}
-  .stats{grid-template-columns:repeat(3,1fr)}
-  .row{grid-template-columns:1fr}
-  .header{flex-wrap:wrap}
-  .tab{padding:12px 12px;font-size:12px}
-}
+.empty-state{text-align:center;padding:30px;color:var(--text-muted);font-size:13px}
+@media(max-width:520px){.grid{grid-template-columns:1fr}.row{grid-template-columns:1fr}.tab{padding:11px 10px;font-size:12px}}
 </style>
 </head>
 <body>
@@ -98,315 +96,345 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   <div class="brand">
     <div class="brand-dot"></div>
     <div>
-      <div class="brand-name" id="hdr-name">Mes Téléphones</div>
-      <div class="brand-sub">Marketplace &amp; WhatsApp</div>
+      <div class="brand-name" id="hdr-name">in.stock</div>
+      <div class="brand-sub">Téléphones · Marketplace &amp; WhatsApp</div>
     </div>
   </div>
-  <div class="header-badge" id="hdr-count">0 disponibles</div>
+  <div class="hbadge" id="hdr-count">0 disponibles</div>
 </div>
 
 <div class="tabs">
-  <div class="tab active" id="tab-cat" onclick="go('cat')">📋 Liste</div>
-  <div class="tab" id="tab-mgr" onclick="go('mgr')">✏️ Modifier</div>
+  <div class="tab active" id="tab-cat" onclick="go('cat')">📋 Catalogue</div>
+  <div class="tab" id="tab-inv" onclick="go('inv')">📦 Inventaire</div>
+  <div class="tab" id="tab-ventes" onclick="go('ventes')">💰 Ventes</div>
   <div class="tab" id="tab-shr" onclick="go('shr')">💬 Partager</div>
 </div>
 
-<!-- CATALOGUE -->
+<!-- CATALOGUE PUBLIC -->
 <div class="view active" id="view-cat">
-  <div class="stats" id="stats"></div>
+  <div class="stats" id="stats-cat"></div>
+  <div class="search-bar"><input type="text" id="search" placeholder="🔍  Rechercher un modèle..." oninput="renderCat()"></div>
   <div class="grid" id="catalog"></div>
 </div>
 
-<!-- MANAGER -->
-<div class="view" id="view-mgr">
-  <div class="add-form">
-    <div class="section-label">Ajouter un téléphone</div>
+<!-- INVENTAIRE ADMIN -->
+<div class="view" id="view-inv">
+  <div class="card-form">
+    <div class="section-label">➕ Ajouter un téléphone</div>
     <div class="row">
       <div class="fg">
         <label>Marque</label>
-        <select id="f-brand">
-          <option>Apple</option><option>Samsung</option><option>Google</option>
-          <option>OnePlus</option><option>Xiaomi</option><option>Motorola</option><option>Autre</option>
-        </select>
+        <select id="f-brand"><option>Apple</option><option>Samsung</option><option>Google</option><option>OnePlus</option><option>Xiaomi</option><option>Motorola</option><option>Microsoft</option><option>Autre</option></select>
       </div>
-      <div class="fg"><label>Modèle</label><input id="f-model" placeholder="ex: iPhone 15, Galaxy S24"></div>
+      <div class="fg"><label>Modèle</label><input id="f-model" placeholder="ex: Galaxy S24"></div>
       <div class="fg">
         <label>Stockage</label>
-        <select id="f-storage">
-          <option>64 Go</option><option>128 Go</option><option selected>256 Go</option>
-          <option>512 Go</option><option>1 To</option>
-        </select>
+        <select id="f-storage"><option>64 Go</option><option>128 Go</option><option>256 Go</option><option>512 Go</option><option>1 To</option><option>—</option></select>
       </div>
-      <div class="fg"><label>Couleur</label><input id="f-color" placeholder="ex: Noir, Blanc, Bleu"></div>
-      <div class="fg">
-        <label>État</label>
-        <select id="f-cond">
-          <option>Neuf</option><option>Comme neuf</option>
-          <option>Très bon état</option><option>Bon état</option><option>Usagé</option>
-        </select>
-      </div>
-      <div class="fg"><label>Prix ($)</label><input id="f-price" type="number" placeholder="ex: 400"></div>
+    </div>
+    <div class="row">
+      <div class="fg"><label>Prix d'achat ($)</label><input id="f-achat" type="number" placeholder="ex: 400"></div>
+      <div class="fg"><label>Prix annoncé ($)</label><input id="f-annonce" type="number" placeholder="ex: 475"></div>
+      <div class="fg consigne-field"><label>🟡 Consigne — nom proprio</label><input id="f-consigne" placeholder="ex: Justin, Sandaga..."></div>
     </div>
     <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <button class="btn-add" onclick="addPhone()">+ Ajouter</button>
+      <button class="btn-green" onclick="addPhone()">+ Ajouter</button>
       <button class="btn-ghost" onclick="clearForm()">Effacer</button>
     </div>
   </div>
-
-  <div class="section-label">Inventaire (<span id="inv-count">0</span> appareils)</div>
+  <div class="section-label">
+    Stock complet — <span id="inv-count">0</span> appareils &nbsp;
+    <span style="font-size:11px;color:var(--amber)">🟡 = consigne (invisible pour client)</span>
+  </div>
   <div id="inv-list"></div>
-
-  <div style="margin-top:24px">
-    <div class="settings-card">
-      <div class="section-label" style="margin-bottom:16px">⚙️ Paramètres</div>
-      <div class="row">
-        <div class="fg"><label>Nom affiché</label><input id="s-name" placeholder="Mes Téléphones"></div>
-        <div class="fg"><label>Numéro WhatsApp</label><input id="s-wa" placeholder="15141234567" type="tel"></div>
-      </div>
-      <button class="btn-add" onclick="saveSettings()">Sauvegarder</button>
-      <p class="settings-hint">Format international sans + ni espace · ex: <strong>15141234567</strong></p>
+  <div class="settings-card">
+    <div class="section-label" style="margin-bottom:14px">⚙️ Paramètres</div>
+    <div class="row">
+      <div class="fg"><label>Nom affiché</label><input id="s-name" placeholder="in.stock"></div>
+      <div class="fg"><label>Numéro WhatsApp</label><input id="s-wa" placeholder="15141234567" type="tel"></div>
     </div>
+    <button class="btn-green" onclick="saveSettings()">Sauvegarder</button>
+    <p style="font-size:11px;color:var(--text-muted);margin-top:8px">Format sans + ni espace · ex: 15141234567</p>
   </div>
 </div>
 
-<!-- SHARE -->
+<!-- VENTES -->
+<div class="view" id="view-ventes">
+  <div class="stats" id="stats-ventes"></div>
+  <div class="section-label" style="margin-top:4px">Historique des ventes</div>
+  <div id="ventes-list"></div>
+</div>
+
+<!-- PARTAGER -->
 <div class="view" id="view-shr">
   <div class="info-box">
-    <strong>💬 Comment utiliser ce message</strong>
-    Copiez-le et collez-le dans votre bio WhatsApp, ou envoyez-le à quelqu'un qui demande vos prix. Il se met à jour automatiquement selon votre inventaire.
+    Ce message affiche <strong>seulement les téléphones disponibles</strong>. Aucun prix d'achat, profit ou info de consigne n'est visible pour le client.
   </div>
-  <div class="section-label">Message prêt à envoyer</div>
+  <div class="section-label">Message WhatsApp prêt à envoyer</div>
   <div class="wa-preview" id="wa-prev"></div>
   <div style="display:flex;gap:8px;flex-wrap:wrap">
-    <button class="copy-btn" onclick="copyMsg()">📋 Copier le message</button>
+    <button class="copy-btn" onclick="copyMsg()">📋 Copier</button>
     <button class="btn-ghost" onclick="openWA()">💬 Ouvrir WhatsApp</button>
+  </div>
+</div>
+
+<!-- MODAL VENTE -->
+<div class="modal-bg" id="modal-vente">
+  <div class="modal">
+    <div class="modal-title">💰 Enregistrer la vente</div>
+    <div id="modal-info" style="font-size:13px;color:var(--text-muted);margin-bottom:14px;padding:10px;background:var(--bg);border-radius:8px"></div>
+    <div class="row" style="grid-template-columns:1fr 1fr">
+      <div class="fg"><label>Prix de vente réel ($)</label><input id="m-reel" type="number"></div>
+      <div class="fg"><label>Prix annoncé ($)</label><input id="m-annonce" type="number" readonly style="background:#f0f0f0;color:var(--text-muted)"></div>
+    </div>
+    <div id="profit-preview" style="font-size:14px;font-weight:600;margin:8px 0 4px"></div>
+    <div class="modal-actions">
+      <button class="btn-green" onclick="confirmVente()">✅ Confirmer la vente</button>
+      <button class="btn-ghost" onclick="closeModal()">Annuler</button>
+    </div>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-// =============================================
-// DONNÉES — Modifiez phones[] pour changer l'inventaire
-// =============================================
 let phones = [
-  {id:1, brand:"Apple",   model:"iPhone 14",   storage:"128 Go", color:"Noir",    cond:"Comme neuf",   price:480, status:"dispo"},
-  {id:2, brand:"Samsung", model:"Galaxy S23",  storage:"256 Go", color:"Crème",   cond:"Très bon état",price:390, status:"dispo"},
-  {id:3, brand:"Apple",   model:"iPhone 13",   storage:"128 Go", color:"Bleu",    cond:"Bon état",     price:320, status:"dispo"},
-  {id:4, brand:"Google",  model:"Pixel 8",     storage:"256 Go", color:"Charbon", cond:"Neuf",         price:560, status:"reserve"},
-  {id:5, brand:"Samsung", model:"Galaxy A54",  storage:"128 Go", color:"Blanc",   cond:"Comme neuf",   price:260, status:"vendu"}
+  {id:1,  brand:"Samsung",model:"Galaxy A21",      storage:"128 Go",achat:150,   annonce:150,  status:"dispo",consigne:"Sandaga"},
+  {id:2,  brand:"Samsung",model:"Galaxy A53",      storage:"128 Go",achat:137.80,annonce:220,  status:"dispo",consigne:"Sandaga"},
+  {id:3,  brand:"Samsung",model:"Galaxy A53",      storage:"128 Go",achat:137.80,annonce:240,  status:"dispo",consigne:""},
+  {id:4,  brand:"Samsung",model:"Galaxy A53",      storage:"128 Go",achat:137.80,annonce:240,  status:"dispo",consigne:""},
+  {id:5,  brand:"Samsung",model:"Galaxy Note",     storage:"—",     achat:100,   annonce:180,  status:"dispo",consigne:""},
+  {id:6,  brand:"Samsung",model:"Galaxy S21",      storage:"128 Go",achat:180.20,annonce:280,  status:"dispo",consigne:""},
+  {id:7,  brand:"Samsung",model:"Galaxy S21 FE",   storage:"128 Go",achat:180.20,annonce:260,  status:"dispo",consigne:"Sandaga"},
+  {id:8,  brand:"Samsung",model:"Galaxy S21 FE",   storage:"128 Go",achat:180.20,annonce:280,  status:"dispo",consigne:""},
+  {id:9,  brand:"Samsung",model:"Galaxy S21 FE",   storage:"128 Go",achat:180.20,annonce:280,  status:"dispo",consigne:""},
+  {id:10, brand:"Samsung",model:"Galaxy S21 FE",   storage:"128 Go",achat:180.20,annonce:280,  status:"dispo",consigne:""},
+  {id:11, brand:"Samsung",model:"Galaxy S21+",     storage:"128 Go",achat:201.40,annonce:300,  status:"dispo",consigne:""},
+  {id:12, brand:"Samsung",model:"Galaxy S22",      storage:"128 Go",achat:212,   annonce:310,  status:"dispo",consigne:""},
+  {id:13, brand:"Samsung",model:"Galaxy S22+",     storage:"128 Go",achat:233.20,annonce:320,  status:"dispo",consigne:""},
+  {id:14, brand:"Samsung",model:"Galaxy S22+",     storage:"128 Go",achat:233.20,annonce:320,  status:"dispo",consigne:""},
+  {id:15, brand:"Samsung",model:"Galaxy S23",      storage:"128 Go",achat:270,   annonce:360,  status:"dispo",consigne:"Justin"},
+  {id:16, brand:"Samsung",model:"Galaxy S23 FE",   storage:"128 Go",achat:243.80,annonce:340,  status:"dispo",consigne:""},
+  {id:17, brand:"Samsung",model:"Galaxy S23 FE",   storage:"128 Go",achat:243.80,annonce:340,  status:"dispo",consigne:""},
+  {id:18, brand:"Samsung",model:"Galaxy S23 Ultra",storage:"512 Go",achat:477,   annonce:577,  status:"dispo",consigne:""},
+  {id:19, brand:"Samsung",model:"Galaxy S24",      storage:"128 Go",achat:400,   annonce:475,  status:"dispo",consigne:""},
+  {id:20, brand:"Samsung",model:"Galaxy S24",      storage:"128 Go",achat:400,   annonce:475,  status:"dispo",consigne:"Justin"},
+  {id:21, brand:"Samsung",model:"Galaxy S24",      storage:"256 Go",achat:400,   annonce:475,  status:"dispo",consigne:"Justin"},
+  {id:22, brand:"Samsung",model:"Galaxy S24 Plus", storage:"256 Go",achat:525,   annonce:630,  status:"dispo",consigne:"Justin"},
+  {id:23, brand:"Samsung",model:"Galaxy S24 Ultra",storage:"256 Go",achat:720,   annonce:820,  status:"dispo",consigne:""},
+  {id:24, brand:"Samsung",model:"Galaxy S24 Ultra",storage:"256 Go",achat:720,   annonce:820,  status:"dispo",consigne:"Justin"},
+  {id:25, brand:"Samsung",model:"Galaxy S24 Ultra",storage:"256 Go",achat:720,   annonce:820,  status:"dispo",consigne:"Justin"},
+  {id:26, brand:"Samsung",model:"Galaxy S24 Ultra",storage:"256 Go",achat:720,   annonce:820,  status:"dispo",consigne:"Justin"},
+  {id:27, brand:"Samsung",model:"Galaxy S24+",     storage:"256 Go",achat:461.10,annonce:560,  status:"dispo",consigne:""},
+  {id:28, brand:"Samsung",model:"Galaxy S24+",     storage:"256 Go",achat:461.10,annonce:560,  status:"dispo",consigne:""},
+  {id:29, brand:"Samsung",model:"Galaxy S25",      storage:"128 Go",achat:519.40,annonce:640,  status:"dispo",consigne:""},
+  {id:30, brand:"Apple",  model:"iPhone 15 Pro",   storage:"—",     achat:650,   annonce:750,  status:"dispo",consigne:""},
+  {id:31, brand:"Apple",  model:"iPhone 15+",      storage:"128 Go",achat:551.20,annonce:650,  status:"dispo",consigne:"Sandaga"},
+  {id:32, brand:"Apple",  model:"iPhone 15+",      storage:"128 Go",achat:551.20,annonce:675,  status:"dispo",consigne:""},
+  {id:33, brand:"Apple",  model:"iPhone 15+",      storage:"128 Go",achat:551.20,annonce:675,  status:"dispo",consigne:""}
 ];
+let ventes=[];
+let nextId=34;
+let cfg={name:"in.stock",wa:"15141234567"};
+let pendingId=null;
 
-let nextId = 6;
-let cfg = {name:"Mes Téléphones", wa:"15141234567"};
-
-// =============================================
-// PERSISTANCE LOCALE
-// =============================================
-function save() {
-  try { localStorage.setItem('ph_v2', JSON.stringify({phones, nextId, cfg})); } catch(e) {}
-}
-function load() {
-  try {
-    const d = JSON.parse(localStorage.getItem('ph_v2') || '{}');
-    if (d.phones)  phones  = d.phones;
-    if (d.nextId)  nextId  = d.nextId;
-    if (d.cfg)     cfg     = d.cfg;
-  } catch(e) {}
+function save(){try{localStorage.setItem('instock_v2',JSON.stringify({phones,ventes,nextId,cfg}))}catch(e){}}
+function load(){
+  try{
+    const d=JSON.parse(localStorage.getItem('instock_v2')||'{}');
+    if(d.phones)phones=d.phones;
+    if(d.ventes)ventes=d.ventes;
+    if(d.nextId)nextId=d.nextId;
+    if(d.cfg)cfg=d.cfg;
+  }catch(e){}
 }
 
-// =============================================
-// NAVIGATION
-// =============================================
-function go(tab) {
-  ['cat','mgr','shr'].forEach(t => {
-    document.getElementById('tab-'+t).classList.toggle('active', t===tab);
-    document.getElementById('view-'+t).classList.toggle('active', t===tab);
+function go(tab){
+  ['cat','inv','ventes','shr'].forEach(t=>{
+    document.getElementById('tab-'+t).classList.toggle('active',t===tab);
+    document.getElementById('view-'+t).classList.toggle('active',t===tab);
   });
-  if (tab==='cat') renderCat();
-  if (tab==='mgr') { renderInv(); loadCfgForm(); }
-  if (tab==='shr') renderShare();
+  if(tab==='cat')renderCat();
+  if(tab==='inv'){renderInv();loadCfgForm();}
+  if(tab==='ventes')renderVentes();
+  if(tab==='shr')renderShare();
 }
 
-// =============================================
-// CATALOGUE
-// =============================================
-function renderCat() {
-  const dispo   = phones.filter(p => p.status==='dispo').length;
-  const reserve = phones.filter(p => p.status==='reserve').length;
-  const vendu   = phones.filter(p => p.status==='vendu').length;
-
-  document.getElementById('hdr-name').textContent  = cfg.name;
-  document.getElementById('hdr-count').textContent = dispo + ' disponible' + (dispo!==1?'s':'');
-
-  document.getElementById('stats').innerHTML = `
-    <div class="stat"><div class="stat-num" style="color:var(--green)">${dispo}</div><div class="stat-lbl">Disponibles</div></div>
-    <div class="stat"><div class="stat-num" style="color:#d97706">${reserve}</div><div class="stat-lbl">Réservés</div></div>
-    <div class="stat"><div class="stat-num" style="color:#6b7280">${vendu}</div><div class="stat-lbl">Vendus</div></div>
+function renderCat(){
+  const dispo=phones.filter(p=>p.status==='dispo');
+  document.getElementById('hdr-name').textContent=cfg.name;
+  document.getElementById('hdr-count').textContent=dispo.length+' disponible'+(dispo.length!==1?'s':'');
+  document.getElementById('stats-cat').innerHTML=`
+    <div class="stat"><div class="stat-num" style="color:var(--green)">${dispo.length}</div><div class="stat-lbl">Disponibles</div></div>
+    <div class="stat"><div class="stat-num" style="color:#6b7280">${phones.filter(p=>p.status==='vendu').length}</div><div class="stat-lbl">Vendus</div></div>
+    <div class="stat"><div class="stat-num">${phones.length}</div><div class="stat-lbl">Total</div></div>
   `;
+  const q=(document.getElementById('search').value||'').toLowerCase();
+  const filtered=dispo.filter(p=>(p.brand+' '+p.model+' '+p.storage).toLowerCase().includes(q));
+  if(!filtered.length){document.getElementById('catalog').innerHTML='<div class="empty-state">Aucun téléphone disponible.</div>';return;}
+  document.getElementById('catalog').innerHTML=filtered.map(p=>`
+    <div class="card">
+      <div class="card-top"><div class="card-brand">${p.brand}</div><span class="badge b-dispo">✅ Disponible</span></div>
+      <div class="card-name">${p.model}</div>
+      <div class="card-specs"><span class="spec">${p.storage}</span></div>
+      <div class="card-footer">
+        <div class="price">${p.annonce}$<small> CAD</small></div>
+        <button class="wa-btn" onclick="askWA(${p.id})">💬 Info</button>
+      </div>
+    </div>`).join('');
+}
 
-  if (!phones.length) {
-    document.getElementById('catalog').innerHTML = '<div class="empty-state">Aucun téléphone — ajoutez-en dans l\'onglet Modifier.</div>';
-    return;
-  }
+function askWA(id){
+  const p=phones.find(x=>x.id===id);if(!p)return;
+  const msg=encodeURIComponent(`Bonjour! Je suis intéressé(e) par le ${p.brand} ${p.model} ${p.storage} à ${p.annonce}$. Est-il encore disponible?`);
+  window.open(`https://wa.me/${cfg.wa}?text=${msg}`,'_blank');
+}
+function openWA(){window.open(`https://wa.me/${cfg.wa}`,'_blank');}
 
-  document.getElementById('catalog').innerHTML = phones.map(p => {
-    const bc = p.status==='dispo' ? 'b-dispo' : p.status==='vendu' ? 'b-vendu' : 'b-reserve';
-    const bl = p.status==='dispo' ? '✅ Disponible' : p.status==='vendu' ? 'Vendu' : '🟡 Réservé';
-    const canWA = p.status !== 'vendu';
-    return `
-      <div class="card ${p.status==='vendu' ? 'vendu' : ''}">
-        <div class="card-top">
-          <div class="card-brand">${p.brand}</div>
-          <span class="badge ${bc}">${bl}</span>
-        </div>
-        <div class="card-name">${p.model}</div>
-        <div class="card-specs">
-          <span class="spec">${p.storage}</span>
-          <span class="spec">${p.color}</span>
-          <span class="spec">${p.cond}</span>
-        </div>
-        <div class="card-footer">
-          <div class="price">${p.price}$<small> CAD</small></div>
-          <button class="wa-btn${canWA ? '' : ' off'}" onclick="${canWA ? `askWA(${p.id})` : 'void(0)'}">💬 Info</button>
-        </div>
-      </div>`;
+function renderInv(){
+  document.getElementById('inv-count').textContent=phones.length;
+  const el=document.getElementById('inv-list');
+  if(!phones.length){el.innerHTML='<div class="empty-state">Aucun appareil.</div>';return;}
+  el.innerHTML=phones.map(p=>{
+    const isC=p.consigne&&p.consigne.trim()!=='';
+    const isDispo=p.status==='dispo';
+    return`<div class="inv-item${isC?' is-consigne':''}">
+      <div style="flex:1;min-width:0">
+        <div class="iname">${p.brand} ${p.model} · ${p.storage}${isC?`<span class="consigne-tag">🟡 ${p.consigne}</span>`:''}</div>
+        <div class="imeta">Achat: <strong>${p.achat}$</strong> &nbsp;·&nbsp; Annoncé: <strong>${p.annonce}$</strong> &nbsp;·&nbsp; Marge: <strong style="color:var(--green)">${(p.annonce-p.achat).toFixed(0)}$</strong></div>
+      </div>
+      <div class="inv-actions">
+        ${isDispo
+          ?`<button class="btn-status st-dispo" onclick="openVenteModal(${p.id})">✅ En stock → Vendre</button>`
+          :`<button class="btn-status st-vendu" onclick="remettreDispo(${p.id})">❌ Vendu — Remettre</button>`}
+        <button class="btn-del" onclick="delPhone(${p.id})">✕</button>
+      </div>
+    </div>`;
   }).join('');
 }
 
-function askWA(id) {
-  const p = phones.find(x => x.id===id);
-  if (!p) return;
-  const msg = encodeURIComponent(`Bonjour! Je suis intéressé(e) par le ${p.brand} ${p.model} ${p.storage} à ${p.price}$. Est-il encore disponible?`);
-  window.open(`https://wa.me/${cfg.wa}?text=${msg}`, '_blank');
+function openVenteModal(id){
+  const p=phones.find(x=>x.id===id);if(!p)return;
+  pendingId=id;
+  document.getElementById('modal-info').textContent=`${p.brand} ${p.model} ${p.storage} — Prix annoncé: ${p.annonce}$`;
+  document.getElementById('m-reel').value=p.annonce;
+  document.getElementById('m-annonce').value=p.annonce;
+  updateProfit();
+  document.getElementById('modal-vente').classList.add('open');
 }
 
-function openWA() {
-  window.open(`https://wa.me/${cfg.wa}`, '_blank');
+function updateProfit(){
+  const p=phones.find(x=>x.id===pendingId);if(!p)return;
+  const reel=parseFloat(document.getElementById('m-reel').value)||0;
+  const profit=reel-p.achat;
+  const el=document.getElementById('profit-preview');
+  el.textContent=`Profit: ${profit>=0?'+':''}${profit.toFixed(2)}$`;
+  el.style.color=profit>=0?'var(--green)':'var(--red)';
 }
 
-// =============================================
-// INVENTAIRE ADMIN
-// =============================================
-function renderInv() {
-  document.getElementById('inv-count').textContent = phones.length;
-  const el = document.getElementById('inv-list');
-  if (!phones.length) {
-    el.innerHTML = '<div class="empty-state">Aucun appareil. Ajoutez-en un ci-dessus!</div>';
-    return;
-  }
-  el.innerHTML = phones.map(p => {
-    const sc = p.status==='dispo' ? 'st-dispo' : p.status==='reserve' ? 'st-reserve' : 'st-vendu';
-    const sl = p.status==='dispo' ? 'Disponible' : p.status==='reserve' ? 'Réservé' : 'Vendu';
-    return `
-      <div class="inv-item">
-        <div class="inv-info">
-          <div class="name">${p.brand} ${p.model} · ${p.storage}</div>
-          <div class="meta">${p.color} · ${p.cond} · <strong>${p.price}$</strong></div>
-        </div>
-        <div class="inv-actions">
-          <button class="btn-status ${sc}" onclick="cycleStatus(${p.id})">${sl}</button>
-          <button class="btn-del" onclick="delPhone(${p.id})" title="Supprimer">✕</button>
-        </div>
-      </div>`;
-  }).join('');
-}
+document.getElementById('m-reel').addEventListener('input',updateProfit);
 
-function cycleStatus(id) {
-  const p = phones.find(x => x.id===id);
-  if (!p) return;
-  p.status = {dispo:'reserve', reserve:'vendu', vendu:'dispo'}[p.status] || 'dispo';
-  save(); renderInv(); toast('Statut → ' + p.status);
-}
-
-function delPhone(id) {
-  if (!confirm('Supprimer cet appareil?')) return;
-  phones = phones.filter(x => x.id!==id);
-  save(); renderInv(); toast('Supprimé');
-}
-
-function addPhone() {
-  const model = document.getElementById('f-model').value.trim();
-  const price = parseFloat(document.getElementById('f-price').value);
-  if (!model || !price) { toast('⚠️ Modèle et prix requis'); return; }
-  phones.push({
-    id: nextId++,
-    brand:   document.getElementById('f-brand').value,
-    model,
-    storage: document.getElementById('f-storage').value,
-    color:   document.getElementById('f-color').value || '—',
-    cond:    document.getElementById('f-cond').value,
-    price,
-    status: 'dispo'
+function confirmVente(){
+  const p=phones.find(x=>x.id===pendingId);if(!p)return;
+  const reel=parseFloat(document.getElementById('m-reel').value)||p.annonce;
+  ventes.push({
+    id:Date.now(),brand:p.brand,model:p.model,storage:p.storage,
+    achat:p.achat,annonce:p.annonce,reel,profit:reel-p.achat,
+    consigne:p.consigne||'',date:new Date().toLocaleDateString('fr-CA')
   });
-  save(); clearForm(); renderInv(); toast('✅ Téléphone ajouté!');
+  p.status='vendu';
+  save();closeModal();renderInv();
+  toast(`✅ Vendu! Profit: ${(reel-p.achat).toFixed(2)}$`);
 }
 
-function clearForm() {
-  ['f-model','f-color','f-price'].forEach(id => document.getElementById(id).value = '');
+function remettreDispo(id){
+  const p=phones.find(x=>x.id===id);if(!p)return;
+  p.status='dispo';save();renderInv();toast('Remis en stock ✅');
 }
 
-function loadCfgForm() {
-  document.getElementById('s-name').value = cfg.name;
-  document.getElementById('s-wa').value   = cfg.wa;
+function closeModal(){document.getElementById('modal-vente').classList.remove('open');pendingId=null;}
+
+function delPhone(id){
+  if(!confirm('Supprimer cet appareil?'))return;
+  phones=phones.filter(x=>x.id!==id);save();renderInv();toast('Supprimé');
 }
 
-function saveSettings() {
-  cfg.name = document.getElementById('s-name').value || cfg.name;
-  cfg.wa   = document.getElementById('s-wa').value   || cfg.wa;
-  document.getElementById('hdr-name').textContent = cfg.name;
-  save(); toast('✅ Paramètres sauvegardés!');
+function addPhone(){
+  const model=document.getElementById('f-model').value.trim();
+  const annonce=parseFloat(document.getElementById('f-annonce').value);
+  if(!model||!annonce){toast('⚠️ Modèle et prix annoncé requis');return;}
+  phones.push({
+    id:nextId++,brand:document.getElementById('f-brand').value,model,
+    storage:document.getElementById('f-storage').value,
+    achat:parseFloat(document.getElementById('f-achat').value)||0,
+    annonce,status:'dispo',
+    consigne:document.getElementById('f-consigne').value.trim()
+  });
+  save();clearForm();renderInv();toast('✅ Ajouté!');
 }
 
-// =============================================
-// MESSAGE WHATSAPP
-// =============================================
-function renderShare() {
-  const dispo = phones.filter(p => p.status==='dispo');
-  let m = `📱 *${cfg.name}*\n`;
-  m += `━━━━━━━━━━━━━━━\n\n`;
-  if (!dispo.length) {
-    m += 'Aucun téléphone disponible en ce moment.\n';
-  } else {
-    dispo.forEach(p => {
-      m += `✅ *${p.brand} ${p.model}*\n`;
-      m += `   • ${p.storage} · ${p.color}\n`;
-      m += `   • ${p.cond}\n`;
-      m += `   • 💰 *${p.price}$ CAD*\n\n`;
+function clearForm(){['f-model','f-achat','f-annonce','f-consigne'].forEach(id=>document.getElementById(id).value='');}
+
+function loadCfgForm(){
+  document.getElementById('s-name').value=cfg.name;
+  document.getElementById('s-wa').value=cfg.wa;
+}
+
+function saveSettings(){
+  cfg.name=document.getElementById('s-name').value||cfg.name;
+  cfg.wa=document.getElementById('s-wa').value||cfg.wa;
+  document.getElementById('hdr-name').textContent=cfg.name;
+  save();toast('✅ Sauvegardé!');
+}
+
+function renderVentes(){
+  const totalProfit=ventes.reduce((s,v)=>s+v.profit,0);
+  const totalRev=ventes.reduce((s,v)=>s+v.reel,0);
+  document.getElementById('stats-ventes').innerHTML=`
+    <div class="stat"><div class="stat-num" style="color:var(--green)">${ventes.length}</div><div class="stat-lbl">Ventes</div></div>
+    <div class="stat"><div class="stat-num">${totalRev.toFixed(0)}$</div><div class="stat-lbl">Revenus</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--green)">${totalProfit.toFixed(0)}$</div><div class="stat-lbl">Profit total</div></div>
+  `;
+  const el=document.getElementById('ventes-list');
+  if(!ventes.length){el.innerHTML='<div class="empty-state">Aucune vente enregistrée encore.<br>Clique "En stock → Vendre" dans l\'inventaire.</div>';return;}
+  el.innerHTML=[...ventes].reverse().map(v=>`
+    <div class="vente-item">
+      <div>
+        <div class="vname">${v.brand} ${v.model} · ${v.storage}${v.consigne?` <span class="consigne-tag">🟡 ${v.consigne}</span>`:''}</div>
+        <div class="vmeta">Achat: ${v.achat}$ &nbsp;·&nbsp; Annoncé: ${v.annonce}$ &nbsp;·&nbsp; <strong>Vendu réel: ${v.reel}$</strong> &nbsp;·&nbsp; ${v.date}</div>
+      </div>
+      <div class="profit-badge ${v.profit<0?'profit-neg':''}">${v.profit>=0?'+':''}${v.profit.toFixed(2)}$</div>
+    </div>`).join('');
+}
+
+function renderShare(){
+  const dispo=phones.filter(p=>p.status==='dispo');
+  let m=`📱 *${cfg.name}*\n━━━━━━━━━━━━━━━\n\n`;
+  if(!dispo.length){m+='Aucun téléphone disponible en ce moment.\n';}
+  else{
+    const brands=[...new Set(dispo.map(p=>p.brand))].sort();
+    brands.forEach(b=>{
+      m+=`*${b.toUpperCase()}*\n`;
+      dispo.filter(p=>p.brand===b).forEach(p=>{m+=`  ✅ ${p.model} ${p.storage} — *${p.annonce}$*\n`;});
+      m+='\n';
     });
   }
-  m += `━━━━━━━━━━━━━━━\n`;
-  m += `💬 Écrivez-moi pour réserver!\n`;
-  m += `📲 wa.me/${cfg.wa}`;
-  document.getElementById('wa-prev').textContent = m;
+  m+=`━━━━━━━━━━━━━━━\n💬 Écrivez-moi pour réserver!\n📲 wa.me/${cfg.wa}`;
+  document.getElementById('wa-prev').textContent=m;
 }
 
-function copyMsg() {
-  const t = document.getElementById('wa-prev').textContent;
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(t).then(() => toast('📋 Copié!'));
-  } else {
-    const ta = document.createElement('textarea');
-    ta.value = t; document.body.appendChild(ta);
-    ta.select(); document.execCommand('copy');
-    document.body.removeChild(ta); toast('📋 Copié!');
-  }
+function copyMsg(){
+  const t=document.getElementById('wa-prev').textContent;
+  if(navigator.clipboard){navigator.clipboard.writeText(t).then(()=>toast('📋 Copié!'));}
+  else{const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);toast('📋 Copié!');}
 }
 
-// =============================================
-// TOAST
-// =============================================
-function toast(msg) {
-  const el = document.getElementById('toast');
-  el.textContent = msg; el.classList.add('show');
-  setTimeout(() => el.classList.remove('show'), 2500);
+function toast(msg){
+  const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'),2500);
 }
 
-// =============================================
-// INIT
-// =============================================
-load();
-renderCat();
+load();renderCat();
 </script>
 </body>
 </html>
