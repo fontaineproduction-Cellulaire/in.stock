@@ -20,7 +20,8 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .brand-name{font-size:18px;font-weight:700;color:var(--text)}
 .brand-sub{font-size:12px;color:var(--text-muted)}
 .hbadge{background:var(--green-light);color:var(--green-dark);font-size:12px;font-weight:600;padding:5px 14px;border-radius:20px;white-space:nowrap}
-/* TABS — hidden by default, shown in admin mode */
+
+/* TABS — admin only */
 .tabs{display:none;background:var(--white);border-bottom:1px solid var(--border);padding:0 16px;overflow-x:auto}
 .tabs.admin-mode{display:flex}
 .tab{padding:12px 16px;font-size:13px;font-weight:500;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;white-space:nowrap}
@@ -28,28 +29,51 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .tab:hover:not(.active){color:var(--text)}
 .view{display:none;padding:16px;max-width:1000px;margin:0 auto}
 .view.active{display:block}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-bottom:16px}
-.stat{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
-.stat-num{font-size:22px;font-weight:700}
-.stat-lbl{font-size:10px;color:var(--text-muted);margin-top:2px;text-transform:uppercase;letter-spacing:0.5px}
-.search-bar{margin-bottom:14px}
-.search-bar input{width:100%;background:var(--white);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:8px;font-size:14px;font-family:inherit}
-.search-bar input:focus{outline:none;border-color:var(--green-mid)}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+
+/* FILTERS */
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;align-items:center}
+.search-wrap{flex:1;min-width:180px;position:relative}
+.search-wrap input{width:100%;background:var(--white);border:1px solid var(--border);color:var(--text);padding:9px 14px;border-radius:8px;font-size:13px;font-family:inherit}
+.search-wrap input:focus{outline:none;border-color:var(--green-mid)}
+.filter-btns{display:flex;gap:6px;flex-wrap:wrap}
+.fbtn{background:var(--white);border:1px solid var(--border);color:var(--text-muted);padding:8px 14px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;transition:all 0.2s;white-space:nowrap}
+.fbtn.active{background:var(--green);border-color:var(--green);color:#fff}
+.fbtn:hover:not(.active){border-color:var(--green-mid);color:var(--green)}
+
+/* BRAND SECTION */
+.brand-section{margin-bottom:28px}
+.brand-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--border)}
+.brand-title{font-size:16px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px}
+.brand-count{background:var(--green-light);color:var(--green-dark);font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px}
+.see-all{font-size:12px;color:var(--green);cursor:pointer;font-weight:500;border:none;background:none;padding:4px 8px}
+.see-all:hover{text-decoration:underline}
+
+/* GRID */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
 .card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px;transition:box-shadow 0.2s}
 .card:hover{box-shadow:0 4px 16px rgba(0,0,0,0.07)}
 .card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
-.card-brand{font-size:11px;font-weight:600;color:var(--green);text-transform:uppercase;letter-spacing:1px}
-.badge{font-size:11px;font-weight:500;padding:3px 9px;border-radius:20px}
-.b-dispo{background:var(--green-light);color:var(--green-dark)}
+.card-brand-lbl{font-size:11px;font-weight:600;color:var(--green);text-transform:uppercase;letter-spacing:1px}
+.badge{font-size:11px;font-weight:500;padding:3px 9px;border-radius:20px;background:var(--green-light);color:var(--green-dark)}
 .card-name{font-size:15px;font-weight:600;margin-bottom:8px;line-height:1.3}
 .card-specs{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
 .spec{background:var(--bg);border:1px solid var(--border);border-radius:6px;font-size:11px;color:var(--text-muted);padding:3px 8px}
+.spec.color-spec{display:flex;align-items:center;gap:4px}
+.color-dot{width:8px;height:8px;border-radius:50%;border:1px solid rgba(0,0,0,0.15);flex-shrink:0}
 .card-footer{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);padding-top:12px}
 .price{font-size:20px;font-weight:700}
 .price small{font-size:12px;font-weight:400;color:var(--text-muted)}
 .wa-btn{background:var(--green);color:#fff;border:none;border-radius:7px;padding:7px 13px;font-size:12px;font-weight:500;cursor:pointer;transition:background 0.2s}
 .wa-btn:hover{background:var(--green-dark)}
+.empty-section{color:var(--text-muted);font-size:13px;padding:12px 0;font-style:italic}
+
+/* ADMIN STATS */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-bottom:16px}
+.stat{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
+.stat-num{font-size:22px;font-weight:700}
+.stat-lbl{font-size:10px;color:var(--text-muted);margin-top:2px;text-transform:uppercase;letter-spacing:0.5px}
+
+/* ADMIN FORM */
 .section-label{font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px}
 .card-form{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:18px}
 .row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:10px}
@@ -62,6 +86,8 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text-muted);padding:9px 14px;border-radius:7px;font-size:13px;cursor:pointer}
 .btn-ghost:hover{border-color:#aaa;color:var(--text)}
 .btn-red{background:var(--red-light);color:var(--red);border:1px solid #f09595;padding:9px 14px;border-radius:7px;font-size:13px;cursor:pointer;font-weight:500}
+
+/* INV LIST */
 .inv-item{background:var(--white);border:1px solid var(--border);border-radius:9px;padding:11px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:7px;flex-wrap:wrap}
 .inv-item.is-consigne{border-left:3px solid #EF9F27}
 .iname{font-size:13px;font-weight:600}
@@ -73,29 +99,37 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .st-vendu{background:var(--red-light);color:var(--red)}
 .btn-del{background:none;border:none;color:#d1d5db;font-size:15px;cursor:pointer;padding:2px 5px}
 .btn-del:hover{color:#ef4444}
+
+/* VENTES */
 .vente-item{background:var(--white);border:1px solid var(--border);border-radius:9px;padding:11px 14px;margin-bottom:7px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
 .vname{font-size:13px;font-weight:600}
 .vmeta{font-size:11px;color:var(--text-muted);margin-top:2px}
 .profit-badge{background:var(--green-light);color:var(--green-dark);font-size:12px;font-weight:700;padding:4px 10px;border-radius:6px}
 .profit-neg{background:var(--red-light) !important;color:var(--red) !important}
+
+/* MODAL */
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:100;align-items:center;justify-content:center;padding:16px}
 .modal-bg.open{display:flex}
 .modal{background:var(--white);border-radius:14px;padding:24px;width:100%;max-width:460px;max-height:90vh;overflow-y:auto}
 .modal-title{font-size:16px;font-weight:600;margin-bottom:14px}
 .modal-actions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+
+/* SHARE */
 .wa-preview{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:16px;font-size:13px;color:var(--text);line-height:1.75;white-space:pre-wrap;word-break:break-word;margin-bottom:14px;font-family:'Courier New',monospace}
 .copy-btn{background:var(--green);color:#fff;border:none;padding:10px 20px;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer}
 .copy-btn:hover{background:var(--green-dark)}
 .info-box{background:var(--green-light);border:1px solid var(--green-mid);border-radius:10px;padding:12px 14px;margin-bottom:14px;font-size:12px;color:var(--green-dark);line-height:1.6}
 .settings-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:18px;margin-top:20px}
+
 /* ADMIN BANNER */
 .admin-banner{background:#1a1a1a;color:#fff;text-align:center;padding:8px;font-size:12px;font-weight:500;display:none;align-items:center;justify-content:center;gap:12px}
 .admin-banner.show{display:flex}
 .admin-banner button{background:rgba(255,255,255,0.15);border:none;color:#fff;padding:4px 12px;border-radius:4px;font-size:11px;cursor:pointer}
-.admin-banner button:hover{background:rgba(255,255,255,0.25)}
+
 /* UNLOCK HINT */
-.unlock-hint{position:fixed;bottom:16px;right:16px;background:rgba(0,0,0,0.06);border-radius:20px;padding:6px 12px;font-size:11px;color:var(--text-muted);pointer-events:none;opacity:0;transition:opacity 0.3s}
+.unlock-hint{position:fixed;bottom:16px;right:16px;background:rgba(0,0,0,0.07);border-radius:20px;padding:6px 12px;font-size:11px;color:var(--text-muted);pointer-events:none;opacity:0;transition:opacity 0.3s}
 .unlock-hint.show{opacity:1}
+
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(60px);background:#1a1a1a;color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;z-index:999;opacity:0;transition:all 0.3s;white-space:nowrap}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
 .empty-state{text-align:center;padding:30px;color:var(--text-muted);font-size:13px}
@@ -104,17 +138,16 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 </head>
 <body>
 
-<!-- ADMIN BANNER (hidden from clients) -->
 <div class="admin-banner" id="admin-banner">
-  🔒 Mode admin activé
+  Mode admin activé
   <button onclick="lockAdmin()">Verrouiller</button>
 </div>
 
 <div class="header">
   <div class="brand" onclick="handleLogoTap()" id="brand-btn">
-    <div class="brand-dot" id="brand-dot"></div>
+    <div class="brand-dot"></div>
     <div>
-      <div class="brand-name" id="hdr-name">in.stock</div>
+      <div class="brand-name" id="hdr-name">Inventaire disponible</div>
       <div class="brand-sub">Téléphones · Marketplace &amp; WhatsApp</div>
     </div>
   </div>
@@ -122,23 +155,34 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 </div>
 
 <div class="tabs" id="tabs">
-  <div class="tab active" id="tab-cat" onclick="go('cat')">📋 Catalogue</div>
-  <div class="tab" id="tab-inv" onclick="go('inv')">📦 Inventaire</div>
-  <div class="tab" id="tab-ventes" onclick="go('ventes')">💰 Ventes</div>
-  <div class="tab" id="tab-shr" onclick="go('shr')">💬 Partager</div>
+  <div class="tab active" id="tab-cat" onclick="go('cat')">Catalogue</div>
+  <div class="tab" id="tab-inv" onclick="go('inv')">Inventaire</div>
+  <div class="tab" id="tab-ventes" onclick="go('ventes')">Ventes</div>
+  <div class="tab" id="tab-shr" onclick="go('shr')">Partager</div>
 </div>
 
 <!-- CATALOGUE -->
 <div class="view active" id="view-cat">
-  <div class="stats" id="stats-cat"></div>
-  <div class="search-bar"><input type="text" id="search" placeholder="🔍  Rechercher un modèle..." oninput="renderCat()"></div>
-  <div class="grid" id="catalog"></div>
+  <div class="filters">
+    <div class="search-wrap">
+      <input type="text" id="search" placeholder="🔍  Rechercher..." oninput="renderCat()">
+    </div>
+    <div class="filter-btns">
+      <button class="fbtn active" onclick="setFilter('all',this)">Tous</button>
+      <button class="fbtn" onclick="setFilter('apple',this)">Apple</button>
+      <button class="fbtn" onclick="setFilter('samsung',this)">Samsung</button>
+      <button class="fbtn" onclick="setFilter('u300',this)">- 300$</button>
+      <button class="fbtn" onclick="setFilter('300500',this)">300-500$</button>
+      <button class="fbtn" onclick="setFilter('o500',this)">500$+</button>
+    </div>
+  </div>
+  <div id="catalog"></div>
 </div>
 
 <!-- INVENTAIRE -->
 <div class="view" id="view-inv">
   <div class="card-form">
-    <div class="section-label">➕ Ajouter un téléphone</div>
+    <div class="section-label">Ajouter un téléphone</div>
     <div class="row">
       <div class="fg">
         <label>Marque</label>
@@ -151,29 +195,27 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
       </div>
     </div>
     <div class="row">
+      <div class="fg"><label>Couleur</label><input id="f-color" placeholder="ex: Noir, Blanc, Bleu..."></div>
       <div class="fg"><label>Prix d'achat ($)</label><input id="f-achat" type="number" placeholder="ex: 400"></div>
       <div class="fg"><label>Prix annoncé ($)</label><input id="f-annonce" type="number" placeholder="ex: 475"></div>
-      <div class="fg consigne-field"><label>🟡 Consigne — nom proprio</label><input id="f-consigne" placeholder="ex: Justin, Sandaga..."></div>
+      <div class="fg consigne-field"><label>Consigne — nom proprio</label><input id="f-consigne" placeholder="ex: Justin, Sandaga..."></div>
     </div>
     <div style="display:flex;gap:8px;flex-wrap:wrap">
       <button class="btn-green" onclick="addPhone()">+ Ajouter</button>
       <button class="btn-ghost" onclick="clearForm()">Effacer</button>
     </div>
   </div>
-  <div class="section-label">
-    Stock — <span id="inv-count">0</span> appareils &nbsp;
-    <span style="font-size:11px;color:var(--amber)">🟡 = consigne</span>
-  </div>
+  <div class="section-label">Stock — <span id="inv-count">0</span> appareils &nbsp;<span style="font-size:11px;color:var(--amber)">consigne</span></div>
   <div id="inv-list"></div>
   <div class="settings-card">
-    <div class="section-label" style="margin-bottom:14px">⚙️ Paramètres</div>
+    <div class="section-label" style="margin-bottom:14px">Paramètres</div>
     <div class="row">
       <div class="fg"><label>Nom affiché</label><input id="s-name" placeholder="in.stock"></div>
       <div class="fg"><label>Numéro WhatsApp</label><input id="s-wa" placeholder="15141234567" type="tel"></div>
     </div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
       <button class="btn-green" onclick="saveSettings()">Sauvegarder</button>
-      <button class="btn-red" onclick="lockAdmin()">🔒 Verrouiller l'admin</button>
+      <button class="btn-red" onclick="lockAdmin()">Verrouiller l'admin</button>
     </div>
     <p style="font-size:11px;color:var(--text-muted);margin-top:8px">Format sans + ni espace · ex: 15141234567</p>
   </div>
@@ -188,21 +230,19 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 
 <!-- PARTAGER -->
 <div class="view" id="view-shr">
-  <div class="info-box">
-    Ce message affiche <strong>seulement les téléphones disponibles</strong>. Aucun prix d'achat, profit ou consigne n'est visible pour le client.
-  </div>
+  <div class="info-box">Ce message affiche <strong>seulement les téléphones disponibles</strong>. Aucun prix d'achat, profit ou consigne n'est visible pour le client.</div>
   <div class="section-label">Message WhatsApp prêt à envoyer</div>
   <div class="wa-preview" id="wa-prev"></div>
   <div style="display:flex;gap:8px;flex-wrap:wrap">
-    <button class="copy-btn" onclick="copyMsg()">📋 Copier</button>
-    <button class="btn-ghost" onclick="openWA()">💬 Ouvrir WhatsApp</button>
+    <button class="copy-btn" onclick="copyMsg()">Copier</button>
+    <button class="btn-ghost" onclick="openWA()">Ouvrir WhatsApp</button>
   </div>
 </div>
 
 <!-- MODAL VENTE -->
 <div class="modal-bg" id="modal-vente">
   <div class="modal">
-    <div class="modal-title">💰 Enregistrer la vente</div>
+    <div class="modal-title">Enregistrer la vente</div>
     <div id="modal-info" style="font-size:13px;color:var(--text-muted);margin-bottom:14px;padding:10px;background:var(--bg);border-radius:8px"></div>
     <div class="row" style="grid-template-columns:1fr 1fr">
       <div class="fg"><label>Prix de vente réel ($)</label><input id="m-reel" type="number"></div>
@@ -210,64 +250,76 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
     </div>
     <div id="profit-preview" style="font-size:14px;font-weight:600;margin:8px 0 4px"></div>
     <div class="modal-actions">
-      <button class="btn-green" onclick="confirmVente()">✅ Confirmer la vente</button>
+      <button class="btn-green" onclick="confirmVente()">Confirmer la vente</button>
       <button class="btn-ghost" onclick="closeModal()">Annuler</button>
     </div>
   </div>
 </div>
 
-<!-- UNLOCK HINT -->
 <div class="unlock-hint" id="unlock-hint"></div>
 <div class="toast" id="toast"></div>
 
 <script>
 let phones = [
-  {id:1,  brand:"Samsung",model:"Galaxy A21",      storage:"128 Go",achat:150,   annonce:150,  status:"dispo",consigne:"Sandaga"},
-  {id:2,  brand:"Samsung",model:"Galaxy A53",      storage:"128 Go",achat:137.80,annonce:220,  status:"dispo",consigne:"Sandaga"},
-  {id:3,  brand:"Samsung",model:"Galaxy A53",      storage:"128 Go",achat:137.80,annonce:240,  status:"dispo",consigne:""},
-  {id:4,  brand:"Samsung",model:"Galaxy A53",      storage:"128 Go",achat:137.80,annonce:240,  status:"dispo",consigne:""},
-  {id:5,  brand:"Samsung",model:"Galaxy Note",     storage:"—",     achat:100,   annonce:180,  status:"dispo",consigne:""},
-  {id:6,  brand:"Samsung",model:"Galaxy S21",      storage:"128 Go",achat:180.20,annonce:280,  status:"dispo",consigne:""},
-  {id:7,  brand:"Samsung",model:"Galaxy S21 FE",   storage:"128 Go",achat:180.20,annonce:260,  status:"dispo",consigne:"Sandaga"},
-  {id:8,  brand:"Samsung",model:"Galaxy S21 FE",   storage:"128 Go",achat:180.20,annonce:280,  status:"dispo",consigne:""},
-  {id:9,  brand:"Samsung",model:"Galaxy S21 FE",   storage:"128 Go",achat:180.20,annonce:280,  status:"dispo",consigne:""},
-  {id:10, brand:"Samsung",model:"Galaxy S21 FE",   storage:"128 Go",achat:180.20,annonce:280,  status:"dispo",consigne:""},
-  {id:11, brand:"Samsung",model:"Galaxy S21+",     storage:"128 Go",achat:201.40,annonce:300,  status:"dispo",consigne:""},
-  {id:12, brand:"Samsung",model:"Galaxy S22",      storage:"128 Go",achat:212,   annonce:310,  status:"dispo",consigne:""},
-  {id:13, brand:"Samsung",model:"Galaxy S22+",     storage:"128 Go",achat:233.20,annonce:320,  status:"dispo",consigne:""},
-  {id:14, brand:"Samsung",model:"Galaxy S22+",     storage:"128 Go",achat:233.20,annonce:320,  status:"dispo",consigne:""},
-  {id:15, brand:"Samsung",model:"Galaxy S23",      storage:"128 Go",achat:270,   annonce:360,  status:"dispo",consigne:"Justin"},
-  {id:16, brand:"Samsung",model:"Galaxy S23 FE",   storage:"128 Go",achat:243.80,annonce:340,  status:"dispo",consigne:""},
-  {id:17, brand:"Samsung",model:"Galaxy S23 FE",   storage:"128 Go",achat:243.80,annonce:340,  status:"dispo",consigne:""},
-  {id:18, brand:"Samsung",model:"Galaxy S23 Ultra",storage:"512 Go",achat:477,   annonce:577,  status:"dispo",consigne:""},
-  {id:19, brand:"Samsung",model:"Galaxy S24",      storage:"128 Go",achat:400,   annonce:475,  status:"dispo",consigne:""},
-  {id:20, brand:"Samsung",model:"Galaxy S24",      storage:"128 Go",achat:400,   annonce:475,  status:"dispo",consigne:"Justin"},
-  {id:21, brand:"Samsung",model:"Galaxy S24",      storage:"256 Go",achat:400,   annonce:475,  status:"dispo",consigne:"Justin"},
-  {id:22, brand:"Samsung",model:"Galaxy S24 Plus", storage:"256 Go",achat:525,   annonce:630,  status:"dispo",consigne:"Justin"},
-  {id:23, brand:"Samsung",model:"Galaxy S24 Ultra",storage:"256 Go",achat:720,   annonce:820,  status:"dispo",consigne:""},
-  {id:24, brand:"Samsung",model:"Galaxy S24 Ultra",storage:"256 Go",achat:720,   annonce:820,  status:"dispo",consigne:"Justin"},
-  {id:25, brand:"Samsung",model:"Galaxy S24 Ultra",storage:"256 Go",achat:720,   annonce:820,  status:"dispo",consigne:"Justin"},
-  {id:26, brand:"Samsung",model:"Galaxy S24 Ultra",storage:"256 Go",achat:720,   annonce:820,  status:"dispo",consigne:"Justin"},
-  {id:27, brand:"Samsung",model:"Galaxy S24+",     storage:"256 Go",achat:461.10,annonce:560,  status:"dispo",consigne:""},
-  {id:28, brand:"Samsung",model:"Galaxy S24+",     storage:"256 Go",achat:461.10,annonce:560,  status:"dispo",consigne:""},
-  {id:29, brand:"Samsung",model:"Galaxy S25",      storage:"128 Go",achat:519.40,annonce:640,  status:"dispo",consigne:""},
-  {id:30, brand:"Apple",  model:"iPhone 15 Pro",   storage:"—",     achat:650,   annonce:750,  status:"dispo",consigne:""},
-  {id:31, brand:"Apple",  model:"iPhone 15+",      storage:"128 Go",achat:551.20,annonce:650,  status:"dispo",consigne:"Sandaga"},
-  {id:32, brand:"Apple",  model:"iPhone 15+",      storage:"128 Go",achat:551.20,annonce:675,  status:"dispo",consigne:""},
-  {id:33, brand:"Apple",  model:"iPhone 15+",      storage:"128 Go",achat:551.20,annonce:675,  status:"dispo",consigne:""}
+  {id:1,  brand:"Samsung",model:"Galaxy A21",      storage:"128 Go",color:"Noir",   achat:150,   annonce:150,  status:"dispo",consigne:"Sandaga"},
+  {id:2,  brand:"Samsung",model:"Galaxy A53",      storage:"128 Go",color:"",       achat:137.80,annonce:220,  status:"dispo",consigne:"Sandaga"},
+  {id:3,  brand:"Samsung",model:"Galaxy A53",      storage:"128 Go",color:"",       achat:137.80,annonce:240,  status:"dispo",consigne:""},
+  {id:4,  brand:"Samsung",model:"Galaxy A53",      storage:"128 Go",color:"",       achat:137.80,annonce:240,  status:"dispo",consigne:""},
+  {id:5,  brand:"Samsung",model:"Galaxy Note",     storage:"—",     color:"",       achat:100,   annonce:180,  status:"dispo",consigne:""},
+  {id:6,  brand:"Samsung",model:"Galaxy S21",      storage:"128 Go",color:"",       achat:180.20,annonce:280,  status:"dispo",consigne:""},
+  {id:7,  brand:"Samsung",model:"Galaxy S21 FE",   storage:"128 Go",color:"",       achat:180.20,annonce:260,  status:"dispo",consigne:"Sandaga"},
+  {id:8,  brand:"Samsung",model:"Galaxy S21 FE",   storage:"128 Go",color:"",       achat:180.20,annonce:280,  status:"dispo",consigne:""},
+  {id:9,  brand:"Samsung",model:"Galaxy S21 FE",   storage:"128 Go",color:"",       achat:180.20,annonce:280,  status:"dispo",consigne:""},
+  {id:10, brand:"Samsung",model:"Galaxy S21 FE",   storage:"128 Go",color:"",       achat:180.20,annonce:280,  status:"dispo",consigne:""},
+  {id:11, brand:"Samsung",model:"Galaxy S21+",     storage:"128 Go",color:"",       achat:201.40,annonce:300,  status:"dispo",consigne:""},
+  {id:12, brand:"Samsung",model:"Galaxy S22",      storage:"128 Go",color:"",       achat:212,   annonce:310,  status:"dispo",consigne:""},
+  {id:13, brand:"Samsung",model:"Galaxy S22+",     storage:"128 Go",color:"",       achat:233.20,annonce:320,  status:"dispo",consigne:""},
+  {id:14, brand:"Samsung",model:"Galaxy S22+",     storage:"128 Go",color:"",       achat:233.20,annonce:320,  status:"dispo",consigne:""},
+  {id:15, brand:"Samsung",model:"Galaxy S23",      storage:"128 Go",color:"",       achat:270,   annonce:360,  status:"dispo",consigne:"Justin"},
+  {id:16, brand:"Samsung",model:"Galaxy S23 FE",   storage:"128 Go",color:"",       achat:243.80,annonce:340,  status:"dispo",consigne:""},
+  {id:17, brand:"Samsung",model:"Galaxy S23 FE",   storage:"128 Go",color:"",       achat:243.80,annonce:340,  status:"dispo",consigne:""},
+  {id:18, brand:"Samsung",model:"Galaxy S23 Ultra",storage:"512 Go",color:"",       achat:477,   annonce:577,  status:"dispo",consigne:""},
+  {id:19, brand:"Samsung",model:"Galaxy S24",      storage:"128 Go",color:"",       achat:400,   annonce:475,  status:"dispo",consigne:""},
+  {id:20, brand:"Samsung",model:"Galaxy S24",      storage:"128 Go",color:"",       achat:400,   annonce:475,  status:"dispo",consigne:"Justin"},
+  {id:21, brand:"Samsung",model:"Galaxy S24",      storage:"256 Go",color:"",       achat:400,   annonce:475,  status:"dispo",consigne:"Justin"},
+  {id:22, brand:"Samsung",model:"Galaxy S24 Plus", storage:"256 Go",color:"",       achat:525,   annonce:630,  status:"dispo",consigne:"Justin"},
+  {id:23, brand:"Samsung",model:"Galaxy S24 Ultra",storage:"256 Go",color:"",       achat:720,   annonce:820,  status:"dispo",consigne:""},
+  {id:24, brand:"Samsung",model:"Galaxy S24 Ultra",storage:"256 Go",color:"",       achat:720,   annonce:820,  status:"dispo",consigne:"Justin"},
+  {id:25, brand:"Samsung",model:"Galaxy S24 Ultra",storage:"256 Go",color:"",       achat:720,   annonce:820,  status:"dispo",consigne:"Justin"},
+  {id:26, brand:"Samsung",model:"Galaxy S24 Ultra",storage:"256 Go",color:"",       achat:720,   annonce:820,  status:"dispo",consigne:"Justin"},
+  {id:27, brand:"Samsung",model:"Galaxy S24+",     storage:"256 Go",color:"",       achat:461.10,annonce:560,  status:"dispo",consigne:""},
+  {id:28, brand:"Samsung",model:"Galaxy S24+",     storage:"256 Go",color:"",       achat:461.10,annonce:560,  status:"dispo",consigne:""},
+  {id:29, brand:"Samsung",model:"Galaxy S25",      storage:"128 Go",color:"",       achat:519.40,annonce:640,  status:"dispo",consigne:""},
+  {id:30, brand:"Apple",  model:"iPhone 15 Pro",   storage:"—",     color:"",       achat:650,   annonce:750,  status:"dispo",consigne:""},
+  {id:31, brand:"Apple",  model:"iPhone 15+",      storage:"128 Go",color:"",       achat:551.20,annonce:650,  status:"dispo",consigne:"Sandaga"},
+  {id:32, brand:"Apple",  model:"iPhone 15+",      storage:"128 Go",color:"",       achat:551.20,annonce:675,  status:"dispo",consigne:""},
+  {id:33, brand:"Apple",  model:"iPhone 15+",      storage:"128 Go",color:"",       achat:551.20,annonce:675,  status:"dispo",consigne:""}
 ];
 let ventes=[];
 let nextId=34;
-let cfg={name:"in.stock",wa:"15141234567"};
+let cfg={name:"Inventaire disponible",wa:"15141234567"};
 let pendingId=null;
 let isAdmin=false;
 let tapCount=0;
 let tapTimer=null;
+let activeFilter='all';
 
-function save(){try{localStorage.setItem('instock_v3',JSON.stringify({phones,ventes,nextId,cfg}))}catch(e){}}
+// COLOR MAP
+const colorMap={
+  'noir':'#1a1a1a','black':'#1a1a1a','blanc':'#f5f5f5','white':'#f5f5f5',
+  'bleu':'#3B82F6','blue':'#3B82F6','rouge':'#EF4444','red':'#EF4444',
+  'vert':'#22C55E','green':'#22C55E','or':'#F59E0B','gold':'#F59E0B',
+  'rose':'#EC4899','pink':'#EC4899','violet':'#8B5CF6','purple':'#8B5CF6',
+  'gris':'#9CA3AF','grey':'#9CA3AF','gray':'#9CA3AF','argent':'#C0C0C0','silver':'#C0C0C0',
+  'crème':'#FEF3C7','creme':'#FEF3C7','charbon':'#374151','titane':'#8D8D8D','titane':'#8D8D8D',
+  'minuit':'#1e293b','midnight':'#1e293b','lumière':'#F8FAFC','starlight':'#F8FAFC'
+};
+function getColorHex(c){if(!c)return null;const k=c.toLowerCase().trim();for(const[key,val]of Object.entries(colorMap)){if(k.includes(key))return val;}return null;}
+
+function save(){try{localStorage.setItem('instock_v4',JSON.stringify({phones,ventes,nextId,cfg}))}catch(e){}}
 function load(){
   try{
-    const d=JSON.parse(localStorage.getItem('instock_v3')||'{}');
+    const d=JSON.parse(localStorage.getItem('instock_v4')||'{}');
     if(d.phones)phones=d.phones;
     if(d.ventes)ventes=d.ventes;
     if(d.nextId)nextId=d.nextId;
@@ -275,41 +327,33 @@ function load(){
   }catch(e){}
 }
 
-/* ── SECRET UNLOCK: tap logo 5x ── */
+/* SECRET UNLOCK — tap logo 5x */
 function handleLogoTap(){
-  if(isAdmin){return;}
+  if(isAdmin)return;
   tapCount++;
   clearTimeout(tapTimer);
   const hint=document.getElementById('unlock-hint');
-  const remaining=5-tapCount;
-  if(remaining>0){
-    hint.textContent=`🔒 ${remaining} clic${remaining>1?'s':''} pour accéder à l'admin`;
+  const rem=5-tapCount;
+  if(rem>0){
+    hint.textContent=`🔒 ${rem} clic${rem>1?'s':''} pour accéder à l'admin`;
     hint.classList.add('show');
     tapTimer=setTimeout(()=>{tapCount=0;hint.classList.remove('show');},2000);
   }
-  if(tapCount>=5){
-    tapCount=0;
-    hint.classList.remove('show');
-    unlockAdmin();
-  }
+  if(tapCount>=5){tapCount=0;hint.classList.remove('show');unlockAdmin();}
 }
-
 function unlockAdmin(){
   isAdmin=true;
   document.getElementById('tabs').classList.add('admin-mode');
   document.getElementById('admin-banner').classList.add('show');
-  toast('🔓 Admin déverrouillé!');
+  toast('Admin déverrouillé!');
 }
-
 function lockAdmin(){
   isAdmin=false;
   document.getElementById('tabs').classList.remove('admin-mode');
   document.getElementById('admin-banner').classList.remove('show');
-  go('cat');
-  toast('🔒 Admin verrouillé');
+  go('cat');toast('Admin verrouillé');
 }
 
-/* ── NAVIGATION ── */
 function go(tab){
   ['cat','inv','ventes','shr'].forEach(t=>{
     document.getElementById('tab-'+t).classList.toggle('active',t===tab);
@@ -321,39 +365,99 @@ function go(tab){
   if(tab==='shr')renderShare();
 }
 
-/* ── CATALOGUE ── */
+function setFilter(f,btn){
+  activeFilter=f;
+  document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCat();
+}
+
+function applyFilter(phones){
+  const q=(document.getElementById('search').value||'').toLowerCase();
+  return phones.filter(p=>{
+    const txt=(p.brand+' '+p.model+' '+p.storage+' '+(p.color||'')).toLowerCase();
+    if(q&&!txt.includes(q))return false;
+    if(activeFilter==='apple')return p.brand==='Apple';
+    if(activeFilter==='samsung')return p.brand==='Samsung';
+    if(activeFilter==='u300')return p.annonce<300;
+    if(activeFilter==='300500')return p.annonce>=300&&p.annonce<=500;
+    if(activeFilter==='o500')return p.annonce>500;
+    return true;
+  });
+}
+
 function renderCat(){
-  const dispo=phones.filter(p=>p.status==='dispo');
+  const dispo=phones.filter(p=>p.status==='dispo'&&(!p.consigne||p.consigne.trim()===''));
   document.getElementById('hdr-name').textContent=cfg.name;
   document.getElementById('hdr-count').textContent=dispo.length+' disponible'+(dispo.length!==1?'s':'');
-  document.getElementById('stats-cat').innerHTML=`
-    <div class="stat"><div class="stat-num" style="color:var(--green)">${dispo.length}</div><div class="stat-lbl">Disponibles</div></div>
-    <div class="stat"><div class="stat-num" style="color:#6b7280">${phones.filter(p=>p.status==='vendu').length}</div><div class="stat-lbl">Vendus</div></div>
-    <div class="stat"><div class="stat-num">${phones.length}</div><div class="stat-lbl">Total</div></div>
-  `;
-  const q=(document.getElementById('search').value||'').toLowerCase();
-  const filtered=dispo.filter(p=>(p.brand+' '+p.model+' '+p.storage).toLowerCase().includes(q));
-  if(!filtered.length){document.getElementById('catalog').innerHTML='<div class="empty-state">Aucun téléphone disponible.</div>';return;}
-  document.getElementById('catalog').innerHTML=filtered.map(p=>`
-    <div class="card">
-      <div class="card-top"><div class="card-brand">${p.brand}</div><span class="badge b-dispo">✅ Disponible</span></div>
-      <div class="card-name">${p.model}</div>
-      <div class="card-specs"><span class="spec">${p.storage}</span></div>
-      <div class="card-footer">
-        <div class="price">${p.annonce}$<small> CAD</small></div>
-        <button class="wa-btn" onclick="askWA(${p.id})">💬 Info</button>
+
+  const filtered=applyFilter(dispo);
+  const catalog=document.getElementById('catalog');
+
+  if(!filtered.length){
+    catalog.innerHTML='<div class="empty-state">Aucun téléphone trouvé.</div>';
+    return;
+  }
+
+  // Group by brand, sort by price within each brand
+  const brands=[...new Set(filtered.map(p=>p.brand))].sort((a,b)=>{
+    // Apple first, then Samsung, then others alphabetically
+    if(a==='Apple')return -1;if(b==='Apple')return 1;
+    if(a==='Samsung')return -1;if(b==='Samsung')return 1;
+    return a.localeCompare(b);
+  });
+
+  catalog.innerHTML=brands.map(brand=>{
+    const bPhones=filtered.filter(p=>p.brand===brand).sort((a,b)=>a.annonce-b.annonce);
+    const cards=bPhones.map(p=>{
+      const hex=getColorHex(p.color);
+      const colorSpec=p.color?`<span class="spec color-spec">${hex?`<span class="color-dot" style="background:${hex}"></span>`:''} ${p.color}</span>`:'';
+      return`<div class="card">
+        <div class="card-top">
+          <div class="card-brand-lbl">${p.brand}</div>
+          <span class="badge">Disponible</span>
+        </div>
+        <div class="card-name">${p.model}</div>
+        <div class="card-specs">
+          <span class="spec">${p.storage}</span>
+          ${colorSpec}
+        </div>
+        <div class="card-footer">
+          <div class="price">${p.annonce}$<small> CAD</small></div>
+          <button class="wa-btn" onclick="askWA(${p.id})">💬 Info</button>
+        </div>
+      </div>`;
+    }).join('');
+
+    return`<div class="brand-section">
+      <div class="brand-header">
+        <div class="brand-title">
+          ${brand}
+          <span class="brand-count">${bPhones.length}</span>
+        </div>
+        <button class="see-all" onclick="filterBrand('${brand.toLowerCase()}')">Voir tout →</button>
       </div>
-    </div>`).join('');
+      <div class="grid">${cards}</div>
+    </div>`;
+  }).join('');
+}
+
+function filterBrand(b){
+  activeFilter=b==='apple'?'apple':b==='samsung'?'samsung':'all';
+  document.querySelectorAll('.fbtn').forEach(btn=>{
+    btn.classList.toggle('active',btn.textContent.toLowerCase().includes(b)||b==='all');
+  });
+  renderCat();
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
 function askWA(id){
   const p=phones.find(x=>x.id===id);if(!p)return;
-  const msg=encodeURIComponent(`Bonjour! Je suis intéressé(e) par le ${p.brand} ${p.model} ${p.storage} à ${p.annonce}$. Est-il encore disponible?`);
+  const msg=encodeURIComponent(`Bonjour! Je suis intéressé(e) par le ${p.brand} ${p.model} ${p.storage}${p.color?' '+p.color:''} à ${p.annonce}$. Est-il encore disponible?`);
   window.open(`https://wa.me/${cfg.wa}?text=${msg}`,'_blank');
 }
 function openWA(){window.open(`https://wa.me/${cfg.wa}`,'_blank');}
 
-/* ── INVENTAIRE ── */
 function renderInv(){
   document.getElementById('inv-count').textContent=phones.length;
   const el=document.getElementById('inv-list');
@@ -362,13 +466,13 @@ function renderInv(){
     const isC=p.consigne&&p.consigne.trim()!=='';
     return`<div class="inv-item${isC?' is-consigne':''}">
       <div style="flex:1;min-width:0">
-        <div class="iname">${p.brand} ${p.model} · ${p.storage}${isC?`<span class="consigne-tag">🟡 ${p.consigne}</span>`:''}</div>
+        <div class="iname">${p.brand} ${p.model} · ${p.storage}${p.color?' · '+p.color:''}${isC?`<span class="consigne-tag">🟡 ${p.consigne}</span>`:''}</div>
         <div class="imeta">Achat: <strong>${p.achat}$</strong> &nbsp;·&nbsp; Annoncé: <strong>${p.annonce}$</strong> &nbsp;·&nbsp; Marge: <strong style="color:var(--green)">${(p.annonce-p.achat).toFixed(0)}$</strong></div>
       </div>
       <div class="inv-actions">
         ${p.status==='dispo'
-          ?`<button class="btn-status st-dispo" onclick="openVenteModal(${p.id})">✅ En stock → Vendre</button>`
-          :`<button class="btn-status st-vendu" onclick="remettreDispo(${p.id})">❌ Vendu — Remettre</button>`}
+          ?`<button class="btn-status st-dispo" onclick="openVenteModal(${p.id})">En stock — Vendre</button>`
+          :`<button class="btn-status st-vendu" onclick="remettreDispo(${p.id})">Vendu — Remettre</button>`}
         <button class="btn-del" onclick="delPhone(${p.id})">✕</button>
       </div>
     </div>`;
@@ -384,7 +488,6 @@ function openVenteModal(id){
   updateProfit();
   document.getElementById('modal-vente').classList.add('open');
 }
-
 function updateProfit(){
   const p=phones.find(x=>x.id===pendingId);if(!p)return;
   const reel=parseFloat(document.getElementById('m-reel').value)||0;
@@ -398,40 +501,31 @@ document.getElementById('m-reel').addEventListener('input',updateProfit);
 function confirmVente(){
   const p=phones.find(x=>x.id===pendingId);if(!p)return;
   const reel=parseFloat(document.getElementById('m-reel').value)||p.annonce;
-  ventes.push({id:Date.now(),brand:p.brand,model:p.model,storage:p.storage,achat:p.achat,annonce:p.annonce,reel,profit:reel-p.achat,consigne:p.consigne||'',date:new Date().toLocaleDateString('fr-CA')});
+  ventes.push({id:Date.now(),brand:p.brand,model:p.model,storage:p.storage,color:p.color||'',achat:p.achat,annonce:p.annonce,reel,profit:reel-p.achat,consigne:p.consigne||'',date:new Date().toLocaleDateString('fr-CA')});
   p.status='vendu';
   save();closeModal();renderInv();
   toast(`✅ Vendu! Profit: ${(reel-p.achat).toFixed(2)}$`);
 }
-
-function remettreDispo(id){
-  const p=phones.find(x=>x.id===id);if(!p)return;
-  p.status='dispo';save();renderInv();toast('Remis en stock ✅');
-}
+function remettreDispo(id){const p=phones.find(x=>x.id===id);if(!p)return;p.status='dispo';save();renderInv();toast('Remis en stock ✅');}
 function closeModal(){document.getElementById('modal-vente').classList.remove('open');pendingId=null;}
-
-function delPhone(id){
-  if(!confirm('Supprimer cet appareil?'))return;
-  phones=phones.filter(x=>x.id!==id);save();renderInv();toast('Supprimé');
-}
+function delPhone(id){if(!confirm('Supprimer?'))return;phones=phones.filter(x=>x.id!==id);save();renderInv();toast('Supprimé');}
 
 function addPhone(){
   const model=document.getElementById('f-model').value.trim();
   const annonce=parseFloat(document.getElementById('f-annonce').value);
   if(!model||!annonce){toast('⚠️ Modèle et prix annoncé requis');return;}
-  phones.push({id:nextId++,brand:document.getElementById('f-brand').value,model,storage:document.getElementById('f-storage').value,achat:parseFloat(document.getElementById('f-achat').value)||0,annonce,status:'dispo',consigne:document.getElementById('f-consigne').value.trim()});
-  save();clearForm();renderInv();toast('✅ Ajouté!');
+  phones.push({id:nextId++,brand:document.getElementById('f-brand').value,model,storage:document.getElementById('f-storage').value,color:document.getElementById('f-color').value.trim(),achat:parseFloat(document.getElementById('f-achat').value)||0,annonce,status:'dispo',consigne:document.getElementById('f-consigne').value.trim()});
+  save();clearForm();renderInv();toast('Ajouté!');
 }
-function clearForm(){['f-model','f-achat','f-annonce','f-consigne'].forEach(id=>document.getElementById(id).value='');}
+function clearForm(){['f-model','f-color','f-achat','f-annonce','f-consigne'].forEach(id=>document.getElementById(id).value='');}
 function loadCfgForm(){document.getElementById('s-name').value=cfg.name;document.getElementById('s-wa').value=cfg.wa;}
 function saveSettings(){
   cfg.name=document.getElementById('s-name').value||cfg.name;
   cfg.wa=document.getElementById('s-wa').value||cfg.wa;
   document.getElementById('hdr-name').textContent=cfg.name;
-  save();toast('✅ Sauvegardé!');
+  save();toast('Sauvegardé!');
 }
 
-/* ── VENTES ── */
 function renderVentes(){
   const totalProfit=ventes.reduce((s,v)=>s+v.profit,0);
   const totalRev=ventes.reduce((s,v)=>s+v.reel,0);
@@ -445,23 +539,24 @@ function renderVentes(){
   el.innerHTML=[...ventes].reverse().map(v=>`
     <div class="vente-item">
       <div>
-        <div class="vname">${v.brand} ${v.model} · ${v.storage}${v.consigne?` <span class="consigne-tag">🟡 ${v.consigne}</span>`:''}</div>
-        <div class="vmeta">Achat: ${v.achat}$ &nbsp;·&nbsp; Annoncé: ${v.annonce}$ &nbsp;·&nbsp; <strong>Vendu: ${v.reel}$</strong> &nbsp;·&nbsp; ${v.date}</div>
+        <div class="vname">${v.brand} ${v.model} · ${v.storage}${v.color?' · '+v.color:''}${v.consigne?` <span class="consigne-tag">🟡 ${v.consigne}</span>`:''}</div>
+        <div class="vmeta">Achat: ${v.achat}$ · Annoncé: ${v.annonce}$ · <strong>Vendu: ${v.reel}$</strong> · ${v.date}</div>
       </div>
       <div class="profit-badge ${v.profit<0?'profit-neg':''}">${v.profit>=0?'+':''}${v.profit.toFixed(2)}$</div>
     </div>`).join('');
 }
 
-/* ── PARTAGER ── */
 function renderShare(){
-  const dispo=phones.filter(p=>p.status==='dispo');
+  const dispo=phones.filter(p=>p.status==='dispo'&&(!p.consigne||p.consigne.trim()==='')).sort((a,b)=>a.annonce-b.annonce);
   let m=`📱 *${cfg.name}*\n━━━━━━━━━━━━━━━\n\n`;
   if(!dispo.length){m+='Aucun téléphone disponible en ce moment.\n';}
   else{
-    const brands=[...new Set(dispo.map(p=>p.brand))].sort();
+    const brands=[...new Set(dispo.map(p=>p.brand))].sort((a,b)=>{if(a==='Apple')return -1;if(b==='Apple')return 1;return a.localeCompare(b);});
     brands.forEach(b=>{
       m+=`*${b.toUpperCase()}*\n`;
-      dispo.filter(p=>p.brand===b).forEach(p=>{m+=`  ✅ ${p.model} ${p.storage} — *${p.annonce}$*\n`;});
+      dispo.filter(p=>p.brand===b).forEach(p=>{
+        m+=`  ✅ ${p.model} ${p.storage}${p.color?' · '+p.color:''} — *${p.annonce}$*\n`;
+      });
       m+='\n';
     });
   }
