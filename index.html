@@ -14,8 +14,6 @@
   --text:#1a1a1a;--text-muted:#6b7280;--border:#e5e7eb;--bg:#f9fafb;--white:#fff;
 }
 body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh}
-
-/* HEADER */
 .header{background:var(--white);border-bottom:1.5px solid var(--border);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .brand{display:flex;align-items:center;gap:10px;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}
 .brand-dot{width:10px;height:10px;background:var(--green);border-radius:50%;flex-shrink:0;transition:transform 0.1s}
@@ -23,20 +21,13 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .brand-name{font-size:18px;font-weight:700;color:var(--text)}
 .brand-sub{font-size:12px;color:var(--text-muted)}
 .hbadge{background:var(--green-light);color:var(--green-dark);font-size:12px;font-weight:600;padding:5px 14px;border-radius:20px;white-space:nowrap}
-
-/* TABS */
 .tabs{display:none;background:var(--white);border-bottom:1px solid var(--border);padding:0 16px;overflow-x:auto}
 .tabs.show{display:flex}
 .tab{padding:12px 14px;font-size:13px;font-weight:500;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;white-space:nowrap}
 .tab.active{color:var(--green);border-bottom-color:var(--green)}
-.tab.blue-tab.active{color:var(--blue);border-bottom-color:var(--blue)}
 .tab:hover:not(.active){color:var(--text)}
-
-/* VIEWS */
 .view{display:none;padding:16px;max-width:1000px;margin:0 auto}
 .view.active{display:block}
-
-/* FILTERS */
 .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;align-items:center}
 .search-wrap{flex:1;min-width:180px}
 .search-wrap input{width:100%;background:var(--white);border:1px solid var(--border);color:var(--text);padding:9px 14px;border-radius:8px;font-size:13px;font-family:inherit}
@@ -45,8 +36,6 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .fbtn{background:var(--white);border:1px solid var(--border);color:var(--text-muted);padding:7px 14px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;transition:all 0.2s;white-space:nowrap}
 .fbtn.active{background:var(--green);border-color:var(--green);color:#fff}
 .fbtn:hover:not(.active){border-color:var(--green-mid);color:var(--green)}
-
-/* BRAND SECTIONS */
 .brand-section{margin-bottom:28px}
 .brand-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--border)}
 .brand-title{font-size:16px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px}
@@ -68,14 +57,10 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .price small{font-size:12px;font-weight:400;color:var(--text-muted)}
 .wa-btn{background:var(--green);color:#fff;border:none;border-radius:7px;padding:7px 13px;font-size:12px;font-weight:500;cursor:pointer;transition:background 0.2s}
 .wa-btn:hover{background:var(--green-dark)}
-
-/* STATS */
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:20px}
 .stat{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
 .stat-num{font-size:22px;font-weight:700}
 .stat-lbl{font-size:10px;color:var(--text-muted);margin-top:2px;text-transform:uppercase;letter-spacing:0.5px}
-
-/* ADMIN */
 .section-label{font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px}
 .card-form{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:18px}
 .row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:10px}
@@ -88,15 +73,10 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text-muted);padding:9px 14px;border-radius:7px;font-size:13px;cursor:pointer}
 .btn-ghost:hover{border-color:#aaa;color:var(--text)}
 .btn-red{background:var(--red-light);color:var(--red);border:1px solid #f09595;padding:9px 14px;border-radius:7px;font-size:13px;cursor:pointer;font-weight:500}
-
-/* INV FILTERS */
 .inv-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
 .ifbtn{background:var(--white);border:1px solid var(--border);color:var(--text-muted);padding:6px 14px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;transition:all 0.2s;white-space:nowrap}
 .ifbtn.active{background:var(--amber-mid);border-color:var(--amber-mid);color:#fff}
 .ifbtn.active-green{background:var(--green);border-color:var(--green);color:#fff}
-.ifbtn:hover:not(.active):not(.active-green){border-color:#aaa;color:var(--text)}
-
-/* INV ITEMS */
 .inv-item{background:var(--white);border:1px solid var(--border);border-radius:9px;padding:11px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:7px;flex-wrap:wrap}
 .inv-item.is-consigne{border-left:3px solid var(--amber-mid)}
 .inv-item.is-old{border-left:3px solid #EF4444}
@@ -111,8 +91,6 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .btn-edit{background:#EEF2FF;color:#4338CA;border:1px solid #C7D2FE;font-size:11px;padding:5px 10px;border-radius:5px;cursor:pointer;font-weight:500}
 .btn-del{background:none;border:none;color:#d1d5db;font-size:15px;cursor:pointer;padding:2px 5px}
 .btn-del:hover{color:#ef4444}
-
-/* VENTES */
 .vente-section-title{font-size:14px;font-weight:700;padding:10px 14px;border-radius:8px;margin:16px 0 8px;display:flex;align-items:center;justify-content:space-between}
 .vente-section-title.mine{background:var(--green-light);color:var(--green-dark)}
 .vente-section-title.consigne{background:var(--amber-light);color:var(--amber)}
@@ -122,41 +100,15 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .profit-badge{background:var(--green-light);color:var(--green-dark);font-size:12px;font-weight:700;padding:4px 10px;border-radius:6px;white-space:nowrap}
 .profit-neg{background:var(--red-light) !important;color:var(--red) !important}
 .rotation-badge{background:#EEF2FF;color:#4338CA;font-size:11px;font-weight:500;padding:2px 8px;border-radius:4px;margin-left:4px}
-
-/* ALERT */
 .alert-box{background:#FCEBEB;border:1px solid #F09595;border-radius:10px;padding:14px 16px;margin-bottom:16px}
 .alert-title{font-size:13px;font-weight:600;color:var(--red);margin-bottom:8px}
 .alert-item{font-size:12px;color:var(--red);padding:3px 0;border-bottom:1px solid rgba(163,45,45,0.1)}
 .alert-item:last-child{border-bottom:none}
-
-/* MODAL */
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:100;align-items:center;justify-content:center;padding:16px}
 .modal-bg.open{display:flex}
 .modal{background:var(--white);border-radius:14px;padding:24px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto}
 .modal-title{font-size:16px;font-weight:600;margin-bottom:16px}
 .modal-actions{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
-
-/* PIN SCREEN */
-.pin-screen{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px}
-.pin-box{background:var(--white);border-radius:16px;padding:32px 24px;width:100%;max-width:320px;text-align:center}
-.pin-title{font-size:18px;font-weight:700;margin-bottom:6px}
-.pin-sub{font-size:13px;color:var(--text-muted);margin-bottom:24px}
-.pin-dots{display:flex;justify-content:center;gap:12px;margin-bottom:24px}
-.pin-dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--border);transition:all 0.2s}
-.pin-dot.filled{background:var(--blue);border-color:var(--blue)}
-.pin-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.pin-key{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:16px;font-size:20px;font-weight:600;cursor:pointer;transition:all 0.15s;user-select:none}
-.pin-key:active{background:var(--blue-light);border-color:var(--blue);transform:scale(0.95)}
-.pin-key.del{font-size:16px;color:var(--text-muted)}
-.pin-error{color:var(--red);font-size:13px;margin-top:12px;min-height:20px}
-
-/* JUSTIN VIEW */
-.justin-header{background:var(--blue-light);border:1px solid #B5D4F4;border-radius:12px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
-.justin-title{font-size:16px;font-weight:700;color:var(--blue)}
-.justin-sub{font-size:12px;color:#378ADD;margin-top:2px}
-.justin-logout{background:transparent;border:1px solid #B5D4F4;color:var(--blue);padding:6px 14px;border-radius:6px;font-size:12px;cursor:pointer;font-weight:500}
-
-/* SHARE */
 .wa-preview{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:16px;font-size:13px;color:var(--text);line-height:1.75;white-space:pre-wrap;word-break:break-word;margin-bottom:14px;font-family:'Courier New',monospace}
 .copy-btn{background:var(--green);color:#fff;border:none;padding:10px 20px;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer}
 .copy-btn:hover{background:var(--green-dark)}
@@ -167,46 +119,15 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .admin-banner button{background:rgba(255,255,255,0.15);border:none;color:#fff;padding:4px 12px;border-radius:4px;font-size:11px;cursor:pointer}
 .unlock-hint{position:fixed;bottom:16px;right:16px;background:rgba(0,0,0,0.07);border-radius:20px;padding:6px 12px;font-size:11px;color:var(--text-muted);pointer-events:none;opacity:0;transition:opacity 0.3s}
 .unlock-hint.show{opacity:1}
+.loading{text-align:center;padding:40px;color:var(--text-muted);font-size:14px}
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(60px);background:#1a1a1a;color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;z-index:999;opacity:0;transition:all 0.3s;white-space:nowrap}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
 .empty-state{text-align:center;padding:30px;color:var(--text-muted);font-size:13px}
-.month-block{margin-bottom:8px}
-.month-row{background:var(--white);border:1px solid var(--border);border-radius:9px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
-.month-name{font-size:14px;font-weight:600}
-.month-meta{font-size:12px;color:var(--text-muted);margin-top:2px}
+.month-row{background:var(--white);border:1px solid var(--border);border-radius:9px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px}
 @media(max-width:520px){.grid{grid-template-columns:1fr}.row{grid-template-columns:1fr}.tab{padding:11px 8px;font-size:11px}}
 </style>
 </head>
 <body>
-
-<!-- PIN SCREEN -->
-<div class="pin-screen" id="pin-screen" style="display:none">
-  <div class="pin-box">
-    <div class="pin-title" id="pin-title">Accès consignateur</div>
-    <div class="pin-sub" id="pin-sub">Entrez votre code PIN</div>
-    <div class="pin-dots">
-      <div class="pin-dot" id="pd0"></div>
-      <div class="pin-dot" id="pd1"></div>
-      <div class="pin-dot" id="pd2"></div>
-      <div class="pin-dot" id="pd3"></div>
-    </div>
-    <div class="pin-pad">
-      <div class="pin-key" onclick="pinKey('1')">1</div>
-      <div class="pin-key" onclick="pinKey('2')">2</div>
-      <div class="pin-key" onclick="pinKey('3')">3</div>
-      <div class="pin-key" onclick="pinKey('4')">4</div>
-      <div class="pin-key" onclick="pinKey('5')">5</div>
-      <div class="pin-key" onclick="pinKey('6')">6</div>
-      <div class="pin-key" onclick="pinKey('7')">7</div>
-      <div class="pin-key" onclick="pinKey('8')">8</div>
-      <div class="pin-key" onclick="pinKey('9')">9</div>
-      <div class="pin-key" onclick="pinCancel()" style="font-size:13px;color:var(--text-muted)">Annuler</div>
-      <div class="pin-key" onclick="pinKey('0')">0</div>
-      <div class="pin-key del" onclick="pinDel()">⌫</div>
-    </div>
-    <div class="pin-error" id="pin-error"></div>
-  </div>
-</div>
 
 <div class="admin-banner" id="admin-banner">
   Mode admin activé
@@ -221,10 +142,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
       <div class="brand-sub">Téléphones · Marketplace &amp; WhatsApp</div>
     </div>
   </div>
-  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-    <div class="hbadge" id="hdr-count">0 disponibles</div>
-    <button id="btn-justin-login" onclick="showPinScreen()" style="background:var(--blue-light);color:var(--blue);border:1px solid #B5D4F4;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;display:none">Accès consignateur</button>
-  </div>
+  <div class="hbadge" id="hdr-count">Chargement...</div>
 </div>
 
 <div class="tabs" id="tabs">
@@ -232,7 +150,6 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   <div class="tab" id="tab-inv" onclick="go('inv')">Inventaire</div>
   <div class="tab" id="tab-ventes" onclick="go('ventes')">Ventes</div>
   <div class="tab" id="tab-shr" onclick="go('shr')">Partager</div>
-  <div class="tab blue-tab" id="tab-justin" onclick="go('justin')" style="display:none">Justin</div>
 </div>
 
 <!-- CATALOGUE -->
@@ -248,10 +165,10 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
       <button class="fbtn" onclick="setFilter('o500',this)">500$+</button>
     </div>
   </div>
-  <div id="catalog"></div>
+  <div id="catalog"><div class="loading">Chargement...</div></div>
 </div>
 
-<!-- INVENTAIRE ADMIN -->
+<!-- INVENTAIRE -->
 <div class="view" id="view-inv">
   <div class="card-form">
     <div class="section-label">Ajouter un téléphone</div>
@@ -276,11 +193,11 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
     </div>
   </div>
   <div class="inv-filters" id="inv-filters"></div>
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
     <div class="section-label" style="margin-bottom:0">Stock — <span id="inv-count">0</span> appareils</div>
   </div>
   <div id="alert-old"></div>
-  <div id="inv-list"></div>
+  <div id="inv-list"><div class="loading">Chargement...</div></div>
   <div class="settings-card">
     <div class="section-label" style="margin-bottom:14px">Paramètres</div>
     <div class="row">
@@ -291,47 +208,26 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
       <button class="btn-green" onclick="saveSettings()">Sauvegarder</button>
       <button class="btn-red" onclick="lockAdmin()">Verrouiller l'admin</button>
     </div>
-    <p style="font-size:11px;color:var(--text-muted);margin-top:8px">Format sans + ni espace · ex: 15141234567</p>
   </div>
 </div>
 
-<!-- VENTES ADMIN -->
+<!-- VENTES -->
 <div class="view" id="view-ventes">
   <div class="stats-grid" id="stats-ventes"></div>
-
-  <!-- RAPPORT MENSUEL -->
   <div id="rapport-mensuel"></div>
-
-  <!-- VENTES SÉPARÉES -->
   <div id="ventes-mine-block"></div>
   <div id="ventes-consigne-block"></div>
 </div>
 
 <!-- PARTAGER -->
 <div class="view" id="view-shr">
-  <div class="info-box">Ce message affiche seulement les téléphones disponibles à vous. Aucun prix d'achat, profit ou consigne n'est visible pour le client.</div>
+  <div class="info-box">Ce message affiche seulement les téléphones disponibles. Aucun prix d'achat ni consigne n'est visible pour le client.</div>
   <div class="section-label">Message WhatsApp prêt à envoyer</div>
   <div class="wa-preview" id="wa-prev"></div>
   <div style="display:flex;gap:8px;flex-wrap:wrap">
     <button class="copy-btn" onclick="copyMsg()">Copier</button>
     <button class="btn-ghost" onclick="openWA()">Ouvrir WhatsApp</button>
   </div>
-</div>
-
-<!-- VUE JUSTIN -->
-<div class="view" id="view-justin">
-  <div class="justin-header">
-    <div>
-      <div class="justin-title">Bonjour Justin!</div>
-      <div class="justin-sub">Voici votre inventaire en consigne</div>
-    </div>
-    <button class="justin-logout" onclick="logoutJustin()">Déconnexion</button>
-  </div>
-  <div class="stats-grid" id="justin-stats"></div>
-  <div class="section-label">Vos téléphones en stock</div>
-  <div id="justin-stock"></div>
-  <div class="section-label" style="margin-top:20px">Vos téléphones vendus</div>
-  <div id="justin-vendus"></div>
 </div>
 
 <!-- MODAL VENTE -->
@@ -385,105 +281,59 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 <div class="unlock-hint" id="unlock-hint"></div>
 <div class="toast" id="toast"></div>
 
-<script>
-const TODAY=new Date().toISOString().split('T')[0];
-const PINS={Justin:'8888'};
+<!-- FIREBASE -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, doc, addDoc, updateDoc, deleteDoc, onSnapshot, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-let phones=[
-  {id:1,  brand:"Samsung",model:"Galaxy A21",      storage:"128 Go",color:"Noir",  achat:150,   annonce:150,  status:"dispo",consigne:"Sandaga",dateEntree:TODAY},
-  {id:2,  brand:"Samsung",model:"Galaxy A53",      storage:"128 Go",color:"",      achat:137.80,annonce:220,  status:"dispo",consigne:"Sandaga",dateEntree:TODAY},
-  {id:3,  brand:"Samsung",model:"Galaxy A53",      storage:"128 Go",color:"",      achat:137.80,annonce:240,  status:"dispo",consigne:"",       dateEntree:TODAY},
-  {id:4,  brand:"Samsung",model:"Galaxy A53",      storage:"128 Go",color:"",      achat:137.80,annonce:240,  status:"dispo",consigne:"",       dateEntree:TODAY},
-  {id:5,  brand:"Samsung",model:"Galaxy Note",     storage:"—",     color:"",      achat:100,   annonce:180,  status:"dispo",consigne:"",       dateEntree:TODAY},
-  {id:6,  brand:"Samsung",model:"Galaxy S21",      storage:"128 Go",color:"",      achat:180.20,annonce:280,  status:"dispo",consigne:"",       dateEntree:TODAY},
-  {id:7,  brand:"Samsung",model:"Galaxy S21 FE",   storage:"128 Go",color:"",      achat:180.20,annonce:260,  status:"dispo",consigne:"Sandaga",dateEntree:TODAY},
-  {id:8,  brand:"Samsung",model:"Galaxy S21 FE",   storage:"128 Go",color:"",      achat:180.20,annonce:280,  status:"dispo",consigne:"",       dateEntree:TODAY},
-  {id:9,  brand:"Samsung",model:"Galaxy S21 FE",   storage:"128 Go",color:"",      achat:180.20,annonce:280,  status:"dispo",consigne:"",       dateEntree:TODAY},
-  {id:10, brand:"Samsung",model:"Galaxy S21 FE",   storage:"128 Go",color:"",      achat:180.20,annonce:280,  status:"dispo",consigne:"",       dateEntree:TODAY},
-  {id:11, brand:"Samsung",model:"Galaxy S21+",     storage:"128 Go",color:"",      achat:201.40,annonce:300,  status:"dispo",consigne:"",       dateEntree:TODAY},
-  {id:12, brand:"Samsung",model:"Galaxy S22",      storage:"128 Go",color:"",      achat:212,   annonce:310,  status:"dispo",consigne:"",       dateEntree:TODAY},
-  {id:13, brand:"Samsung",model:"Galaxy S22+",     storage:"128 Go",color:"",      achat:233.20,annonce:320,  status:"dispo",consigne:"",       dateEntree:TODAY},
-  {id:14, brand:"Samsung",model:"Galaxy S22+",     storage:"128 Go",color:"",      achat:233.20,annonce:320,  status:"dispo",consigne:"",       dateEntree:TODAY},
-  {id:15, brand:"Samsung",model:"Galaxy S23",      storage:"128 Go",color:"",      achat:270,   annonce:360,  status:"dispo",consigne:"Justin", dateEntree:TODAY},
-  {id:16, brand:"Samsung",model:"Galaxy S23 FE",   storage:"128 Go",color:"",      achat:243.80,annonce:340,  status:"dispo",consigne:"",       dateEntree:TODAY},
-  {id:17, brand:"Samsung",model:"Galaxy S23 FE",   storage:"128 Go",color:"",      achat:243.80,annonce:340,  status:"dispo",consigne:"",       dateEntree:TODAY},
-  {id:18, brand:"Samsung",model:"Galaxy S23 Ultra",storage:"512 Go",color:"",      achat:477,   annonce:577,  status:"dispo",consigne:"",       dateEntree:TODAY},
-  {id:19, brand:"Samsung",model:"Galaxy S24",      storage:"128 Go",color:"",      achat:400,   annonce:475,  status:"dispo",consigne:"",       dateEntree:TODAY},
-  {id:20, brand:"Samsung",model:"Galaxy S24",      storage:"128 Go",color:"",      achat:400,   annonce:475,  status:"dispo",consigne:"Justin", dateEntree:TODAY},
-  {id:21, brand:"Samsung",model:"Galaxy S24",      storage:"256 Go",color:"",      achat:400,   annonce:475,  status:"dispo",consigne:"Justin", dateEntree:TODAY},
-  {id:22, brand:"Samsung",model:"Galaxy S24 Plus", storage:"256 Go",color:"",      achat:525,   annonce:630,  status:"dispo",consigne:"Justin", dateEntree:TODAY},
-  {id:23, brand:"Samsung",model:"Galaxy S24 Ultra",storage:"256 Go",color:"",      achat:720,   annonce:820,  status:"dispo",consigne:"",       dateEntree:TODAY},
-  {id:24, brand:"Samsung",model:"Galaxy S24 Ultra",storage:"256 Go",color:"",      achat:720,   annonce:820,  status:"dispo",consigne:"Justin", dateEntree:TODAY},
-  {id:25, brand:"Samsung",model:"Galaxy S24 Ultra",storage:"256 Go",color:"",      achat:720,   annonce:820,  status:"dispo",consigne:"Justin", dateEntree:TODAY},
-  {id:26, brand:"Samsung",model:"Galaxy S24 Ultra",storage:"256 Go",color:"",      achat:720,   annonce:820,  status:"dispo",consigne:"Justin", dateEntree:TODAY},
-  {id:27, brand:"Samsung",model:"Galaxy S24+",     storage:"256 Go",color:"",      achat:461.10,annonce:560,  status:"dispo",consigne:"",       dateEntree:TODAY},
-  {id:28, brand:"Samsung",model:"Galaxy S24+",     storage:"256 Go",color:"",      achat:461.10,annonce:560,  status:"dispo",consigne:"",       dateEntree:TODAY},
-  {id:29, brand:"Samsung",model:"Galaxy S25",      storage:"128 Go",color:"",      achat:519.40,annonce:640,  status:"dispo",consigne:"",       dateEntree:TODAY},
-  {id:30, brand:"Apple",  model:"iPhone 15 Pro",   storage:"—",     color:"",      achat:650,   annonce:750,  status:"dispo",consigne:"",       dateEntree:TODAY},
-  {id:31, brand:"Apple",  model:"iPhone 15+",      storage:"128 Go",color:"",      achat:551.20,annonce:650,  status:"dispo",consigne:"Sandaga",dateEntree:TODAY},
-  {id:32, brand:"Apple",  model:"iPhone 15+",      storage:"128 Go",color:"",      achat:551.20,annonce:675,  status:"dispo",consigne:"",       dateEntree:TODAY},
-  {id:33, brand:"Apple",  model:"iPhone 15+",      storage:"128 Go",color:"",      achat:551.20,annonce:675,  status:"dispo",consigne:"",       dateEntree:TODAY}
-];
-let ventes=[];
-let nextId=34;
-let cfg={name:"Inventaire disponible",wa:"15141234567"};
-let pendingId=null;
-let editingId=null;
-let isAdmin=false;
-let justinLoggedIn=false;
-let tapCount=0;
-let tapTimer=null;
-let activeFilter='all';
-let invFilter='all';
-let pinBuffer='';
-let pinTarget='';
+const firebaseConfig = {
+  apiKey: "AIzaSyDEuNfVvNRUR8F7Xrz6qDom58-k6DSTPl0",
+  authDomain: "in-stock-9dd3f.firebaseapp.com",
+  projectId: "in-stock-9dd3f",
+  storageBucket: "in-stock-9dd3f.firebasestorage.app",
+  messagingSenderId: "76529951617",
+  appId: "1:76529951617:web:e72839b128d5401700fe80"
+};
 
-const colorMap={'noir':'#1a1a1a','black':'#1a1a1a','blanc':'#f5f5f5','white':'#f5f5f5','bleu':'#3B82F6','blue':'#3B82F6','rouge':'#EF4444','red':'#EF4444','vert':'#22C55E','or':'#F59E0B','rose':'#EC4899','violet':'#8B5CF6','gris':'#9CA3AF','grey':'#9CA3AF','gray':'#9CA3AF','argent':'#C0C0C0','silver':'#C0C0C0','crème':'#FEF3C7','creme':'#FEF3C7','charbon':'#374151','titane':'#8D8D8D','minuit':'#1e293b','midnight':'#1e293b','lumière':'#F8FAFC','starlight':'#F8FAFC'};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const TODAY = new Date().toISOString().split('T')[0];
+let phones = [];
+let ventes = [];
+let cfg = {name:"Inventaire disponible", wa:"15141234567"};
+let pendingId = null;
+let editingId = null;
+let isAdmin = false;
+let tapCount = 0;
+let tapTimer = null;
+let activeFilter = 'all';
+let invFilter = 'all';
+
+const colorMap = {'noir':'#1a1a1a','black':'#1a1a1a','blanc':'#f5f5f5','white':'#f5f5f5','bleu':'#3B82F6','blue':'#3B82F6','rouge':'#EF4444','vert':'#22C55E','or':'#F59E0B','rose':'#EC4899','violet':'#8B5CF6','gris':'#9CA3AF','grey':'#9CA3AF','gray':'#9CA3AF','argent':'#C0C0C0','silver':'#C0C0C0','crème':'#FEF3C7','creme':'#FEF3C7','charbon':'#374151','titane':'#8D8D8D','minuit':'#1e293b','lumière':'#F8FAFC'};
 function getColorHex(c){if(!c)return null;const k=c.toLowerCase().trim();for(const[key,val]of Object.entries(colorMap)){if(k.includes(key))return val;}return null;}
 function daysSince(d){if(!d)return 0;return Math.floor((new Date()-new Date(d))/(1000*60*60*24));}
 
-function save(){try{localStorage.setItem('instock_v6',JSON.stringify({phones,ventes,nextId,cfg}))}catch(e){}}
-function load(){try{const d=JSON.parse(localStorage.getItem('instock_v6')||'{}');if(d.phones)phones=d.phones;if(d.ventes)ventes=d.ventes;if(d.nextId)nextId=d.nextId;if(d.cfg)cfg=d.cfg;}catch(e){}}
-
-/* ── PIN ── */
-function showPinScreen(){
-  pinBuffer='';pinTarget='Justin';
-  updatePinDots();
-  document.getElementById('pin-error').textContent='';
-  document.getElementById('pin-title').textContent='Accès Justin';
-  document.getElementById('pin-screen').style.display='flex';
-}
-function pinKey(k){
-  if(pinBuffer.length>=4)return;
-  pinBuffer+=k;
-  updatePinDots();
-  if(pinBuffer.length===4){
-    setTimeout(()=>{
-      if(pinBuffer===PINS[pinTarget]){
-        document.getElementById('pin-screen').style.display='none';
-        justinLoggedIn=true;
-        document.getElementById('tab-justin').style.display='block';
-        go('justin');
-        toast('Bienvenue Justin!');
-      }else{
-        document.getElementById('pin-error').textContent='Code incorrect, réessayez.';
-        pinBuffer='';updatePinDots();
-      }
-    },200);
-  }
-}
-function pinDel(){pinBuffer=pinBuffer.slice(0,-1);updatePinDots();}
-function pinCancel(){document.getElementById('pin-screen').style.display='none';pinBuffer='';}
-function updatePinDots(){for(let i=0;i<4;i++){document.getElementById('pd'+i).classList.toggle('filled',i<pinBuffer.length);}}
-
-function logoutJustin(){
-  justinLoggedIn=false;
-  document.getElementById('tab-justin').style.display='none';
-  go('cat');toast('Déconnecté');
+// Load config
+async function loadCfg(){
+  const snap = await getDoc(doc(db,'config','main'));
+  if(snap.exists()) cfg = snap.data();
+  document.getElementById('hdr-name').textContent = cfg.name;
 }
 
-/* ── ADMIN UNLOCK ── */
-function handleLogoTap(){
+// Real-time listeners
+onSnapshot(collection(db,'phones'), snap => {
+  phones = snap.docs.map(d => ({...d.data(), _id: d.id}));
+  renderCat();
+  if(isAdmin){renderInvFilters();renderInv();}
+});
+
+onSnapshot(collection(db,'ventes'), snap => {
+  ventes = snap.docs.map(d => ({...d.data(), _id: d.id}));
+  if(isAdmin) renderVentes();
+});
+
+window.handleLogoTap = function(){
   if(isAdmin)return;
   tapCount++;clearTimeout(tapTimer);
   const hint=document.getElementById('unlock-hint');
@@ -495,33 +345,29 @@ function unlockAdmin(){
   isAdmin=true;
   document.getElementById('tabs').classList.add('show');
   document.getElementById('admin-banner').classList.add('show');
-  document.getElementById('btn-justin-login').style.display='block';
+  renderInvFilters();renderInv();renderVentes();
   toast('Admin déverrouillé!');
 }
-function lockAdmin(){
+window.lockAdmin = function(){
   isAdmin=false;
   document.getElementById('tabs').classList.remove('show');
   document.getElementById('admin-banner').classList.remove('show');
-  document.getElementById('btn-justin-login').style.display='none';
-  if(!justinLoggedIn)document.getElementById('tab-justin').style.display='none';
   go('cat');toast('Admin verrouillé');
 }
 
-function go(tab){
-  ['cat','inv','ventes','shr','justin'].forEach(t=>{
-    const tabEl=document.getElementById('tab-'+t);
-    if(tabEl)tabEl.classList.toggle('active',t===tab);
+window.go = function(tab){
+  ['cat','inv','ventes','shr'].forEach(t=>{
+    document.getElementById('tab-'+t).classList.toggle('active',t===tab);
     document.getElementById('view-'+t).classList.toggle('active',t===tab);
   });
   if(tab==='cat')renderCat();
   if(tab==='inv'){renderInvFilters();renderInv();loadCfgForm();}
   if(tab==='ventes')renderVentes();
   if(tab==='shr')renderShare();
-  if(tab==='justin')renderJustin();
 }
 
-/* ── CATALOGUE ── */
-function setFilter(f,btn){activeFilter=f;document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderCat();}
+window.setFilter = function(f,btn){activeFilter=f;document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderCat();}
+
 function applyClientFilter(list){
   const q=(document.getElementById('search').value||'').toLowerCase();
   return list.filter(p=>{
@@ -535,6 +381,7 @@ function applyClientFilter(list){
     return true;
   });
 }
+
 function renderCat(){
   const dispo=phones.filter(p=>p.status==='dispo'&&(!p.consigne||p.consigne.trim()===''));
   document.getElementById('hdr-name').textContent=cfg.name;
@@ -548,20 +395,25 @@ function renderCat(){
     const cards=bPhones.map(p=>{
       const hex=getColorHex(p.color);
       const colorSpec=p.color?`<span class="spec">${hex?`<span class="color-dot" style="background:${hex}"></span>`:''} ${p.color}</span>`:'';
-      return`<div class="card"><div class="card-top"><div class="card-brand-lbl">${p.brand}</div><span class="badge">Disponible</span></div><div class="card-name">${p.model}</div><div class="card-specs"><span class="spec">${p.storage}</span>${colorSpec}</div><div class="card-footer"><div class="price">${p.annonce}$<small> CAD</small></div><button class="wa-btn" onclick="askWA(${p.id})">Info</button></div></div>`;
+      return`<div class="card"><div class="card-top"><div class="card-brand-lbl">${p.brand}</div><span class="badge">Disponible</span></div><div class="card-name">${p.model}</div><div class="card-specs"><span class="spec">${p.storage}</span>${colorSpec}</div><div class="card-footer"><div class="price">${p.annonce}$<small> CAD</small></div><button class="wa-btn" onclick="askWA('${p._id}')">Info</button></div></div>`;
     }).join('');
     return`<div class="brand-section"><div class="brand-header"><div class="brand-title">${brand}<span class="brand-count">${bPhones.length}</span></div><button class="see-all" onclick="filterBrand('${brand.toLowerCase()}')">Voir tout</button></div><div class="grid">${cards}</div></div>`;
   }).join('');
 }
-function filterBrand(b){
+
+window.filterBrand = function(b){
   activeFilter=b==='apple'?'apple':b==='samsung'?'samsung':'all';
   document.querySelectorAll('.fbtn').forEach(btn=>{const t=btn.textContent.toLowerCase();btn.classList.toggle('active',t===b||(b==='all'&&t==='tous'));});
   renderCat();window.scrollTo({top:0,behavior:'smooth'});
 }
-function askWA(id){const p=phones.find(x=>x.id===id);if(!p)return;const msg=encodeURIComponent(`Bonjour! Je suis intéressé(e) par le ${p.brand} ${p.model} ${p.storage}${p.color?' '+p.color:''} à ${p.annonce}$. Est-il encore disponible?`);window.open(`https://wa.me/${cfg.wa}?text=${msg}`,'_blank');}
-function openWA(){window.open(`https://wa.me/${cfg.wa}`,'_blank');}
 
-/* ── INVENTAIRE ── */
+window.askWA = function(id){
+  const p=phones.find(x=>x._id===id);if(!p)return;
+  const msg=encodeURIComponent(`Bonjour! Je suis intéressé(e) par le ${p.brand} ${p.model} ${p.storage}${p.color?' '+p.color:''} à ${p.annonce}$. Est-il encore disponible?`);
+  window.open(`https://wa.me/${cfg.wa}?text=${msg}`,'_blank');
+}
+window.openWA = function(){window.open(`https://wa.me/${cfg.wa}`,'_blank');}
+
 function renderInvFilters(){
   const consignes=[...new Set(phones.map(p=>p.consigne).filter(c=>c&&c.trim()!==''))].sort();
   const el=document.getElementById('inv-filters');
@@ -572,13 +424,16 @@ function renderInvFilters(){
     <button class="ifbtn ${invFilter==='old'?'active':''}" onclick="setInvFilter('old',this)">30+ jours</button>
   `;
 }
-function setInvFilter(f,btn){invFilter=f;document.querySelectorAll('.ifbtn').forEach(b=>{b.classList.remove('active','active-green');});if(f==='all'||f==='mine')btn.classList.add('active-green');else btn.classList.add('active');renderInv();}
+
+window.setInvFilter = function(f,btn){invFilter=f;document.querySelectorAll('.ifbtn').forEach(b=>{b.classList.remove('active','active-green');});if(f==='all'||f==='mine')btn.classList.add('active-green');else btn.classList.add('active');renderInv();}
+
 function applyInvFilter(list){
   if(invFilter==='mine')return list.filter(p=>!p.consigne||p.consigne.trim()==='');
   if(invFilter==='old')return list.filter(p=>p.status==='dispo'&&daysSince(p.dateEntree)>30);
   if(invFilter!=='all')return list.filter(p=>p.consigne===invFilter);
   return list;
 }
+
 function renderInv(){
   const filtered=applyInvFilter(phones);
   document.getElementById('inv-count').textContent=filtered.length;
@@ -595,20 +450,19 @@ function renderInv(){
     return`<div class="inv-item${isC?' is-consigne':''}${isOld?' is-old':''}">
       <div style="flex:1;min-width:0">
         <div class="iname">${p.brand} ${p.model} · ${p.storage}${p.color?' · '+p.color:''}${isC?`<span class="consigne-tag">${p.consigne}</span>`:''}${isOld?`<span class="old-tag">${days}j</span>`:''}</div>
-        <div class="imeta">Achat: <strong>${p.achat}$</strong> &nbsp;·&nbsp; Annoncé: <strong>${p.annonce}$</strong> &nbsp;·&nbsp; Marge: <strong style="color:var(--green)">${(p.annonce-p.achat).toFixed(0)}$</strong>${p.dateEntree?' &nbsp;·&nbsp; Entrée: '+p.dateEntree:''}</div>
+        <div class="imeta">Achat: <strong>${p.achat}$</strong> · Annoncé: <strong>${p.annonce}$</strong> · Marge: <strong style="color:var(--green)">${(p.annonce-p.achat).toFixed(0)}$</strong>${p.dateEntree?' · Entrée: '+p.dateEntree:''}</div>
       </div>
       <div class="inv-actions">
-        ${p.status==='dispo'?`<button class="btn-status st-dispo" onclick="openVenteModal(${p.id})">Vendre</button>`:`<button class="btn-status st-vendu" onclick="remettreDispo(${p.id})">Remettre</button>`}
-        <button class="btn-edit" onclick="openEditModal(${p.id})">Modifier</button>
-        <button class="btn-del" onclick="delPhone(${p.id})">✕</button>
+        ${p.status==='dispo'?`<button class="btn-status st-dispo" onclick="openVenteModal('${p._id}')">Vendre</button>`:`<button class="btn-status st-vendu" onclick="remettreDispo('${p._id}')">Remettre</button>`}
+        <button class="btn-edit" onclick="openEditModal('${p._id}')">Modifier</button>
+        <button class="btn-del" onclick="delPhone('${p._id}')">✕</button>
       </div>
     </div>`;
   }).join('');
 }
 
-/* ── VENTE ── */
-function openVenteModal(id){
-  const p=phones.find(x=>x.id===id);if(!p)return;
+window.openVenteModal = function(id){
+  const p=phones.find(x=>x._id===id);if(!p)return;
   pendingId=id;
   document.getElementById('modal-info').textContent=`${p.brand} ${p.model} ${p.storage} — Prix annoncé: ${p.annonce}$`;
   document.getElementById('m-reel').value=p.annonce;
@@ -616,8 +470,9 @@ function openVenteModal(id){
   updateProfit();
   document.getElementById('modal-vente').classList.add('open');
 }
-function updateProfit(){
-  const p=phones.find(x=>x.id===pendingId);if(!p)return;
+
+window.updateProfit = function(){
+  const p=phones.find(x=>x._id===pendingId);if(!p)return;
   const reel=parseFloat(document.getElementById('m-reel').value)||0;
   const profit=reel-p.achat;
   const el=document.getElementById('profit-preview');
@@ -625,21 +480,29 @@ function updateProfit(){
   el.style.color=profit>=0?'var(--green)':'var(--red)';
 }
 document.getElementById('m-reel').addEventListener('input',updateProfit);
-function confirmVente(){
-  const p=phones.find(x=>x.id===pendingId);if(!p)return;
+
+window.confirmVente = async function(){
+  const p=phones.find(x=>x._id===pendingId);if(!p)return;
   const reel=parseFloat(document.getElementById('m-reel').value)||p.annonce;
   const dateVente=new Date().toLocaleDateString('fr-CA');
   const joursStock=daysSince(p.dateEntree);
-  ventes.push({id:Date.now(),brand:p.brand,model:p.model,storage:p.storage,color:p.color||'',achat:p.achat,annonce:p.annonce,reel,profit:reel-p.achat,consigne:p.consigne||'',dateEntree:p.dateEntree||'',dateVente,joursStock});
-  p.status='vendu';
-  save();closeModal('modal-vente');renderInv();
+  await addDoc(collection(db,'ventes'),{
+    brand:p.brand,model:p.model,storage:p.storage,color:p.color||'',
+    achat:p.achat,annonce:p.annonce,reel,profit:reel-p.achat,
+    consigne:p.consigne||'',dateEntree:p.dateEntree||'',dateVente,joursStock
+  });
+  await updateDoc(doc(db,'phones',pendingId),{status:'vendu'});
+  closeModal('modal-vente');
   toast(`Vendu! Profit: ${(reel-p.achat).toFixed(2)}$`);
 }
-function remettreDispo(id){const p=phones.find(x=>x.id===id);if(!p)return;p.status='dispo';save();renderInv();toast('Remis en stock');}
 
-/* ── EDIT ── */
-function openEditModal(id){
-  const p=phones.find(x=>x.id===id);if(!p)return;
+window.remettreDispo = async function(id){
+  await updateDoc(doc(db,'phones',id),{status:'dispo'});
+  toast('Remis en stock');
+}
+
+window.openEditModal = function(id){
+  const p=phones.find(x=>x._id===id);if(!p)return;
   editingId=id;
   document.getElementById('e-brand').value=p.brand;
   document.getElementById('e-model').value=p.model;
@@ -651,121 +514,92 @@ function openEditModal(id){
   document.getElementById('e-consigne').value=p.consigne||'';
   document.getElementById('modal-edit').classList.add('open');
 }
-function saveEdit(){
-  const p=phones.find(x=>x.id===editingId);if(!p)return;
-  p.brand=document.getElementById('e-brand').value;
-  p.model=document.getElementById('e-model').value;
-  p.storage=document.getElementById('e-storage').value;
-  p.color=document.getElementById('e-color').value.trim();
-  p.achat=parseFloat(document.getElementById('e-achat').value)||p.achat;
-  p.annonce=parseFloat(document.getElementById('e-annonce').value)||p.annonce;
-  p.status=document.getElementById('e-status').value;
-  p.consigne=document.getElementById('e-consigne').value.trim();
-  save();closeModal('modal-edit');renderInvFilters();renderInv();toast('Modifié!');
+
+window.saveEdit = async function(){
+  if(!editingId)return;
+  await updateDoc(doc(db,'phones',editingId),{
+    brand:document.getElementById('e-brand').value,
+    model:document.getElementById('e-model').value,
+    storage:document.getElementById('e-storage').value,
+    color:document.getElementById('e-color').value.trim(),
+    achat:parseFloat(document.getElementById('e-achat').value)||0,
+    annonce:parseFloat(document.getElementById('e-annonce').value)||0,
+    status:document.getElementById('e-status').value,
+    consigne:document.getElementById('e-consigne').value.trim()
+  });
+  closeModal('modal-edit');toast('Modifié!');
 }
-function closeModal(id){document.getElementById(id).classList.remove('open');pendingId=null;editingId=null;}
-function delPhone(id){if(!confirm('Supprimer?'))return;phones=phones.filter(x=>x.id!==id);save();renderInvFilters();renderInv();toast('Supprimé');}
-function addPhone(){
+
+window.closeModal = function(id){document.getElementById(id).classList.remove('open');pendingId=null;editingId=null;}
+
+window.delPhone = async function(id){
+  if(!confirm('Supprimer?'))return;
+  await deleteDoc(doc(db,'phones',id));
+  toast('Supprimé');
+}
+
+window.addPhone = async function(){
   const model=document.getElementById('f-model').value.trim();
   const annonce=parseFloat(document.getElementById('f-annonce').value);
   if(!model||!annonce){toast('Modèle et prix annoncé requis');return;}
-  phones.push({id:nextId++,brand:document.getElementById('f-brand').value,model,storage:document.getElementById('f-storage').value,color:document.getElementById('f-color').value.trim(),achat:parseFloat(document.getElementById('f-achat').value)||0,annonce,status:'dispo',consigne:document.getElementById('f-consigne').value.trim(),dateEntree:TODAY});
-  save();clearForm();renderInvFilters();renderInv();toast('Ajouté!');
+  await addDoc(collection(db,'phones'),{
+    brand:document.getElementById('f-brand').value,model,
+    storage:document.getElementById('f-storage').value,
+    color:document.getElementById('f-color').value.trim(),
+    achat:parseFloat(document.getElementById('f-achat').value)||0,
+    annonce,status:'dispo',
+    consigne:document.getElementById('f-consigne').value.trim(),
+    dateEntree:TODAY
+  });
+  clearForm();toast('Ajouté!');
 }
-function clearForm(){['f-model','f-color','f-achat','f-annonce','f-consigne'].forEach(id=>document.getElementById(id).value='');}
-function loadCfgForm(){document.getElementById('s-name').value=cfg.name;document.getElementById('s-wa').value=cfg.wa;}
-function saveSettings(){cfg.name=document.getElementById('s-name').value||cfg.name;cfg.wa=document.getElementById('s-wa').value||cfg.wa;document.getElementById('hdr-name').textContent=cfg.name;save();toast('Sauvegardé!');}
 
-/* ── VENTES ADMIN ── */
+window.clearForm = function(){['f-model','f-color','f-achat','f-annonce','f-consigne'].forEach(id=>document.getElementById(id).value='');}
+
+function loadCfgForm(){document.getElementById('s-name').value=cfg.name;document.getElementById('s-wa').value=cfg.wa;}
+
+window.saveSettings = async function(){
+  cfg.name=document.getElementById('s-name').value||cfg.name;
+  cfg.wa=document.getElementById('s-wa').value||cfg.wa;
+  await setDoc(doc(db,'config','main'),cfg);
+  document.getElementById('hdr-name').textContent=cfg.name;
+  toast('Sauvegardé!');
+}
+
 function renderVentes(){
   const mine=ventes.filter(v=>!v.consigne||v.consigne.trim()==='');
   const consignes=ventes.filter(v=>v.consigne&&v.consigne.trim()!=='');
   const totalProfitMine=mine.reduce((s,v)=>s+v.profit,0);
   const totalProfitCon=consignes.reduce((s,v)=>s+v.profit,0);
   const avgJours=ventes.length?Math.round(ventes.reduce((s,v)=>s+(v.joursStock||0),0)/ventes.length):0;
-
   document.getElementById('stats-ventes').innerHTML=`
     <div class="stat"><div class="stat-num" style="color:var(--green)">${ventes.length}</div><div class="stat-lbl">Total ventes</div></div>
     <div class="stat"><div class="stat-num" style="color:var(--green)">${totalProfitMine.toFixed(0)}$</div><div class="stat-lbl">Profit mes ventes</div></div>
     <div class="stat"><div class="stat-num" style="color:var(--amber)">${totalProfitCon.toFixed(0)}$</div><div class="stat-lbl">Profit consignes</div></div>
     <div class="stat"><div class="stat-num" style="color:#4338CA">${avgJours}j</div><div class="stat-lbl">Rotation moy.</div></div>
   `;
-
-  // Rapport mensuel
   const byMonth={};
-  ventes.forEach(v=>{
-    const m=v.dateVente?v.dateVente.substring(0,7):'Sans date';
-    if(!byMonth[m])byMonth[m]={count:0,profit:0,revenus:0,consigneProfit:0};
-    if(!v.consigne||v.consigne.trim()===''){byMonth[m].profit+=v.profit;byMonth[m].revenus+=v.reel;}
-    else{byMonth[m].consigneProfit+=v.profit;}
-    byMonth[m].count++;
-  });
+  ventes.forEach(v=>{const m=v.dateVente?v.dateVente.substring(0,7):'Sans date';if(!byMonth[m])byMonth[m]={count:0,profit:0,revenus:0,consigneProfit:0};if(!v.consigne||v.consigne.trim()===''){byMonth[m].profit+=v.profit;byMonth[m].revenus+=v.reel;}else{byMonth[m].consigneProfit+=v.profit;}byMonth[m].count++;});
   const months=Object.keys(byMonth).sort().reverse();
-  const rapportEl=document.getElementById('rapport-mensuel');
-  if(months.length){
-    rapportEl.innerHTML=`<div class="section-label" style="margin-bottom:10px">Rapport mensuel</div>`+
-    months.map(m=>`<div class="month-row"><div><div class="month-name">${m}</div><div class="month-meta">${byMonth[m].count} vente${byMonth[m].count>1?'s':''} · Mes revenus: ${byMonth[m].revenus.toFixed(0)}$</div></div><div style="display:flex;gap:6px;flex-wrap:wrap"><span class="profit-badge">Moi: +${byMonth[m].profit.toFixed(0)}$</span>${byMonth[m].consigneProfit>0?`<span class="profit-badge" style="background:var(--amber-light);color:var(--amber)">Consignes: +${byMonth[m].consigneProfit.toFixed(0)}$</span>`:''}</div></div>`).join('');
-  }else{rapportEl.innerHTML='';}
-
-  // Mes ventes
-  const mineEl=document.getElementById('ventes-mine-block');
-  mineEl.innerHTML=`<div class="vente-section-title mine">Mes ventes (${mine.length})</div>`+
-    (mine.length?[...mine].reverse().map(v=>`<div class="vente-item"><div><div class="vname">${v.brand} ${v.model} · ${v.storage}${v.color?' · '+v.color:''}</div><div class="vmeta">Achat: ${v.achat}$ · Annoncé: ${v.annonce}$ · <strong>Vendu: ${v.reel}$</strong>${v.dateVente?' · '+v.dateVente:''}${v.joursStock!=null?` · <span class="rotation-badge">${v.joursStock}j</span>`:''}</div></div><div class="profit-badge ${v.profit<0?'profit-neg':''}">${v.profit>=0?'+':''}${v.profit.toFixed(2)}$</div></div>`).join(''):'<div class="empty-state">Aucune vente personnelle.</div>');
-
-  // Ventes consignes
-  const conEl=document.getElementById('ventes-consigne-block');
-  conEl.innerHTML=`<div class="vente-section-title consigne" style="margin-top:8px">Ventes en consigne (${consignes.length})</div>`+
-    (consignes.length?[...consignes].reverse().map(v=>`<div class="vente-item"><div><div class="vname">${v.brand} ${v.model} · ${v.storage}${v.color?' · '+v.color:''} <span class="consigne-tag">${v.consigne}</span></div><div class="vmeta">Achat: ${v.achat}$ · Annoncé: ${v.annonce}$ · <strong>Vendu: ${v.reel}$</strong>${v.dateVente?' · '+v.dateVente:''}${v.joursStock!=null?` · <span class="rotation-badge">${v.joursStock}j</span>`:''}</div></div><div class="profit-badge ${v.profit<0?'profit-neg':''}">${v.profit>=0?'+':''}${v.profit.toFixed(2)}$</div></div>`).join(''):'<div class="empty-state">Aucune vente en consigne.</div>');
+  document.getElementById('rapport-mensuel').innerHTML=months.length?`<div class="section-label">Rapport mensuel</div>`+months.map(m=>`<div class="month-row"><div><div style="font-size:14px;font-weight:600">${m}</div><div style="font-size:12px;color:var(--text-muted);margin-top:2px">${byMonth[m].count} vente${byMonth[m].count>1?'s':''} · Revenus: ${byMonth[m].revenus.toFixed(0)}$</div></div><div style="display:flex;gap:6px;flex-wrap:wrap"><span class="profit-badge">Moi: +${byMonth[m].profit.toFixed(0)}$</span>${byMonth[m].consigneProfit>0?`<span class="profit-badge" style="background:var(--amber-light);color:var(--amber)">Consignes: +${byMonth[m].consigneProfit.toFixed(0)}$</span>`:''}</div></div>`).join(''):'';
+  document.getElementById('ventes-mine-block').innerHTML=`<div class="vente-section-title mine">Mes ventes (${mine.length})</div>`+(mine.length?[...mine].reverse().map(v=>`<div class="vente-item"><div><div class="vname">${v.brand} ${v.model} · ${v.storage}${v.color?' · '+v.color:''}</div><div class="vmeta">Achat: ${v.achat}$ · Annoncé: ${v.annonce}$ · <strong>Vendu: ${v.reel}$</strong>${v.dateVente?' · '+v.dateVente:''}${v.joursStock!=null?` · <span class="rotation-badge">${v.joursStock}j</span>`:''}</div></div><div class="profit-badge ${v.profit<0?'profit-neg':''}">${v.profit>=0?'+':''}${v.profit.toFixed(2)}$</div></div>`).join(''):'<div class="empty-state">Aucune vente personnelle.</div>');
+  document.getElementById('ventes-consigne-block').innerHTML=`<div class="vente-section-title consigne" style="margin-top:8px">Ventes en consigne (${consignes.length})</div>`+(consignes.length?[...consignes].reverse().map(v=>`<div class="vente-item"><div><div class="vname">${v.brand} ${v.model} · ${v.storage}${v.color?' · '+v.color:''} <span class="consigne-tag">${v.consigne}</span></div><div class="vmeta">Achat: ${v.achat}$ · Annoncé: ${v.annonce}$ · <strong>Vendu: ${v.reel}$</strong>${v.dateVente?' · '+v.dateVente:''}${v.joursStock!=null?` · <span class="rotation-badge">${v.joursStock}j</span>`:''}</div></div><div class="profit-badge ${v.profit<0?'profit-neg':''}">${v.profit>=0?'+':''}${v.profit.toFixed(2)}$</div></div>`).join(''):'<div class="empty-state">Aucune vente en consigne.</div>');
 }
 
-/* ── VUE JUSTIN ── */
-function renderJustin(){
-  const stock=phones.filter(p=>p.consigne==='Justin'&&p.status==='dispo');
-  const vendus=ventes.filter(v=>v.consigne==='Justin');
-  const valStock=stock.reduce((s,p)=>s+p.annonce,0);
-  const profitTotal=vendus.reduce((s,v)=>s+v.profit,0);
-  document.getElementById('justin-stats').innerHTML=`
-    <div class="stat"><div class="stat-num" style="color:var(--blue)">${stock.length}</div><div class="stat-lbl">En stock</div></div>
-    <div class="stat"><div class="stat-num">${valStock.toFixed(0)}$</div><div class="stat-lbl">Valeur stock</div></div>
-    <div class="stat"><div class="stat-num" style="color:var(--green)">${vendus.length}</div><div class="stat-lbl">Vendus</div></div>
-    <div class="stat"><div class="stat-num" style="color:var(--green)">${profitTotal.toFixed(0)}$</div><div class="stat-lbl">Profit total</div></div>
-  `;
-  const stockEl=document.getElementById('justin-stock');
-  stockEl.innerHTML=stock.length?stock.sort((a,b)=>a.annonce-b.annonce).map(p=>`
-    <div class="inv-item">
-      <div style="flex:1">
-        <div class="iname">${p.brand} ${p.model} · ${p.storage}${p.color?' · '+p.color:''}</div>
-        <div class="imeta">Prix d'achat: <strong>${p.achat}$</strong> &nbsp;·&nbsp; Prix annoncé: <strong>${p.annonce}$</strong> &nbsp;·&nbsp; Marge: <strong style="color:var(--green)">${(p.annonce-p.achat).toFixed(0)}$</strong>${p.dateEntree?' &nbsp;·&nbsp; Entrée: '+p.dateEntree:''}</div>
-      </div>
-    </div>`).join(''):'<div class="empty-state">Aucun téléphone en stock.</div>';
-
-  const vendusEl=document.getElementById('justin-vendus');
-  vendusEl.innerHTML=vendus.length?[...vendus].reverse().map(v=>`
-    <div class="vente-item">
-      <div>
-        <div class="vname">${v.brand} ${v.model} · ${v.storage}${v.color?' · '+v.color:''}</div>
-        <div class="vmeta">Achat: ${v.achat}$ · Annoncé: ${v.annonce}$ · <strong>Vendu: ${v.reel}$</strong>${v.dateVente?' · '+v.dateVente:''}${v.joursStock!=null?` · <span class="rotation-badge">${v.joursStock}j</span>`:''}</div>
-      </div>
-      <div class="profit-badge">${v.profit>=0?'+':''}${v.profit.toFixed(2)}$</div>
-    </div>`).join(''):'<div class="empty-state">Aucune vente encore.</div>';
-}
-
-/* ── PARTAGER ── */
 function renderShare(){
   const dispo=phones.filter(p=>p.status==='dispo'&&(!p.consigne||p.consigne.trim()==='')).sort((a,b)=>a.annonce-b.annonce);
   let m=`Inventaire disponible\n━━━━━━━━━━━━━━━\n\n`;
   if(!dispo.length){m+='Aucun téléphone disponible en ce moment.\n';}
-  else{
-    const brands=[...new Set(dispo.map(p=>p.brand))].sort((a,b)=>{if(a==='Apple')return -1;if(b==='Apple')return 1;return a.localeCompare(b);});
-    brands.forEach(b=>{m+=`*${b.toUpperCase()}*\n`;dispo.filter(p=>p.brand===b).forEach(p=>{m+=`  ${p.model} ${p.storage}${p.color?' · '+p.color:''} — *${p.annonce}$*\n`;});m+='\n';});
-  }
+  else{const brands=[...new Set(dispo.map(p=>p.brand))].sort((a,b)=>{if(a==='Apple')return -1;if(b==='Apple')return 1;return a.localeCompare(b);});brands.forEach(b=>{m+=`*${b.toUpperCase()}*\n`;dispo.filter(p=>p.brand===b).forEach(p=>{m+=`  ${p.model} ${p.storage}${p.color?' · '+p.color:''} — *${p.annonce}$*\n`;});m+='\n';});}
   m+=`━━━━━━━━━━━━━━━\nEcrivez-moi pour réserver!\nwa.me/${cfg.wa}`;
   document.getElementById('wa-prev').textContent=m;
 }
-function copyMsg(){const t=document.getElementById('wa-prev').textContent;if(navigator.clipboard){navigator.clipboard.writeText(t).then(()=>toast('Copié!'));}else{const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);toast('Copié!');}}
+
+window.copyMsg = function(){const t=document.getElementById('wa-prev').textContent;if(navigator.clipboard){navigator.clipboard.writeText(t).then(()=>toast('Copié!'));}else{const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);toast('Copié!');}}
+
 function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2800);}
 
-load();renderCat();
+loadCfg();
 </script>
 </body>
 </html>
