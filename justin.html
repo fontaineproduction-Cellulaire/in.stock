@@ -7,18 +7,15 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --blue:#185FA5;--blue-light:#E6F1FB;--blue-mid:#378ADD;--blue-dark:#0C447C;
+  --blue:#185FA5;--blue-light:#E6F1FB;--blue-dark:#0C447C;
   --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#0F6E56;
-  --amber:#BA7517;--amber-light:#FAEEDA;--amber-mid:#EF9F27;
+  --amber:#BA7517;--amber-light:#FAEEDA;
   --red:#A32D2D;--red-light:#FCEBEB;
   --text:#1a1a1a;--text-muted:#6b7280;--border:#e5e7eb;--bg:#f9fafb;--white:#fff;
 }
 body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh}
-
-/* PIN SCREEN */
-.pin-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(135deg,var(--blue-light) 0%,#f0f7ff 100%)}
+.pin-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:var(--blue-light)}
 .pin-box{background:var(--white);border-radius:20px;padding:40px 28px;width:100%;max-width:340px;text-align:center;box-shadow:0 8px 40px rgba(24,95,165,0.12)}
-.pin-logo{width:56px;height:56px;background:var(--blue-light);border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:24px}
 .pin-title{font-size:20px;font-weight:700;color:var(--text);margin-bottom:6px}
 .pin-sub{font-size:13px;color:var(--text-muted);margin-bottom:28px}
 .pin-dots{display:flex;justify-content:center;gap:14px;margin-bottom:28px}
@@ -26,71 +23,50 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .pin-dot.filled{background:var(--blue);border-color:var(--blue);transform:scale(1.1)}
 .pin-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
 .pin-key{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:18px;font-size:22px;font-weight:600;cursor:pointer;transition:all 0.15s;user-select:none;color:var(--text)}
-.pin-key:active{background:var(--blue-light);border-color:var(--blue);transform:scale(0.95);color:var(--blue)}
+.pin-key:active{background:var(--blue-light);border-color:var(--blue);transform:scale(0.95)}
 .pin-key.del{font-size:18px;color:var(--text-muted)}
-.pin-key.cancel{font-size:12px;color:var(--text-muted);font-weight:400}
 .pin-error{color:var(--red);font-size:13px;margin-top:4px;min-height:20px;font-weight:500}
-
-/* APP */
 .app{display:none}
 .header{background:var(--white);border-bottom:1.5px solid var(--border);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .header-left{display:flex;align-items:center;gap:10px}
 .header-dot{width:10px;height:10px;background:var(--blue);border-radius:50%}
-.header-name{font-size:17px;font-weight:700;color:var(--text)}
+.header-name{font-size:17px;font-weight:700}
 .header-sub{font-size:12px;color:var(--text-muted)}
 .logout-btn{background:var(--blue-light);color:var(--blue);border:1px solid #B5D4F4;padding:7px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer}
-
-/* TABS */
 .tabs{display:flex;background:var(--white);border-bottom:1px solid var(--border);padding:0 16px}
 .tab{padding:12px 16px;font-size:13px;font-weight:500;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;white-space:nowrap}
 .tab.active{color:var(--blue);border-bottom-color:var(--blue)}
-
-/* VIEWS */
 .view{display:none;padding:16px;max-width:900px;margin:0 auto}
 .view.active{display:block}
-
-/* STATS */
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:20px}
 .stat{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center}
 .stat-num{font-size:24px;font-weight:700}
 .stat-lbl{font-size:10px;color:var(--text-muted);margin-top:2px;text-transform:uppercase;letter-spacing:0.5px}
-
-/* ITEMS */
 .section-label{font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px}
 .phone-item{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:8px}
-.phone-name{font-size:14px;font-weight:600;margin-bottom:6px}
-.phone-details{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-top:8px}
+.phone-name{font-size:14px;font-weight:600;margin-bottom:8px}
+.phone-details{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-top:8px}
 .detail-box{background:var(--bg);border-radius:8px;padding:8px 12px}
 .detail-label{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px}
-.detail-value{font-size:15px;font-weight:700;color:var(--text)}
+.detail-value{font-size:15px;font-weight:700}
 .detail-value.green{color:var(--green)}
 .detail-value.blue{color:var(--blue)}
-.date-tag{display:inline-block;font-size:11px;color:var(--text-muted);background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:2px 8px;margin-top:6px}
-
-/* VENTES */
+.date-tag{display:inline-block;font-size:11px;color:var(--text-muted);background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:2px 8px;margin-top:8px}
 .vente-item{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
 .vname{font-size:14px;font-weight:600}
 .vmeta{font-size:11px;color:var(--text-muted);margin-top:3px}
 .profit-badge{background:var(--green-light);color:var(--green-dark);font-size:13px;font-weight:700;padding:5px 12px;border-radius:8px}
 .rotation-tag{display:inline-block;background:#EEF2FF;color:#4338CA;font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;margin-left:4px}
-
-.empty-state{text-align:center;padding:40px 20px;color:var(--text-muted);font-size:13px}
-.info-banner{background:var(--blue-light);border:1px solid #B5D4F4;border-radius:10px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:var(--blue-dark);line-height:1.6}
-
-/* RAPPORT */
 .rapport-item{background:var(--white);border:1px solid var(--border);border-radius:9px;padding:12px 16px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
-.rapport-month{font-size:14px;font-weight:600}
-.rapport-meta{font-size:12px;color:var(--text-muted);margin-top:2px}
-
+.empty-state{text-align:center;padding:40px 20px;color:var(--text-muted);font-size:13px}
+.loading{text-align:center;padding:40px;color:var(--text-muted)}
 @media(max-width:480px){.stats{grid-template-columns:repeat(2,1fr)}.phone-details{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
 
-<!-- PIN SCREEN -->
 <div class="pin-screen" id="pin-screen">
   <div class="pin-box">
-    <div class="pin-logo">📱</div>
     <div class="pin-title">Bonjour Justin!</div>
     <div class="pin-sub">Entrez votre code PIN pour accéder à votre inventaire</div>
     <div class="pin-dots">
@@ -109,7 +85,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
       <div class="pin-key" onclick="pinKey('7')">7</div>
       <div class="pin-key" onclick="pinKey('8')">8</div>
       <div class="pin-key" onclick="pinKey('9')">9</div>
-      <div class="pin-key cancel" onclick="window.history.back()">Retour</div>
+      <div class="pin-key" style="font-size:13px;color:var(--text-muted)"></div>
       <div class="pin-key" onclick="pinKey('0')">0</div>
       <div class="pin-key del" onclick="pinDel()">⌫</div>
     </div>
@@ -117,7 +93,6 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   </div>
 </div>
 
-<!-- APP (hidden until PIN ok) -->
 <div class="app" id="app">
   <div class="header">
     <div class="header-left">
@@ -129,64 +104,87 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
     </div>
     <button class="logout-btn" onclick="logout()">Déconnexion</button>
   </div>
-
   <div class="tabs">
     <div class="tab active" id="tab-stock" onclick="goTab('stock')">En stock</div>
     <div class="tab" id="tab-ventes" onclick="goTab('ventes')">Mes ventes</div>
   </div>
-
-  <!-- STOCK -->
   <div class="view active" id="view-stock">
     <div class="stats" id="stats-stock"></div>
     <div class="section-label">Vos téléphones en stock</div>
-    <div id="stock-list"></div>
+    <div id="stock-list"><div class="loading">Chargement...</div></div>
   </div>
-
-  <!-- VENTES -->
   <div class="view" id="view-ventes">
     <div class="stats" id="stats-ventes"></div>
     <div id="rapport-block"></div>
     <div class="section-label" style="margin-top:16px">Historique des ventes</div>
-    <div id="ventes-list"></div>
+    <div id="ventes-list"><div class="loading">Chargement...</div></div>
   </div>
 </div>
 
-<script>
-const PIN='8888';
-const STORAGE_KEY='instock_v6';
-let pinBuffer='';
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-function pinKey(k){
+const firebaseConfig = {
+  apiKey: "AIzaSyDEuNfVvNRUR8F7Xrz6qDom58-k6DSTPl0",
+  authDomain: "in-stock-9dd3f.firebaseapp.com",
+  projectId: "in-stock-9dd3f",
+  storageBucket: "in-stock-9dd3f.firebasestorage.app",
+  messagingSenderId: "76529951617",
+  appId: "1:76529951617:web:e72839b128d5401700fe80"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const PIN = '8888';
+let pinBuffer = '';
+let phones = [];
+let ventes = [];
+let unlocked = false;
+
+function daysSince(d){if(!d)return 0;return Math.floor((new Date()-new Date(d))/(1000*60*60*24));}
+
+window.pinKey = function(k){
   if(pinBuffer.length>=4)return;
   pinBuffer+=k;
   updateDots();
   if(pinBuffer.length===4){
     setTimeout(()=>{
       if(pinBuffer===PIN){unlock();}
-      else{
-        document.getElementById('pin-error').textContent='Code incorrect, réessayez.';
-        pinBuffer='';updateDots();
-      }
+      else{document.getElementById('pin-error').textContent='Code incorrect, réessayez.';pinBuffer='';updateDots();}
     },200);
   }
 }
-function pinDel(){pinBuffer=pinBuffer.slice(0,-1);updateDots();}
+window.pinDel = function(){pinBuffer=pinBuffer.slice(0,-1);updateDots();}
 function updateDots(){for(let i=0;i<4;i++){document.getElementById('pd'+i).classList.toggle('filled',i<pinBuffer.length);}}
 
 function unlock(){
   document.getElementById('pin-screen').style.display='none';
   document.getElementById('app').style.display='block';
-  renderStock();
+  unlocked=true;
+  startListeners();
 }
 
-function logout(){
+window.logout = function(){
   document.getElementById('app').style.display='none';
   document.getElementById('pin-screen').style.display='flex';
   pinBuffer='';updateDots();
   document.getElementById('pin-error').textContent='';
 }
 
-function goTab(tab){
+function startListeners(){
+  onSnapshot(collection(db,'phones'), snap => {
+    phones = snap.docs.map(d=>({...d.data(),_id:d.id})).filter(p=>p.consigne==='Justin');
+    if(document.getElementById('view-stock').classList.contains('active')) renderStock();
+  });
+  onSnapshot(collection(db,'ventes'), snap => {
+    ventes = snap.docs.map(d=>({...d.data(),_id:d.id})).filter(v=>v.consigne==='Justin');
+    if(document.getElementById('view-ventes').classList.contains('active')) renderVentes();
+  });
+}
+
+window.goTab = function(tab){
   ['stock','ventes'].forEach(t=>{
     document.getElementById('tab-'+t).classList.toggle('active',t===tab);
     document.getElementById('view-'+t).classList.toggle('active',t===tab);
@@ -195,95 +193,51 @@ function goTab(tab){
   if(tab==='ventes')renderVentes();
 }
 
-function getData(){
-  try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}');}catch(e){return {};}
-}
-
 function renderStock(){
-  const data=getData();
-  const phones=(data.phones||[]).filter(p=>p.consigne==='Justin');
   const enStock=phones.filter(p=>p.status==='dispo');
   const valStock=enStock.reduce((s,p)=>s+p.annonce,0);
   const valAchat=enStock.reduce((s,p)=>s+p.achat,0);
-  const margeTotal=valStock-valAchat;
-
   document.getElementById('stats-stock').innerHTML=`
     <div class="stat"><div class="stat-num" style="color:var(--blue)">${enStock.length}</div><div class="stat-lbl">En stock</div></div>
     <div class="stat"><div class="stat-num">${valStock.toFixed(0)}$</div><div class="stat-lbl">Valeur annoncée</div></div>
     <div class="stat"><div class="stat-num">${valAchat.toFixed(0)}$</div><div class="stat-lbl">Coût total</div></div>
-    <div class="stat"><div class="stat-num" style="color:var(--green)">${margeTotal.toFixed(0)}$</div><div class="stat-lbl">Marge totale</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--green)">${(valStock-valAchat).toFixed(0)}$</div><div class="stat-lbl">Marge totale</div></div>
   `;
-
   const el=document.getElementById('stock-list');
   if(!enStock.length){el.innerHTML='<div class="empty-state">Aucun téléphone en stock actuellement.</div>';return;}
-
   el.innerHTML=enStock.sort((a,b)=>a.annonce-b.annonce).map(p=>`
     <div class="phone-item">
       <div class="phone-name">${p.brand} ${p.model} · ${p.storage}${p.color?' · '+p.color:''}</div>
       <div class="phone-details">
-        <div class="detail-box">
-          <div class="detail-label">Prix d'achat</div>
-          <div class="detail-value">${p.achat}$</div>
-        </div>
-        <div class="detail-box">
-          <div class="detail-label">Prix annoncé</div>
-          <div class="detail-value blue">${p.annonce}$</div>
-        </div>
-        <div class="detail-box">
-          <div class="detail-label">Marge</div>
-          <div class="detail-value green">${(p.annonce-p.achat).toFixed(0)}$</div>
-        </div>
+        <div class="detail-box"><div class="detail-label">Prix d'achat</div><div class="detail-value">${p.achat}$</div></div>
+        <div class="detail-box"><div class="detail-label">Prix annoncé</div><div class="detail-value blue">${p.annonce}$</div></div>
+        <div class="detail-box"><div class="detail-label">Marge</div><div class="detail-value green">${(p.annonce-p.achat).toFixed(0)}$</div></div>
       </div>
       ${p.dateEntree?`<div class="date-tag">En stock depuis le ${p.dateEntree}</div>`:''}
     </div>`).join('');
 }
 
 function renderVentes(){
-  const data=getData();
-  const ventes=(data.ventes||[]).filter(v=>v.consigne==='Justin');
   const totalProfit=ventes.reduce((s,v)=>s+v.profit,0);
   const totalRev=ventes.reduce((s,v)=>s+v.reel,0);
   const avgJours=ventes.length?Math.round(ventes.reduce((s,v)=>s+(v.joursStock||0),0)/ventes.length):0;
-
   document.getElementById('stats-ventes').innerHTML=`
     <div class="stat"><div class="stat-num" style="color:var(--green)">${ventes.length}</div><div class="stat-lbl">Ventes</div></div>
     <div class="stat"><div class="stat-num">${totalRev.toFixed(0)}$</div><div class="stat-lbl">Revenus</div></div>
     <div class="stat"><div class="stat-num" style="color:var(--green)">${totalProfit.toFixed(0)}$</div><div class="stat-lbl">Profit total</div></div>
     <div class="stat"><div class="stat-num" style="color:#4338CA">${avgJours}j</div><div class="stat-lbl">Rotation moy.</div></div>
   `;
-
-  // Rapport mensuel
   const byMonth={};
-  ventes.forEach(v=>{
-    const m=v.dateVente?v.dateVente.substring(0,7):'Sans date';
-    if(!byMonth[m])byMonth[m]={count:0,profit:0,revenus:0};
-    byMonth[m].count++;byMonth[m].profit+=v.profit;byMonth[m].revenus+=v.reel;
-  });
+  ventes.forEach(v=>{const m=v.dateVente?v.dateVente.substring(0,7):'Sans date';if(!byMonth[m])byMonth[m]={count:0,profit:0,revenus:0};byMonth[m].count++;byMonth[m].profit+=v.profit;byMonth[m].revenus+=v.reel;});
   const months=Object.keys(byMonth).sort().reverse();
-  const rapportEl=document.getElementById('rapport-block');
-  if(months.length){
-    rapportEl.innerHTML=`<div class="section-label">Rapport mensuel</div>`+
-    months.map(m=>`
-      <div class="rapport-item">
-        <div>
-          <div class="rapport-month">${m}</div>
-          <div class="rapport-meta">${byMonth[m].count} vente${byMonth[m].count>1?'s':''} · Revenus: ${byMonth[m].revenus.toFixed(0)}$</div>
-        </div>
-        <div class="profit-badge">+${byMonth[m].profit.toFixed(0)}$</div>
-      </div>`).join('');
-  }else{rapportEl.innerHTML='';}
-
+  document.getElementById('rapport-block').innerHTML=months.length?`<div class="section-label">Rapport mensuel</div>`+months.map(m=>`<div class="rapport-item"><div><div style="font-size:14px;font-weight:600">${m}</div><div style="font-size:12px;color:var(--text-muted);margin-top:2px">${byMonth[m].count} vente${byMonth[m].count>1?'s':''} · Revenus: ${byMonth[m].revenus.toFixed(0)}$</div></div><div class="profit-badge">+${byMonth[m].profit.toFixed(0)}$</div></div>`).join(''):'';
   const el=document.getElementById('ventes-list');
   if(!ventes.length){el.innerHTML='<div class="empty-state">Aucune vente enregistrée encore.</div>';return;}
   el.innerHTML=[...ventes].reverse().map(v=>`
     <div class="vente-item">
       <div>
         <div class="vname">${v.brand} ${v.model} · ${v.storage}${v.color?' · '+v.color:''}</div>
-        <div class="vmeta">
-          Achat: ${v.achat}$ · Annoncé: ${v.annonce}$ · <strong>Vendu: ${v.reel}$</strong>
-          ${v.dateVente?' · '+v.dateVente:''}
-          ${v.joursStock!=null?`<span class="rotation-tag">${v.joursStock}j en stock</span>`:''}
-        </div>
+        <div class="vmeta">Achat: ${v.achat}$ · Annoncé: ${v.annonce}$ · <strong>Vendu: ${v.reel}$</strong>${v.dateVente?' · '+v.dateVente:''}${v.joursStock!=null?`<span class="rotation-tag">${v.joursStock}j en stock</span>`:''}</div>
       </div>
       <div class="profit-badge">${v.profit>=0?'+':''}${v.profit.toFixed(2)}$</div>
     </div>`).join('');
