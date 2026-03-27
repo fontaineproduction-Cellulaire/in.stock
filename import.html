@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Import inventaire</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#f9fafb;font-family:'Segoe UI',system-ui,sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
+.box{background:#fff;border-radius:16px;padding:40px 32px;max-width:480px;width:100%;border:1px solid #e5e7eb;text-align:center}
+h1{font-size:22px;font-weight:700;margin-bottom:8px;color:#1a1a1a}
+p{font-size:14px;color:#6b7280;margin-bottom:28px;line-height:1.6}
+.btn{background:#1D9E75;color:#fff;border:none;padding:14px 32px;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;width:100%;transition:background 0.2s}
+.btn:hover{background:#0F6E56}
+.btn:disabled{background:#9ca3af;cursor:not-allowed}
+.log{margin-top:20px;text-align:left;background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:14px;font-size:12px;color:#374151;line-height:1.8;max-height:300px;overflow-y:auto;display:none}
+.success{color:#1D9E75;font-weight:600}
+.error{color:#A32D2D}
+.count{font-size:32px;font-weight:700;color:#1D9E75;margin:16px 0 4px}
+.count-label{font-size:13px;color:#6b7280;margin-bottom:24px}
+</style>
+</head>
+<body>
+<div class="box">
+  <h1>Import inventaire Firebase</h1>
+  <p>Cliquez le bouton pour importer tous vos téléphones d'un seul coup dans Firebase. Cette opération est sécuritaire — elle n'écrase pas les données existantes.</p>
+  <div class="count" id="count">33</div>
+  <div class="count-label">téléphones à importer</div>
+  <button class="btn" id="btn" onclick="startImport()">Importer maintenant</button>
+  <div class="log" id="log"></div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDEuNfVvNRUR8F7Xrz6qDom58-k6DSTPl0",
+  authDomain: "in-stock-9dd3f.firebaseapp.com",
+  projectId: "in-stock-9dd3f",
+  storageBucket: "in-stock-9dd3f.firebasestorage.app",
+  messagingSenderId: "76529951617",
+  appId: "1:76529951617:web:e72839b128d5401700fe80"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const TODAY = new Date().toISOString().split('T')[0];
+
+const phones = [
+  {brand:"Samsung",model:"Galaxy A21",      storage:"128 Go",color:"Noir",  achat:150,   annonce:150,  status:"dispo",consigne:"Sandaga",dateEntree:TODAY},
+  {brand:"Samsung",model:"Galaxy A53",      storage:"128 Go",color:"",      achat:137.80,annonce:220,  status:"dispo",consigne:"Sandaga",dateEntree:TODAY},
+  {brand:"Samsung",model:"Galaxy A53",      storage:"128 Go",color:"",      achat:137.80,annonce:240,  status:"dispo",consigne:"",       dateEntree:TODAY},
+  {brand:"Samsung",model:"Galaxy A53",      storage:"128 Go",color:"",      achat:137.80,annonce:240,  status:"dispo",consigne:"",       dateEntree:TODAY},
+  {brand:"Samsung",model:"Galaxy Note",     storage:"—",     color:"",      achat:100,   annonce:180,  status:"dispo",consigne:"",       dateEntree:TODAY},
+  {brand:"Samsung",model:"Galaxy S21",      storage:"128 Go",color:"",      achat:180.20,annonce:280,  status:"dispo",consigne:"",       dateEntree:TODAY},
+  {brand:"Samsung",model:"Galaxy S21 FE",   storage:"128 Go",color:"",      achat:180.20,annonce:260,  status:"dispo",consigne:"Sandaga",dateEntree:TODAY},
+  {brand:"Samsung",model:"Galaxy S21 FE",   storage:"128 Go",color:"",      achat:180.20,annonce:280,  status:"dispo",consigne:"",       dateEntree:TODAY},
+  {brand:"Samsung",model:"Galaxy S21 FE",   storage:"128 Go",color:"",      achat:180.20,annonce:280,  status:"dispo",consigne:"",       dateEntree:TODAY},
+  {brand:"Samsung",model:"Galaxy S21 FE",   storage:"128 Go",color:"",      achat:180.20,annonce:280,  status:"dispo",consigne:"",       dateEntree:TODAY},
+  {brand:"Samsung",model:"Galaxy S21+",     storage:"128 Go",color:"",      achat:201.40,annonce:300,  status:"dispo",consigne:"",       dateEntree:TODAY},
+  {brand:"Samsung",model:"Galaxy S22",      storage:"128 Go",color:"",      achat:212,   annonce:310,  status:"dispo",consigne:"",       dateEntree:TODAY},
+  {brand:"Samsung",model:"Galaxy S22+",     storage:"128 Go",color:"",      achat:233.20,annonce:320,  status:"dispo",consigne:"",       dateEntree:TODAY},
+  {brand:"Samsung",model:"Galaxy S22+",     storage:"128 Go",color:"",      achat:233.20,annonce:320,  status:"dispo",consigne:"",       dateEntree:TODAY},
+  {brand:"Samsung",model:"Galaxy S23",      storage:"128 Go",color:"",      achat:270,   annonce:360,  status:"dispo",consigne:"Justin", dateEntree:TODAY},
+  {brand:"Samsung",model:"Galaxy S23 FE",   storage:"128 Go",color:"",      achat:243.80,annonce:340,  status:"dispo",consigne:"",       dateEntree:TODAY},
+  {brand:"Samsung",model:"Galaxy S23 FE",   storage:"128 Go",color:"",      achat:243.80,annonce:340,  status:"dispo",consigne:"",       dateEntree:TODAY},
+  {brand:"Samsung",model:"Galaxy S23 Ultra",storage:"512 Go",color:"",      achat:477,   annonce:577,  status:"dispo",consigne:"",       dateEntree:TODAY},
+  {brand:"Samsung",model:"Galaxy S24",      storage:"128 Go",color:"",      achat:400,   annonce:475,  status:"dispo",consigne:"",       dateEntree:TODAY},
+  {brand:"Samsung",model:"Galaxy S24",      storage:"128 Go",color:"",      achat:400,   annonce:475,  status:"dispo",consigne:"Justin", dateEntree:TODAY},
+  {brand:"Samsung",model:"Galaxy S24",      storage:"256 Go",color:"",      achat:400,   annonce:475,  status:"dispo",consigne:"Justin", dateEntree:TODAY},
+  {brand:"Samsung",model:"Galaxy S24 Plus", storage:"256 Go",color:"",      achat:525,   annonce:630,  status:"dispo",consigne:"Justin", dateEntree:TODAY},
+  {brand:"Samsung",model:"Galaxy S24 Ultra",storage:"256 Go",color:"",      achat:720,   annonce:820,  status:"dispo",consigne:"",       dateEntree:TODAY},
+  {brand:"Samsung",model:"Galaxy S24 Ultra",storage:"256 Go",color:"",      achat:720,   annonce:820,  status:"dispo",consigne:"Justin", dateEntree:TODAY},
+  {brand:"Samsung",model:"Galaxy S24 Ultra",storage:"256 Go",color:"",      achat:720,   annonce:820,  status:"dispo",consigne:"Justin", dateEntree:TODAY},
+  {brand:"Samsung",model:"Galaxy S24 Ultra",storage:"256 Go",color:"",      achat:720,   annonce:820,  status:"dispo",consigne:"Justin", dateEntree:TODAY},
+  {brand:"Samsung",model:"Galaxy S24+",     storage:"256 Go",color:"",      achat:461.10,annonce:560,  status:"dispo",consigne:"",       dateEntree:TODAY},
+  {brand:"Samsung",model:"Galaxy S24+",     storage:"256 Go",color:"",      achat:461.10,annonce:560,  status:"dispo",consigne:"",       dateEntree:TODAY},
+  {brand:"Samsung",model:"Galaxy S25",      storage:"128 Go",color:"",      achat:519.40,annonce:640,  status:"dispo",consigne:"",       dateEntree:TODAY},
+  {brand:"Apple",  model:"iPhone 15 Pro",   storage:"—",     color:"",      achat:650,   annonce:750,  status:"dispo",consigne:"",       dateEntree:TODAY},
+  {brand:"Apple",  model:"iPhone 15+",      storage:"128 Go",color:"",      achat:551.20,annonce:650,  status:"dispo",consigne:"Sandaga",dateEntree:TODAY},
+  {brand:"Apple",  model:"iPhone 15+",      storage:"128 Go",color:"",      achat:551.20,annonce:675,  status:"dispo",consigne:"",       dateEntree:TODAY},
+  {brand:"Apple",  model:"iPhone 15+",      storage:"128 Go",color:"",      achat:551.20,annonce:675,  status:"dispo",consigne:"",       dateEntree:TODAY}
+];
+
+window.startImport = async function(){
+  const btn = document.getElementById('btn');
+  const log = document.getElementById('log');
+  btn.disabled = true;
+  btn.textContent = 'Import en cours...';
+  log.style.display = 'block';
+  log.innerHTML = '';
+
+  // Check if already imported
+  const existing = await getDocs(collection(db,'phones'));
+  if(existing.size > 0){
+    log.innerHTML = `<span class="error">⚠️ Il y a déjà ${existing.size} téléphone(s) dans Firebase. Supprime-les d'abord si tu veux réimporter.</span>`;
+    btn.disabled = false;
+    btn.textContent = 'Importer maintenant';
+    return;
+  }
+
+  let success = 0;
+  let errors = 0;
+
+  for(const phone of phones){
+    try{
+      await addDoc(collection(db,'phones'), phone);
+      success++;
+      log.innerHTML += `<span class="success">✓</span> ${phone.brand} ${phone.model} ${phone.storage}${phone.consigne?' ['+phone.consigne+']':''}<br>`;
+      log.scrollTop = log.scrollHeight;
+    }catch(e){
+      errors++;
+      log.innerHTML += `<span class="error">✗ Erreur: ${phone.brand} ${phone.model}</span><br>`;
+    }
+  }
+
+  log.innerHTML += `<br><strong class="success">Import terminé! ${success} téléphones importés${errors>0?' · '+errors+' erreurs':''}</strong>`;
+  btn.textContent = success === phones.length ? '✓ Import réussi!' : 'Import partiel';
+  document.getElementById('count').textContent = success;
+}
+</script>
+</body>
+</html>
