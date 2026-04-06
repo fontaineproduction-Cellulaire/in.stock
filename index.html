@@ -150,6 +150,8 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   <div class="tab" id="tab-inv" onclick="go('inv')">Inventaire</div>
   <div class="tab" id="tab-ventes" onclick="go('ventes')">Ventes</div>
   <div class="tab" id="tab-shr" onclick="go('shr')">Partager</div>
+  <div class="tab" id="tab-justino-inv" onclick="go('justino-inv')" style="color:#7C3AED;border-bottom-color:transparent">Justino — Stock</div>
+  <div class="tab" id="tab-justino-ventes" onclick="go('justino-ventes')" style="color:#7C3AED;border-bottom-color:transparent">Justino — Ventes</div>
 </div>
 
 <!-- CATALOGUE -->
@@ -293,6 +295,31 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   </div>
 </div>
 
+<!-- JUSTINO INVENTAIRE -->
+<div class="view" id="view-justino-inv">
+  <div style="background:#F5F3FF;border:1px solid #DDD6FE;border-radius:12px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+    <div>
+      <div style="font-size:17px;font-weight:700;color:#7C3AED">Inventaire Justino</div>
+      <div style="font-size:12px;color:#8B5CF6;margin-top:2px">Téléphones en consigne</div>
+    </div>
+    <div style="background:#7C3AED;color:#fff;font-size:13px;font-weight:600;padding:6px 14px;border-radius:20px" id="justino-stock-count">0 en stock</div>
+  </div>
+  <div class="stats-grid" id="justino-inv-stats"></div>
+  <div class="section-label">Téléphones en stock</div>
+  <div id="justino-inv-list"><div class="loading">Chargement...</div></div>
+</div>
+
+<!-- JUSTINO VENTES -->
+<div class="view" id="view-justino-ventes">
+  <div style="background:#F5F3FF;border:1px solid #DDD6FE;border-radius:12px;padding:16px 20px;margin-bottom:20px">
+    <div style="font-size:17px;font-weight:700;color:#7C3AED">Ventes Justino</div>
+    <div style="font-size:12px;color:#8B5CF6;margin-top:2px">Historique des ventes en consigne</div>
+  </div>
+  <div class="stats-grid" id="justino-ventes-stats"></div>
+  <div class="section-label" style="margin-top:8px">Historique</div>
+  <div id="justino-ventes-list"><div class="loading">Chargement...</div></div>
+</div>
+
 <!-- MODAL VENTE -->
 <div class="modal-bg" id="modal-vente">
   <div class="modal">
@@ -301,6 +328,19 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
     <div class="row" style="grid-template-columns:1fr 1fr">
       <div class="fg"><label>Prix de vente réel ($)</label><input id="m-reel" type="number"></div>
       <div class="fg"><label>Prix annoncé ($)</label><input id="m-annonce" type="number" readonly style="background:#f0f0f0;color:var(--text-muted)"></div>
+    </div>
+    <div class="row" style="grid-template-columns:1fr 1fr">
+      <div class="fg"><label>IMEI</label><input id="m-imei" type="text" placeholder="ex: 352844012345678"></div>
+      <div class="fg"><label>Garantie</label>
+        <select id="m-garantie">
+          <option value="Aucune">Aucune</option>
+          <option value="7 jours">7 jours</option>
+          <option value="14 jours">14 jours</option>
+          <option value="30 jours" selected>30 jours</option>
+          <option value="60 jours">60 jours</option>
+          <option value="90 jours">90 jours</option>
+        </select>
+      </div>
     </div>
     <div id="profit-preview" style="font-size:14px;font-weight:600;margin:8px 0 4px"></div>
     <div class="modal-actions">
@@ -554,8 +594,12 @@ function applyInvFilter(list){
     if(brand&&p.brand!==brand)return false;
     if(model&&!(p.brand+' '+p.model+' '+p.storage).toLowerCase().includes(model))return false;
     if(status&&p.status!==status)return false;
-    if(consigne==='mine'&&(p.consigne&&p.consigne.trim()!==''))return false;
-    if(consigne&&consigne!=='mine'&&p.consigne!==consigne)return false;
+    // Filtre consigne : "mine" = seulement mes téléphones (sans consigne), sinon filtre par nom
+    if(consigne==='mine'){
+      if(p.consigne&&p.consigne.trim()!=='')return false;
+    } else if(consigne!==''){
+      if(p.consigne!==consigne)return false;
+    }
     if(ageFilter==='old'&&!(p.status==='dispo'&&daysSince(p.dateEntree)>30))return false;
     return true;
   });
@@ -618,14 +662,19 @@ document.getElementById('m-reel').addEventListener('input',updateProfit);
 window.confirmVente = async function(){
   const p=phones.find(x=>x._id===pendingId);if(!p)return;
   const reel=parseFloat(document.getElementById('m-reel').value)||p.annonce;
+  const imei=document.getElementById('m-imei').value.trim();
+  const garantie=document.getElementById('m-garantie').value;
   const dateVente=new Date().toLocaleDateString('fr-CA');
   const joursStock=daysSince(p.dateEntree);
   await addDoc(collection(db,'ventes'),{
     brand:p.brand,model:p.model,storage:p.storage,color:p.color||'',
     achat:p.achat,annonce:p.annonce,reel,profit:reel-p.achat,
-    consigne:p.consigne||'',dateEntree:p.dateEntree||'',dateVente,joursStock
+    consigne:p.consigne||'',dateEntree:p.dateEntree||'',dateVente,joursStock,
+    imei:imei||'',garantie:garantie||'30 jours'
   });
   await updateDoc(doc(db,'phones',pendingId),{status:'vendu'});
+  document.getElementById('m-imei').value='';
+  document.getElementById('m-garantie').value='30 jours';
   closeModal('modal-vente');
   toast(`Vendu! Profit: ${(reel-p.achat).toFixed(2)}$`);
 }
@@ -774,8 +823,8 @@ function renderVentes(){
   filtered.forEach(v=>{const m=v.dateVente?v.dateVente.substring(0,7):'Sans date';if(!byMonth[m])byMonth[m]={count:0,profit:0,revenus:0,consigneProfit:0};if(!v.consigne||v.consigne.trim()===''){byMonth[m].profit+=v.profit;byMonth[m].revenus+=v.reel;}else{byMonth[m].consigneProfit+=v.profit;}byMonth[m].count++;});
   const months=Object.keys(byMonth).sort().reverse();
   document.getElementById('rapport-mensuel').innerHTML=months.length?`<div class="section-label">Rapport par période</div>`+months.map(m=>`<div class="month-row"><div><div style="font-size:14px;font-weight:600">${m}</div><div style="font-size:12px;color:var(--text-muted);margin-top:2px">${byMonth[m].count} vente${byMonth[m].count>1?'s':''} · Revenus: ${byMonth[m].revenus.toFixed(0)}$</div></div><div style="display:flex;gap:6px;flex-wrap:wrap"><span class="profit-badge">Moi: +${byMonth[m].profit.toFixed(0)}$</span>${byMonth[m].consigneProfit>0?`<span class="profit-badge" style="background:var(--amber-light);color:var(--amber)">Consignes: +${byMonth[m].consigneProfit.toFixed(0)}$</span>`:''}</div></div>`).join(''):'';
-  document.getElementById('ventes-mine-block').innerHTML=`<div class="vente-section-title mine">Mes ventes (${mine.length})</div>`+(mine.length?[...mine].reverse().map(v=>`<div class="vente-item"><div><div class="vname">${v.brand} ${v.model} · ${v.storage}${v.color?' · '+v.color:''}</div><div class="vmeta">Achat: ${v.achat}$ · Annoncé: ${v.annonce}$ · <strong>Vendu: ${v.reel}$</strong>${v.dateVente?' · '+v.dateVente:''}${v.joursStock!=null?` · <span class="rotation-badge">${v.joursStock}j</span>`:''}</div></div><div class="profit-badge ${v.profit<0?'profit-neg':''}">${v.profit>=0?'+':''}${v.profit.toFixed(2)}$</div></div>`).join(''):'<div class="empty-state">Aucune vente personnelle dans cette période.</div>');
-  document.getElementById('ventes-consigne-block').innerHTML=`<div class="vente-section-title consigne" style="margin-top:8px">Ventes en consigne (${consignes.length})</div>`+(consignes.length?[...consignes].reverse().map(v=>`<div class="vente-item"><div><div class="vname">${v.brand} ${v.model} · ${v.storage}${v.color?' · '+v.color:''} <span class="consigne-tag">${v.consigne}</span></div><div class="vmeta">Achat: ${v.achat}$ · Annoncé: ${v.annonce}$ · <strong>Vendu: ${v.reel}$</strong>${v.dateVente?' · '+v.dateVente:''}${v.joursStock!=null?` · <span class="rotation-badge">${v.joursStock}j</span>`:''}</div></div><div class="profit-badge ${v.profit<0?'profit-neg':''}">${v.profit>=0?'+':''}${v.profit.toFixed(2)}$</div></div>`).join(''):'<div class="empty-state">Aucune vente en consigne dans cette période.</div>');
+  document.getElementById('ventes-mine-block').innerHTML=`<div class="vente-section-title mine">Mes ventes (${mine.length})</div>`+(mine.length?[...mine].reverse().map(v=>`<div class="vente-item"><div><div class="vname">${v.brand} ${v.model} · ${v.storage}${v.color?' · '+v.color:''}</div><div class="vmeta">Achat: ${v.achat}$ · Annoncé: ${v.annonce}$ · <strong>Vendu: ${v.reel}$</strong>${v.dateVente?' · '+v.dateVente:''}${v.joursStock!=null?` · <span class="rotation-badge">${v.joursStock}j</span>`:''}${v.garantie?` · Garantie: <strong>${v.garantie}</strong>`:''}${v.imei?` · IMEI: ${v.imei}`:''}</div></div><div class="profit-badge ${v.profit<0?'profit-neg':''}">${v.profit>=0?'+':''}${v.profit.toFixed(2)}$</div></div>`).join(''):'<div class="empty-state">Aucune vente personnelle dans cette période.</div>');
+  document.getElementById('ventes-consigne-block').innerHTML=`<div class="vente-section-title consigne" style="margin-top:8px">Ventes en consigne (${consignes.length})</div>`+(consignes.length?[...consignes].reverse().map(v=>`<div class="vente-item"><div><div class="vname">${v.brand} ${v.model} · ${v.storage}${v.color?' · '+v.color:''} <span class="consigne-tag">${v.consigne}</span></div><div class="vmeta">Achat: ${v.achat}$ · Annoncé: ${v.annonce}$ · <strong>Vendu: ${v.reel}$</strong>${v.dateVente?' · '+v.dateVente:''}${v.joursStock!=null?` · <span class="rotation-badge">${v.joursStock}j</span>`:''}${v.garantie?` · Garantie: <strong>${v.garantie}</strong>`:''}${v.imei?` · IMEI: ${v.imei}`:''}</div></div><div class="profit-badge ${v.profit<0?'profit-neg':''}">${v.profit>=0?'+':''}${v.profit.toFixed(2)}$</div></div>`).join(''):'<div class="empty-state">Aucune vente en consigne dans cette période.</div>');
 }
 
 function renderShare(){
