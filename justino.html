@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mon inventaire — Justino</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --blue:#185FA5;--blue-light:#E6F1FB;--blue-dark:#0C447C;
+  --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#0F6E56;
+  --purple:#534AB7;--purple-light:#EEEDFE;
+  --red:#A32D2D;--red-light:#FCEBEB;
+  --text:#1a1a1a;--text-muted:#6b7280;--border:#e5e7eb;--bg:#f9fafb;--white:#fff;
+}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh}
+.header{background:var(--white);border-bottom:1.5px solid var(--border);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-dot{width:10px;height:10px;background:var(--blue);border-radius:50%}
+.brand-name{font-size:18px;font-weight:700}
+.brand-sub{font-size:12px;color:var(--text-muted)}
+.hbadge{background:var(--blue-light);color:var(--blue-dark);font-size:12px;font-weight:600;padding:5px 14px;border-radius:20px}
+.tabs{display:flex;background:var(--white);border-bottom:1px solid var(--border);padding:0 16px;overflow-x:auto}
+.tab{padding:12px 16px;font-size:13px;font-weight:500;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all 0.2s}
+.tab.active{color:var(--blue);border-bottom-color:var(--blue)}
+.view{display:none;padding:16px;max-width:900px;margin:0 auto}
+.view.active{display:block}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:20px}
+.stat{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center}
+.stat-num{font-size:24px;font-weight:700}
+.stat-lbl{font-size:10px;color:var(--text-muted);margin-top:2px;text-transform:uppercase;letter-spacing:0.5px}
+.section-header{border-radius:10px;padding:12px 16px;margin-bottom:12px;margin-top:16px;display:flex;align-items:center;justify-content:space-between}
+.section-header.mine{background:var(--blue-light);color:var(--blue-dark)}
+.section-header.steph{background:var(--purple-light);color:var(--purple)}
+.section-header-title{font-size:14px;font-weight:700}
+.section-header-sub{font-size:11px;margin-top:2px;opacity:0.8}
+.section-header-count{font-size:20px;font-weight:700}
+.section-label{font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px}
+.card-form{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:16px}
+.type-toggle{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.type-btn{padding:12px;border-radius:8px;border:2px solid var(--border);background:var(--bg);cursor:pointer;font-size:13px;font-weight:500;color:var(--text-muted);transition:all 0.2s;text-align:center}
+.type-btn.active-mine{border-color:var(--blue);background:var(--blue-light);color:var(--blue-dark)}
+.type-btn.active-steph{border-color:var(--purple);background:var(--purple-light);color:var(--purple)}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:10px}
+.fg label{display:block;font-size:11px;color:var(--text-muted);font-weight:500;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.5px}
+.fg input,.fg select{width:100%;background:#f9fafb;border:1px solid var(--border);color:var(--text);padding:8px 10px;border-radius:7px;font-size:13px;font-family:inherit}
+.fg input:focus,.fg select:focus{outline:none;border-color:#B5D4F4}
+.btn-blue{background:var(--blue);color:#fff;border:none;padding:9px 18px;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer}
+.btn-blue:hover{background:var(--blue-dark)}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text-muted);padding:9px 14px;border-radius:7px;font-size:13px;cursor:pointer}
+.phone-item{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:8px}
+.phone-item.is-steph{border-left:3px solid var(--purple)}
+.phone-item.is-mine{border-left:3px solid var(--blue)}
+.phone-name{font-size:14px;font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.type-tag{font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;text-transform:uppercase}
+.type-tag.mine{background:var(--blue-light);color:var(--blue-dark)}
+.type-tag.steph{background:var(--purple-light);color:var(--purple)}
+.phone-details{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-top:8px}
+.detail-box{background:var(--bg);border-radius:8px;padding:8px 12px}
+.detail-label{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px}
+.detail-value{font-size:15px;font-weight:700}
+.detail-value.green{color:var(--green)}
+.detail-value.blue{color:var(--blue)}
+.detail-value.purple{color:var(--purple)}
+.date-tag{display:inline-block;font-size:11px;color:var(--text-muted);background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:2px 8px;margin-top:8px}
+.vente-item{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.vente-item.is-steph{border-left:3px solid var(--purple)}
+.vente-item.is-mine{border-left:3px solid var(--blue)}
+.vname{font-size:14px;font-weight:600}
+.vmeta{font-size:11px;color:var(--text-muted);margin-top:3px}
+.profit-badge{font-size:13px;font-weight:700;padding:5px 12px;border-radius:8px}
+.profit-badge.mine{background:var(--blue-light);color:var(--blue-dark)}
+.profit-badge.steph{background:var(--purple-light);color:var(--purple)}
+.split-badge{font-size:11px;color:var(--green);font-weight:500;margin-top:3px}
+.empty-state{text-align:center;padding:30px 20px;color:var(--text-muted);font-size:13px}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(60px);background:#1a1a1a;color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;z-index:999;opacity:0;transition:all 0.3s}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+@media(max-width:480px){.stats{grid-template-columns:repeat(2,1fr)}.phone-details{grid-template-columns:repeat(2,1fr)}.row{grid-template-columns:1fr}.type-toggle{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="brand">
+    <div class="brand-dot"></div>
+    <div>
+      <div class="brand-name">Mon inventaire — Justino</div>
+      <div class="brand-sub">Espace consignateur</div>
+    </div>
+  </div>
+  <div class="hbadge" id="hdr-count">Chargement...</div>
+</div>
+<div class="tabs">
+  <div class="tab active" id="tab-stock" onclick="goTab('stock')">Stock</div>
+  <div class="tab" id="tab-ajouter" onclick="goTab('ajouter')">Ajouter</div>
+  <div class="tab" id="tab-ventes" onclick="goTab('ventes')">Ventes</div>
+</div>
+
+<!-- STOCK -->
+<div class="view active" id="view-stock">
+  <div class="stats" id="stats-stock"></div>
+  <div class="section-header mine">
+    <div>
+      <div class="section-header-title">Mes telephones</div>
+      <div class="section-header-sub">Je garde 100% du profit</div>
+    </div>
+    <div class="section-header-count" id="count-mine">0</div>
+  </div>
+  <div id="stock-mine"></div>
+  <div class="section-header steph" style="margin-top:20px">
+    <div>
+      <div class="section-header-title">Telephones de Stephanie</div>
+      <div class="section-header-sub">Profit partage 50/50</div>
+    </div>
+    <div class="section-header-count" id="count-steph">0</div>
+  </div>
+  <div id="stock-steph"></div>
+</div>
+
+<!-- AJOUTER -->
+<div class="view" id="view-ajouter">
+  <div class="card-form">
+    <div class="section-label">Type de telephone</div>
+    <div class="type-toggle">
+      <div class="type-btn active-mine" id="type-mine-btn" onclick="setType('mine')">
+        <div style="font-size:16px;margin-bottom:4px">MOI</div>
+        <div>Mon telephone</div>
+        <div style="font-size:11px;margin-top:2px;opacity:0.7">Je garde 100% du profit</div>
+      </div>
+      <div class="type-btn" id="type-steph-btn" onclick="setType('steph')">
+        <div style="font-size:16px;margin-bottom:4px">STEPH</div>
+        <div>Telephone de Stephanie</div>
+        <div style="font-size:11px;margin-top:2px;opacity:0.7">Profit partage 50/50</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="fg"><label>Marque</label>
+        <select id="f-brand" onchange="toggleBattery()">
+          <option>Apple</option><option>Samsung</option><option>Google</option>
+          <option>OnePlus</option><option>Xiaomi</option><option>Motorola</option><option>Autre</option>
+        </select>
+      </div>
+      <div class="fg"><label>Modele</label><input id="f-model" placeholder="ex: iPhone 15 Pro"></div>
+      <div class="fg"><label>Stockage</label>
+        <select id="f-storage"><option>64 Go</option><option>128 Go</option><option>256 Go</option><option>512 Go</option><option>1 To</option><option>--</option></select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="fg"><label>Couleur</label><input id="f-color" placeholder="ex: Noir, Blanc..."></div>
+      <div class="fg" id="f-battery-wrap"><label>% Batterie (Apple)</label><input id="f-battery" type="number" placeholder="ex: 89" min="1" max="100"></div>
+      <div class="fg"><label>Prix d'achat ($)</label><input id="f-achat" type="number" placeholder="ex: 400"></div>
+      <div class="fg"><label>Prix annonce ($)</label><input id="f-annonce" type="number" placeholder="ex: 475"></div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn-blue" onclick="addPhone()">Ajouter</button>
+      <button class="btn-ghost" onclick="clearForm()">Effacer</button>
+    </div>
+  </div>
+</div>
+
+<!-- VENTES -->
+<div class="view" id="view-ventes">
+  <div class="stats" id="stats-ventes"></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
+    <div style="background:var(--blue-light);border-radius:10px;padding:14px;text-align:center">
+      <div style="font-size:11px;color:var(--blue-dark);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">Mes ventes (100%)</div>
+      <div style="font-size:22px;font-weight:700;color:var(--blue)" id="profit-mine-total">0$</div>
+    </div>
+    <div style="background:var(--purple-light);border-radius:10px;padding:14px;text-align:center">
+      <div style="font-size:11px;color:var(--purple);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">Consigne Stephanie (50%)</div>
+      <div style="font-size:22px;font-weight:700;color:var(--purple)" id="profit-steph-total">0$</div>
+    </div>
+  </div>
+  <div class="section-header mine">
+    <div><div class="section-header-title">Mes ventes</div><div class="section-header-sub">Profit 100% a moi</div></div>
+    <div class="section-header-count" id="count-ventes-mine">0</div>
+  </div>
+  <div id="ventes-mine"></div>
+  <div class="section-header steph" style="margin-top:16px">
+    <div><div class="section-header-title">Ventes Stephanie</div><div class="section-header-sub">Profit partage 50/50</div></div>
+    <div class="section-header-count" id="count-ventes-steph">0</div>
+  </div>
+  <div id="ventes-steph"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script>
+firebase.initializeApp({
+  apiKey:"AIzaSyDEuNfVvNRUR8F7Xrz6qDom58-k6DSTPl0",
+  authDomain:"in-stock-9dd3f.firebaseapp.com",
+  projectId:"in-stock-9dd3f",
+  storageBucket:"in-stock-9dd3f.firebasestorage.app",
+  messagingSenderId:"76529951617",
+  appId:"1:76529951617:web:e72839b128d5401700fe80"
+});
+var db=firebase.firestore();
+var TODAY=new Date().toISOString().split('T')[0];
+var phones=[];var ventes=[];var phoneType='mine';
+
+function daysSince(d){if(!d)return 0;return Math.floor((new Date()-new Date(d))/(1000*60*60*24));}
+
+db.collection('phones').onSnapshot(function(snap){
+  phones=snap.docs.map(function(d){return Object.assign({},d.data(),{_id:d.id});})
+    .filter(function(p){return p.consigne==='Justino'||p.consigne==='Justino-propre';});
+  renderStock();
+  var dispo=phones.filter(function(p){return p.status==='dispo';}).length;
+  document.getElementById('hdr-count').textContent=dispo+' en stock';
+});
+
+db.collection('ventes').onSnapshot(function(snap){
+  ventes=snap.docs.map(function(d){return Object.assign({},d.data(),{_id:d.id});})
+    .filter(function(v){return v.consigne==='Justino'||v.consigne==='Justino-propre';});
+  if(document.getElementById('view-ventes').classList.contains('active'))renderVentes();
+});
+
+function goTab(tab){
+  ['stock','ajouter','ventes'].forEach(function(t){
+    document.getElementById('tab-'+t).classList.toggle('active',t===tab);
+    document.getElementById('view-'+t).classList.toggle('active',t===tab);
+  });
+  if(tab==='ventes')renderVentes();
+}
+
+function setType(type){
+  phoneType=type;
+  document.getElementById('type-mine-btn').className='type-btn'+(type==='mine'?' active-mine':'');
+  document.getElementById('type-steph-btn').className='type-btn'+(type==='steph'?' active-steph':'');
+}
+
+function toggleBattery(){
+  var isApple=document.getElementById('f-brand').value==='Apple';
+  document.getElementById('f-battery-wrap').style.opacity=isApple?'1':'0.3';
+  if(!isApple)document.getElementById('f-battery').value='';
+}
+
+function renderStock(){
+  var mine=phones.filter(function(p){return p.status==='dispo'&&p.consigne==='Justino-propre';});
+  var steph=phones.filter(function(p){return p.status==='dispo'&&p.consigne==='Justino';});
+  document.getElementById('count-mine').textContent=mine.length;
+  document.getElementById('count-steph').textContent=steph.length;
+  var allDispo=[...mine,...steph];
+  var totalVal=allDispo.reduce(function(s,p){return s+p.annonce;},0);
+  var totalAchat=allDispo.reduce(function(s,p){return s+p.achat;},0);
+  document.getElementById('stats-stock').innerHTML=
+    '<div class="stat"><div class="stat-num" style="color:var(--blue)">'+allDispo.length+'</div><div class="stat-lbl">Total stock</div></div>'+
+    '<div class="stat"><div class="stat-num">'+totalAchat.toFixed(0)+'$</div><div class="stat-lbl">Cout total</div></div>'+
+    '<div class="stat"><div class="stat-num" style="color:var(--blue)">'+totalVal.toFixed(0)+'$</div><div class="stat-lbl">Valeur annoncee</div></div>'+
+    '<div class="stat"><div class="stat-num" style="color:var(--green)">'+(totalVal-totalAchat).toFixed(0)+'$</div><div class="stat-lbl">Marge potentielle</div></div>';
+
+  function phoneCard(p,type){
+    var bat=(p.battery&&p.brand==='Apple')?' - Bat:'+p.battery+'%':'';
+    var maPart=type==='steph'?'<div class="detail-box"><div class="detail-label">Ma part (50%)</div><div class="detail-value green">'+((p.annonce-p.achat)/2).toFixed(0)+'$</div></div>':'';
+    return '<div class="phone-item is-'+type+'">'+
+      '<div class="phone-name">'+p.brand+' '+p.model+' - '+p.storage+(p.color?' - '+p.color:'')+bat+
+        ' <span class="type-tag '+type+'">'+(type==='mine'?'Mon cell':'Stephanie')+'</span></div>'+
+      '<div class="phone-details">'+
+        '<div class="detail-box"><div class="detail-label">Prix achat</div><div class="detail-value">'+p.achat+'$</div></div>'+
+        '<div class="detail-box"><div class="detail-label">Prix annonce</div><div class="detail-value '+(type==='mine'?'blue':'purple')+'">'+p.annonce+'$</div></div>'+
+        '<div class="detail-box"><div class="detail-label">Marge</div><div class="detail-value green">'+(p.annonce-p.achat).toFixed(0)+'$</div></div>'+
+        maPart+
+      '</div>'+
+      (p.dateEntree?'<div class="date-tag">En stock depuis le '+p.dateEntree+'</div>':'')+
+    '</div>';
+  }
+
+  var mineEl=document.getElementById('stock-mine');
+  mineEl.innerHTML=mine.length?mine.sort(function(a,b){return a.annonce-b.annonce;}).map(function(p){return phoneCard(p,'mine');}).join(''):'<div class="empty-state">Aucun de vos telephones en stock.<br>Ajoutez-en dans Ajouter.</div>';
+  var stephEl=document.getElementById('stock-steph');
+  stephEl.innerHTML=steph.length?steph.sort(function(a,b){return a.annonce-b.annonce;}).map(function(p){return phoneCard(p,'steph');}).join(''):'<div class="empty-state">Aucun telephone de Stephanie en stock.</div>';
+}
+
+function addPhone(){
+  var model=document.getElementById('f-model').value.trim();
+  var annonce=parseFloat(document.getElementById('f-annonce').value);
+  if(!model||!annonce){toast('Modele et prix annonce requis');return;}
+  var brand=document.getElementById('f-brand').value;
+  var battery=document.getElementById('f-battery').value;
+  var consigne=phoneType==='mine'?'Justino-propre':'Justino';
+  db.collection('phones').add({
+    brand:brand,model:model,
+    storage:document.getElementById('f-storage').value,
+    color:document.getElementById('f-color').value.trim(),
+    battery:battery?parseInt(battery):'',
+    achat:parseFloat(document.getElementById('f-achat').value)||0,
+    annonce:annonce,status:'dispo',consigne:consigne,dateEntree:TODAY
+  }).then(function(){clearForm();toast('Telephone ajoute!');goTab('stock');})
+  .catch(function(e){toast('Erreur: '+e.message);});
+}
+
+function clearForm(){
+  ['f-model','f-color','f-battery','f-achat','f-annonce'].forEach(function(id){document.getElementById(id).value='';});
+}
+
+function renderVentes(){
+  var mine=ventes.filter(function(v){return v.consigne==='Justino-propre';});
+  var steph=ventes.filter(function(v){return v.consigne==='Justino';});
+  var profitMine=mine.reduce(function(s,v){return s+v.profit;},0);
+  var profitSteph=steph.reduce(function(s,v){return s+v.profit;},0);
+  var totalRev=[...mine,...steph].reduce(function(s,v){return s+v.reel;},0);
+  document.getElementById('profit-mine-total').textContent=profitMine.toFixed(0)+'$';
+  document.getElementById('profit-steph-total').textContent=(profitSteph/2).toFixed(0)+'$ (ma part)';
+  document.getElementById('count-ventes-mine').textContent=mine.length;
+  document.getElementById('count-ventes-steph').textContent=steph.length;
+  document.getElementById('stats-ventes').innerHTML=
+    '<div class="stat"><div class="stat-num" style="color:var(--green)">'+(mine.length+steph.length)+'</div><div class="stat-lbl">Total ventes</div></div>'+
+    '<div class="stat"><div class="stat-num">'+totalRev.toFixed(0)+'$</div><div class="stat-lbl">Revenus totaux</div></div>'+
+    '<div class="stat"><div class="stat-num" style="color:var(--green)">'+(profitMine+profitSteph/2).toFixed(0)+'$</div><div class="stat-lbl">Mon profit total</div></div>';
+
+  function venteCard(v,type){
+    var myProfit=type==='mine'?v.profit:v.profit/2;
+    return '<div class="vente-item is-'+type+'">'+
+      '<div>'+
+        '<div class="vname">'+v.brand+' '+v.model+' - '+v.storage+(v.color?' - '+v.color:'')+'</div>'+
+        '<div class="vmeta">Achat: '+v.achat+'$ - Vendu: <strong>'+v.reel+'$</strong>'+(v.dateVente?' - '+v.dateVente:'')+(v.garantie?' - Garantie: '+v.garantie:'')+(v.imei?' - IMEI: '+v.imei:'')+'</div>'+
+        (type==='steph'?'<div class="split-badge">Ma part (50%): +'+(v.profit/2).toFixed(2)+'$</div>':'')+
+      '</div>'+
+      '<div class="profit-badge '+type+'">'+(myProfit>=0?'+':'')+myProfit.toFixed(2)+'$</div>'+
+    '</div>';
+  }
+
+  document.getElementById('ventes-mine').innerHTML=mine.length?[...mine].reverse().map(function(v){return venteCard(v,'mine');}).join(''):'<div class="empty-state">Aucune vente personnelle.</div>';
+  document.getElementById('ventes-steph').innerHTML=steph.length?[...steph].reverse().map(function(v){return venteCard(v,'steph');}).join(''):'<div class="empty-state">Aucune vente de Stephanie.</div>';
+}
+
+function toast(msg){
+  var el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');
+  setTimeout(function(){el.classList.remove('show');},2500);
+}
+</script>
+</body>
+</html>
