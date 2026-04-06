@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inventaire disponible</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --green:#1D9E75;--green-light:#E1F5EE;--green-mid:#9FE1CB;--green-dark:#0F6E56;
+  --amber:#BA7517;--amber-light:#FAEEDA;--amber-mid:#EF9F27;
+  --red:#A32D2D;--red-light:#FCEBEB;
+  --blue:#185FA5;--blue-light:#E6F1FB;
+  --text:#1a1a1a;--text-muted:#6b7280;--border:#e5e7eb;--bg:#f9fafb;--white:#fff;
+}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh}
+.header{background:var(--white);border-bottom:1.5px solid var(--border);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}
+.brand-dot{width:10px;height:10px;background:var(--green);border-radius:50%;flex-shrink:0;transition:transform 0.1s}
+.brand:active .brand-dot{transform:scale(1.4)}
+.brand-name{font-size:18px;font-weight:700;color:var(--text)}
+.brand-sub{font-size:12px;color:var(--text-muted)}
+.hbadge{background:var(--green-light);color:var(--green-dark);font-size:12px;font-weight:600;padding:5px 14px;border-radius:20px;white-space:nowrap}
+.tabs{display:none;background:var(--white);border-bottom:1px solid var(--border);padding:0 16px;overflow-x:auto}
+.tabs.show{display:flex}
+.tab{padding:12px 14px;font-size:13px;font-weight:500;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;white-space:nowrap}
+.tab.active{color:var(--green);border-bottom-color:var(--green)}
+.tab:hover:not(.active){color:var(--text)}
+.view{display:none;padding:16px;max-width:1000px;margin:0 auto}
+.view.active{display:block}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;align-items:center}
+.search-wrap{flex:1;min-width:180px}
+.search-wrap input{width:100%;background:var(--white);border:1px solid var(--border);color:var(--text);padding:9px 14px;border-radius:8px;font-size:13px;font-family:inherit}
+.search-wrap input:focus{outline:none;border-color:var(--green-mid)}
+.filter-btns{display:flex;gap:6px;flex-wrap:wrap}
+.fbtn{background:var(--white);border:1px solid var(--border);color:var(--text-muted);padding:7px 14px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;transition:all 0.2s;white-space:nowrap}
+.fbtn.active{background:var(--green);border-color:var(--green);color:#fff}
+.fbtn:hover:not(.active){border-color:var(--green-mid);color:var(--green)}
+.brand-section{margin-bottom:28px}
+.brand-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--border)}
+.brand-title{font-size:16px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px}
+.brand-count{background:var(--green-light);color:var(--green-dark);font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px}
+.see-all{font-size:12px;color:var(--green);cursor:pointer;font-weight:500;border:none;background:none;padding:4px 8px}
+.see-all:hover{text-decoration:underline}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px;transition:box-shadow 0.2s}
+.card:hover{box-shadow:0 4px 16px rgba(0,0,0,0.07)}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
+.card-brand-lbl{font-size:11px;font-weight:600;color:var(--green);text-transform:uppercase;letter-spacing:1px}
+.badge{font-size:11px;font-weight:500;padding:3px 9px;border-radius:20px;background:var(--green-light);color:var(--green-dark)}
+.card-name{font-size:15px;font-weight:600;margin-bottom:8px;line-height:1.3}
+.card-specs{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+.spec{background:var(--bg);border:1px solid var(--border);border-radius:6px;font-size:11px;color:var(--text-muted);padding:3px 8px;display:flex;align-items:center;gap:4px}
+.color-dot{width:8px;height:8px;border-radius:50%;border:1px solid rgba(0,0,0,0.15);flex-shrink:0}
+.card-footer{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);padding-top:12px}
+.price{font-size:20px;font-weight:700}
+.price small{font-size:12px;font-weight:400;color:var(--text-muted)}
+.wa-btn{background:var(--green);color:#fff;border:none;border-radius:7px;padding:7px 13px;font-size:12px;font-weight:500;cursor:pointer;transition:background 0.2s}
+.wa-btn:hover{background:var(--green-dark)}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:20px}
+.stat{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
+.stat-num{font-size:22px;font-weight:700}
+.stat-lbl{font-size:10px;color:var(--text-muted);margin-top:2px;text-transform:uppercase;letter-spacing:0.5px}
+.section-label{font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px}
+.card-form{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:18px}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:10px}
+.fg label{display:block;font-size:11px;color:var(--text-muted);font-weight:500;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.5px}
+.fg input,.fg select{width:100%;background:#f9fafb;border:1px solid var(--border);color:var(--text);padding:8px 10px;border-radius:7px;font-size:13px;font-family:inherit}
+.fg input:focus,.fg select:focus{outline:none;border-color:var(--green-mid)}
+.consigne-field input{background:#FAEEDA !important;border-color:#EF9F27 !important}
+.btn-green{background:var(--green);color:#fff;border:none;padding:9px 18px;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer}
+.btn-green:hover{background:var(--green-dark)}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text-muted);padding:9px 14px;border-radius:7px;font-size:13px;cursor:pointer}
+.btn-ghost:hover{border-color:#aaa;color:var(--text)}
+.btn-red{background:var(--red-light);color:var(--red);border:1px solid #f09595;padding:9px 14px;border-radius:7px;font-size:13px;cursor:pointer;font-weight:500}
+.inv-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.ifbtn{background:var(--white);border:1px solid var(--border);color:var(--text-muted);padding:6px 14px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;transition:all 0.2s;white-space:nowrap}
+.ifbtn.active{background:var(--amber-mid);border-color:var(--amber-mid);color:#fff}
+.ifbtn.active-green{background:var(--green);border-color:var(--green);color:#fff}
+.inv-item{background:var(--white);border:1px solid var(--border);border-radius:9px;padding:11px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:7px;flex-wrap:wrap}
+.inv-item.is-consigne{border-left:3px solid var(--amber-mid)}
+.inv-item.is-old{border-left:3px solid #EF4444}
+.iname{font-size:13px;font-weight:600;display:flex;align-items:center;flex-wrap:wrap;gap:4px}
+.imeta{font-size:11px;color:var(--text-muted);margin-top:3px}
+.consigne-tag{display:inline-block;background:var(--amber-light);color:var(--amber);font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;text-transform:uppercase}
+.old-tag{display:inline-block;background:#FCEBEB;color:var(--red);font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px}
+.inv-actions{display:flex;gap:6px;align-items:center;flex-shrink:0;flex-wrap:wrap}
+.btn-status{font-size:11px;padding:5px 10px;border-radius:5px;border:none;cursor:pointer;font-weight:500;white-space:nowrap}
+.st-dispo{background:var(--green-light);color:var(--green-dark)}
+.st-vendu{background:var(--red-light);color:var(--red)}
+.btn-edit{background:#EEF2FF;color:#4338CA;border:1px solid #C7D2FE;font-size:11px;padding:5px 10px;border-radius:5px;cursor:pointer;font-weight:500}
+.btn-del{background:none;border:none;color:#d1d5db;font-size:15px;cursor:pointer;padding:2px 5px}
+.btn-del:hover{color:#ef4444}
+.vente-section-title{font-size:14px;font-weight:700;padding:10px 14px;border-radius:8px;margin:16px 0 8px;display:flex;align-items:center;justify-content:space-between}
+.vente-section-title.mine{background:var(--green-light);color:var(--green-dark)}
+.vente-section-title.consigne{background:var(--amber-light);color:var(--amber)}
+.vente-item{background:var(--white);border:1px solid var(--border);border-radius:9px;padding:11px 14px;margin-bottom:7px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.vname{font-size:13px;font-weight:600}
+.vmeta{font-size:11px;color:var(--text-muted);margin-top:2px}
+.profit-badge{background:var(--green-light);color:var(--green-dark);font-size:12px;font-weight:700;padding:4px 10px;border-radius:6px;white-space:nowrap}
+.profit-neg{background:var(--red-light) !important;color:var(--red) !important}
+.rotation-badge{background:#EEF2FF;color:#4338CA;font-size:11px;font-weight:500;padding:2px 8px;border-radius:4px;margin-left:4px}
+.alert-box{background:#FCEBEB;border:1px solid #F09595;border-radius:10px;padding:14px 16px;margin-bottom:16px}
+.alert-title{font-size:13px;font-weight:600;color:var(--red);margin-bottom:8px}
+.alert-item{font-size:12px;color:var(--red);padding:3px 0;border-bottom:1px solid rgba(163,45,45,0.1)}
+.alert-item:last-child{border-bottom:none}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:100;align-items:center;justify-content:center;padding:16px}
+.modal-bg.open{display:flex}
+.modal{background:var(--white);border-radius:14px;padding:24px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto}
+.modal-title{font-size:16px;font-weight:600;margin-bottom:16px}
+.modal-actions{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+.wa-preview{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:16px;font-size:13px;color:var(--text);line-height:1.75;white-space:pre-wrap;word-break:break-word;margin-bottom:14px;font-family:'Courier New',monospace}
+.copy-btn{background:var(--green);color:#fff;border:none;padding:10px 20px;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer}
+.copy-btn:hover{background:var(--green-dark)}
+.info-box{background:var(--green-light);border:1px solid var(--green-mid);border-radius:10px;padding:12px 14px;margin-bottom:14px;font-size:12px;color:var(--green-dark);line-height:1.6}
+.settings-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:18px;margin-top:20px}
+.admin-banner{background:#1a1a1a;color:#fff;text-align:center;padding:8px;font-size:12px;font-weight:500;display:none;align-items:center;justify-content:center;gap:12px}
+.admin-banner.show{display:flex}
+.admin-banner button{background:rgba(255,255,255,0.15);border:none;color:#fff;padding:4px 12px;border-radius:4px;font-size:11px;cursor:pointer}
+.unlock-hint{position:fixed;bottom:16px;right:16px;background:rgba(0,0,0,0.07);border-radius:20px;padding:6px 12px;font-size:11px;color:var(--text-muted);pointer-events:none;opacity:0;transition:opacity 0.3s}
+.unlock-hint.show{opacity:1}
+.loading{text-align:center;padding:40px;color:var(--text-muted);font-size:14px}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(60px);background:#1a1a1a;color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;z-index:999;opacity:0;transition:all 0.3s;white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+.empty-state{text-align:center;padding:30px;color:var(--text-muted);font-size:13px}
+.month-row{background:var(--white);border:1px solid var(--border);border-radius:9px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+@media(max-width:520px){.grid{grid-template-columns:1fr}.row{grid-template-columns:1fr}.tab{padding:11px 8px;font-size:11px}}
+</style>
+</head>
+<body>
+
+<div class="admin-banner" id="admin-banner">
+  Mode admin activé
+  <button onclick="lockAdmin()">Verrouiller</button>
+</div>
+
+<div class="header">
+  <div class="brand" onclick="handleLogoTap()">
+    <div class="brand-dot"></div>
+    <div>
+      <div class="brand-name" id="hdr-name">Inventaire disponible</div>
+      <div class="brand-sub">Téléphones · Marketplace &amp; WhatsApp</div>
+    </div>
+  </div>
+  <div class="hbadge" id="hdr-count">Chargement...</div>
+</div>
+
+<div class="tabs" id="tabs">
+  <div class="tab active" id="tab-cat" onclick="go('cat')">Catalogue</div>
+  <div class="tab" id="tab-inv" onclick="go('inv')">Inventaire</div>
+  <div class="tab" id="tab-ventes" onclick="go('ventes')">Ventes</div>
+  <div class="tab" id="tab-justino" onclick="go('justino')" style="color:#185FA5">Justino</div>
+  <div class="tab" id="tab-shr" onclick="go('shr')">Partager</div>
+</div>
+
+<!-- CATALOGUE -->
+<div class="view active" id="view-cat">
+  <div class="filters">
+    <div class="search-wrap"><input type="text" id="search" placeholder="Rechercher..." oninput="renderCat()"></div>
+    <div class="filter-btns">
+      <button class="fbtn active" onclick="setFilter('all',this)">Tous</button>
+      <button class="fbtn" onclick="setFilter('apple',this)">Apple</button>
+      <button class="fbtn" onclick="setFilter('samsung',this)">Samsung</button>
+      <button class="fbtn" onclick="setFilter('u300',this)">- 300$</button>
+      <button class="fbtn" onclick="setFilter('300500',this)">300-500$</button>
+      <button class="fbtn" onclick="setFilter('o500',this)">500$+</button>
+    </div>
+  </div>
+  <div id="catalog"><div class="loading">Chargement...</div></div>
+</div>
+
+<!-- INVENTAIRE -->
+<div class="view" id="view-inv">
+  <div class="card-form">
+    <div class="section-label">Ajouter un téléphone</div>
+    <div class="row">
+      <div class="fg"><label>Marque</label>
+        <select id="f-brand" onchange="toggleBattery()"><option>Apple</option><option>Samsung</option><option>Google</option><option>OnePlus</option><option>Xiaomi</option><option>Motorola</option><option>Microsoft</option><option>Autre</option></select>
+      </div>
+      <div class="fg"><label>Modèle</label><input id="f-model" placeholder="ex: Galaxy S24"></div>
+      <div class="fg"><label>Stockage</label>
+        <select id="f-storage"><option>64 Go</option><option>128 Go</option><option>256 Go</option><option>512 Go</option><option>1 To</option><option>—</option></select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="fg"><label>Couleur</label><input id="f-color" placeholder="ex: Noir, Blanc..."></div>
+      <div class="fg" id="f-battery-wrap"><label>% Batterie (Apple)</label><input id="f-battery" type="number" placeholder="ex: 89" min="1" max="100"></div>
+      <div class="fg"><label>Prix d'achat ($)</label><input id="f-achat" type="number" placeholder="ex: 400"></div>
+      <div class="fg"><label>Prix annoncé ($)</label><input id="f-annonce" type="number" placeholder="ex: 475"></div>
+      <div class="fg consigne-field"><label>Consigne — nom proprio</label><input id="f-consigne" placeholder="ex: Justin, Sandaga..."></div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn-green" onclick="addPhone()">Ajouter</button>
+      <button class="btn-ghost" onclick="clearForm()">Effacer</button>
+    </div>
+  </div>
+  <!-- FILTRES ADMIN INVENTAIRE -->
+  <div style="background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:16px">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:12px">
+      <div class="fg"><label>Marque</label>
+        <select id="inv-f-brand" onchange="renderInv()">
+          <option value="">Toutes les marques</option>
+          <option>Apple</option><option>Samsung</option><option>Google</option><option>OnePlus</option><option>Xiaomi</option><option>Motorola</option><option>Microsoft</option><option>Autre</option>
+        </select>
+      </div>
+      <div class="fg"><label>Recherche modèle</label>
+        <input type="text" id="inv-f-model" placeholder="ex: S23 FE, iPhone 15..." oninput="renderInv()">
+      </div>
+      <div class="fg"><label>Statut</label>
+        <select id="inv-f-status" onchange="renderInv()">
+          <option value="">Tous</option>
+          <option value="dispo">En stock</option>
+          <option value="vendu">Vendus</option>
+        </select>
+      </div>
+      <div class="fg"><label>Consigne</label>
+        <select id="inv-f-consigne" onchange="renderInv()">
+          <option value="">Tous</option>
+          <option value="mine">Mes téléphones</option>
+        </select>
+      </div>
+    </div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+      <span style="font-size:11px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:0.5px">Âge:</span>
+      <button class="ifbtn active-green" id="age-all" onclick="setAgeFilter('all',this)">Tous</button>
+      <button class="ifbtn" id="age-old" onclick="setAgeFilter('old',this)">30+ jours</button>
+      <button class="btn-ghost" onclick="resetInvFilters()" style="padding:6px 12px;font-size:11px;margin-left:auto">Réinitialiser</button>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+    <div class="section-label" style="margin-bottom:0">Stock — <span id="inv-count">0</span> appareils</div>
+  </div>
+  <div id="alert-old"></div>
+  <div id="inv-list"><div class="loading">Chargement...</div></div>
+  <div class="settings-card">
+    <div class="section-label" style="margin-bottom:14px">Paramètres</div>
+    <div class="row">
+      <div class="fg"><label>Nom affiché</label><input id="s-name" placeholder="Inventaire disponible"></div>
+      <div class="fg"><label>Numéro WhatsApp</label><input id="s-wa" placeholder="15141234567" type="tel"></div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
+      <button class="btn-green" onclick="saveSettings()">Sauvegarder</button>
+      <button class="btn-red" onclick="lockAdmin()">Verrouiller l'admin</button>
+    </div>
+  </div>
+</div>
+
+<!-- VENTES -->
+<div class="view" id="view-ventes">
+  <!-- SÉLECTEUR DE PÉRIODE -->
+  <div style="background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:16px">
+    <div style="font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px">Période d'analyse</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">
+      <button class="ifbtn active-green" onclick="setPeriod('all',this)">Tout</button>
+      <button class="ifbtn" onclick="setPeriod('2w',this)">2 semaines</button>
+      <button class="ifbtn" onclick="setPeriod('month',this)">Ce mois</button>
+      <button class="ifbtn" onclick="setPeriod('3m',this)">3 mois</button>
+      <button class="ifbtn" onclick="setPeriod('custom',this)">Personnalisé</button>
+    </div>
+    <div id="custom-period" style="display:none;display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div class="fg"><label>Date début</label><input type="date" id="period-start" onchange="renderVentes()"></div>
+      <div class="fg"><label>Date fin</label><input type="date" id="period-end" onchange="renderVentes()"></div>
+    </div>
+  </div>
+
+  <!-- TABLEAU DE BORD -->
+  <div class="stats-grid" id="stats-ventes"></div>
+
+  <!-- STOCK ACTUEL -->
+  <div id="stock-summary"></div>
+
+  <div id="rapport-mensuel"></div>
+  <div id="ventes-mine-block"></div>
+  <div id="ventes-consigne-block"></div>
+</div>
+
+<!-- JUSTINO -->
+<div class="view" id="view-justino">
+  <div style="background:var(--blue-light);border:1px solid #B5D4F4;border-radius:12px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+    <div>
+      <div style="font-size:16px;font-weight:700;color:var(--blue)">Inventaire Justino</div>
+      <div style="font-size:12px;color:#378ADD;margin-top:2px">Téléphones en consigne</div>
+    </div>
+    <a href="justino.html" target="_blank" style="background:var(--blue);color:#fff;padding:7px 16px;border-radius:8px;font-size:12px;font-weight:600;text-decoration:none">Ouvrir la page Justino →</a>
+  </div>
+  <div class="stats-grid" id="justino-stats"></div>
+  <div class="section-label">Téléphones en stock</div>
+  <div id="justino-stock"></div>
+  <div class="section-label" style="margin-top:20px">Ventes</div>
+  <div id="justino-ventes"></div>
+</div>
+
+<!-- PARTAGER -->
+<div class="view" id="view-shr">
+  <div class="info-box">Ce message affiche seulement les téléphones disponibles. Aucun prix d'achat ni consigne n'est visible pour le client.</div>
+  <div class="section-label">Message WhatsApp prêt à envoyer</div>
+  <div class="wa-preview" id="wa-prev"></div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px">
+    <button class="copy-btn" onclick="copyMsg()">Copier</button>
+    <button class="btn-ghost" onclick="openWA()">Ouvrir WhatsApp</button>
+  </div>
+
+  <div class="card-form">
+    <div class="section-label" style="margin-bottom:6px">Sauvegarde des données</div>
+    <p style="font-size:12px;color:var(--text-muted);margin-bottom:16px;line-height:1.6">Une sauvegarde complète se télécharge automatiquement chaque fois que tu ouvres l'admin. Tu peux aussi en faire une manuelle ici, ou restaurer une ancienne sauvegarde.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn-green" onclick="exportBackup()">Télécharger une sauvegarde</button>
+      <button class="btn-ghost" onclick="document.getElementById('import-backup').click()">Restaurer une sauvegarde</button>
+      <input type="file" id="import-backup" accept=".json" style="display:none" onchange="importBackup(event)">
+    </div>
+  </div>
+</div>
+
+<!-- JUSTINO INVENTAIRE -->
+<!-- MODAL VENTE -->
+<div class="modal-bg" id="modal-vente">
+  <div class="modal">
+    <div class="modal-title">Enregistrer la vente</div>
+    <div id="modal-info" style="font-size:13px;color:var(--text-muted);margin-bottom:14px;padding:10px;background:var(--bg);border-radius:8px"></div>
+    <div class="row" style="grid-template-columns:1fr 1fr">
+      <div class="fg"><label>Prix de vente réel ($)</label><input id="m-reel" type="number"></div>
+      <div class="fg"><label>Prix annoncé ($)</label><input id="m-annonce" type="number" readonly style="background:#f0f0f0;color:var(--text-muted)"></div>
+    </div>
+    <div class="row" style="grid-template-columns:1fr 1fr">
+      <div class="fg"><label>IMEI</label><input id="m-imei" type="text" placeholder="ex: 352844012345678"></div>
+      <div class="fg"><label>Garantie</label>
+        <select id="m-garantie">
+          <option value="Aucune">Aucune</option>
+          <option value="7 jours">7 jours</option>
+          <option value="14 jours">14 jours</option>
+          <option value="30 jours" selected>30 jours</option>
+          <option value="60 jours">60 jours</option>
+          <option value="90 jours">90 jours</option>
+        </select>
+      </div>
+    </div>
+    <div id="profit-preview" style="font-size:14px;font-weight:600;margin:8px 0 4px"></div>
+    <div class="modal-actions">
+      <button class="btn-green" onclick="confirmVente()">Confirmer la vente</button>
+      <button class="btn-ghost" onclick="closeModal('modal-vente')">Annuler</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL EDIT -->
+<div class="modal-bg" id="modal-edit">
+  <div class="modal">
+    <div class="modal-title">Modifier le téléphone</div>
+    <div class="row">
+      <div class="fg"><label>Marque</label>
+        <select id="e-brand" onchange="toggleEditBattery()"><option>Apple</option><option>Samsung</option><option>Google</option><option>OnePlus</option><option>Xiaomi</option><option>Motorola</option><option>Microsoft</option><option>Autre</option></select>
+      </div>
+      <div class="fg"><label>Modèle</label><input id="e-model"></div>
+      <div class="fg"><label>Stockage</label>
+        <select id="e-storage"><option>64 Go</option><option>128 Go</option><option>256 Go</option><option>512 Go</option><option>1 To</option><option>—</option></select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="fg"><label>Couleur</label><input id="e-color"></div>
+      <div class="fg" id="e-battery-wrap"><label>% Batterie (Apple)</label><input id="e-battery" type="number" min="1" max="100" placeholder="ex: 89"></div>
+      <div class="fg"><label>Prix d'achat ($)</label><input id="e-achat" type="number"></div>
+      <div class="fg"><label>Prix annoncé ($)</label><input id="e-annonce" type="number"></div>
+    </div>
+    <div class="row">
+      <div class="fg"><label>Statut</label>
+        <select id="e-status"><option value="dispo">Disponible</option><option value="vendu">Vendu</option></select>
+      </div>
+      <div class="fg consigne-field"><label>Consigne — nom proprio</label><input id="e-consigne"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-green" onclick="saveEdit()">Sauvegarder</button>
+      <button class="btn-ghost" onclick="closeModal('modal-edit')">Annuler</button>
+    </div>
+  </div>
+</div>
+
+<div class="unlock-hint" id="unlock-hint"></div>
+<div class="toast" id="toast"></div>
+
+<!-- FIREBASE -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, doc, addDoc, updateDoc, deleteDoc, onSnapshot, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDEuNfVvNRUR8F7Xrz6qDom58-k6DSTPl0",
+  authDomain: "in-stock-9dd3f.firebaseapp.com",
+  projectId: "in-stock-9dd3f",
+  storageBucket: "in-stock-9dd3f.firebasestorage.app",
+  messagingSenderId: "76529951617",
+  appId: "1:76529951617:web:e72839b128d5401700fe80"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const TODAY = new Date().toISOString().split('T')[0];
+let phones = [];
+let ventes = [];
+let cfg = {name:"Inventaire disponible", wa:"15141234567"};
+let pendingId = null;
+let editingId = null;
+let isAdmin = false;
+let tapCount = 0;
+let tapTimer = null;
+let activeFilter = 'all';
+let invFilter = 'all';
+
+const colorMap = {'noir':'#1a1a1a','black':'#1a1a1a','blanc':'#f5f5f5','white':'#f5f5f5','bleu':'#3B82F6','blue':'#3B82F6','rouge':'#EF4444','vert':'#22C55E','or':'#F59E0B','rose':'#EC4899','violet':'#8B5CF6','gris':'#9CA3AF','grey':'#9CA3AF','gray':'#9CA3AF','argent':'#C0C0C0','silver':'#C0C0C0','crème':'#FEF3C7','creme':'#FEF3C7','charbon':'#374151','titane':'#8D8D8D','minuit':'#1e293b','lumière':'#F8FAFC'};
+function getColorHex(c){if(!c)return null;const k=c.toLowerCase().trim();for(const[key,val]of Object.entries(colorMap)){if(k.includes(key))return val;}return null;}
+function daysSince(d){if(!d)return 0;return Math.floor((new Date()-new Date(d))/(1000*60*60*24));}
+
+// Load config
+async function loadCfg(){
+  const snap = await getDoc(doc(db,'config','main'));
+  if(snap.exists()) cfg = snap.data();
+  document.getElementById('hdr-name').textContent = cfg.name;
+}
+
+// Real-time listeners
+onSnapshot(collection(db,'phones'), snap => {
+  phones = snap.docs.map(d => ({...d.data(), _id: d.id}));
+  renderCat();
+  if(isAdmin){renderInvFilters();renderInv();}
+});
+
+onSnapshot(collection(db,'ventes'), snap => {
+  ventes = snap.docs.map(d => ({...d.data(), _id: d.id}));
+  if(isAdmin) renderVentes();
+});
+
+window.handleLogoTap = function(){
+  if(isAdmin)return;
+  tapCount++;clearTimeout(tapTimer);
+  const hint=document.getElementById('unlock-hint');
+  const rem=5-tapCount;
+  if(rem>0){hint.textContent=`${rem} clic${rem>1?'s':''} pour accéder à l'admin`;hint.classList.add('show');tapTimer=setTimeout(()=>{tapCount=0;hint.classList.remove('show');},2000);}
+  if(tapCount>=5){tapCount=0;hint.classList.remove('show');unlockAdmin();}
+}
+function unlockAdmin(){
+  isAdmin=true;
+  document.getElementById('tabs').classList.add('show');
+  document.getElementById('admin-banner').classList.add('show');
+  renderInvFilters();renderInv();renderVentes();
+  toast('Admin déverrouillé! Sauvegarde en cours...');
+  setTimeout(autoBackup, 2000);
+}
+
+async function autoBackup(){
+  try{
+    const date=new Date().toISOString().split('T')[0];
+    const data={exportDate:new Date().toLocaleString('fr-CA'),phones,ventes,cfg};
+    const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;a.download='instock-backup-'+date+'.json';
+    document.body.appendChild(a);a.click();
+    document.body.removeChild(a);URL.revokeObjectURL(url);
+    toast('Sauvegarde téléchargée!');
+  }catch(e){console.error('Backup error',e);}
+}
+
+window.exportBackup=async function(){await autoBackup();}
+
+window.importBackup=async function(event){
+  const file=event.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=async e=>{
+    try{
+      const data=JSON.parse(e.target.result);
+      if(!confirm('Restaurer '+( data.phones?.length||0)+' téléphones et '+(data.ventes?.length||0)+' ventes? Les données actuelles seront remplacées.'))return;
+      const allPhones=await getDocs(collection(db,'phones'));
+      const allVentes=await getDocs(collection(db,'ventes'));
+      for(const d of allPhones.docs)await deleteDoc(doc(db,'phones',d.id));
+      for(const d of allVentes.docs)await deleteDoc(doc(db,'ventes',d.id));
+      for(const p of (data.phones||[])){const {_id,...clean}=p;await addDoc(collection(db,'phones'),clean);}
+      for(const v of (data.ventes||[])){const {_id,...clean}=v;await addDoc(collection(db,'ventes'),clean);}
+      if(data.cfg)await setDoc(doc(db,'config','main'),data.cfg);
+      toast('Restauration réussie! '+(data.phones?.length||0)+' téléphones importés.');
+    }catch(err){console.error(err);toast('Erreur lors de la restauration');}
+  };
+  reader.readAsText(file);event.target.value='';
+}
+window.lockAdmin = function(){
+  isAdmin=false;
+  document.getElementById('tabs').classList.remove('show');
+  document.getElementById('admin-banner').classList.remove('show');
+  go('cat');toast('Admin verrouillé');
+}
+
+window.go = function(tab){
+  ['cat','inv','ventes','justino','shr'].forEach(t=>{
+    const tabEl=document.getElementById('tab-'+t);
+    if(tabEl) tabEl.classList.toggle('active',t===tab);
+    const viewEl=document.getElementById('view-'+t);
+    if(viewEl) viewEl.classList.toggle('active',t===tab);
+  });
+  if(tab==='cat')renderCat();
+  if(tab==='inv'){renderInvFilters();renderInv();loadCfgForm();}
+  if(tab==='ventes')renderVentes();
+  if(tab==='justino')renderJustino();
+  if(tab==='shr')renderShare();
+}
+
+window.setFilter = function(f,btn){activeFilter=f;document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderCat();}
+
+function applyClientFilter(list){
+  const q=(document.getElementById('search').value||'').toLowerCase();
+  return list.filter(p=>{
+    const txt=(p.brand+' '+p.model+' '+p.storage+' '+(p.color||'')).toLowerCase();
+    if(q&&!txt.includes(q))return false;
+    if(activeFilter==='apple')return p.brand==='Apple';
+    if(activeFilter==='samsung')return p.brand==='Samsung';
+    if(activeFilter==='u300')return p.annonce<300;
+    if(activeFilter==='300500')return p.annonce>=300&&p.annonce<=500;
+    if(activeFilter==='o500')return p.annonce>500;
+    return true;
+  });
+}
+
+function renderCat(){
+  const dispo=phones.filter(p=>p.status==='dispo'&&(!p.consigne||p.consigne.trim()===''));
+  document.getElementById('hdr-name').textContent=cfg.name;
+  document.getElementById('hdr-count').textContent=dispo.length+' disponible'+(dispo.length!==1?'s':'');
+  const filtered=applyClientFilter(dispo);
+  const catalog=document.getElementById('catalog');
+  if(!filtered.length){catalog.innerHTML='<div class="empty-state">Aucun téléphone trouvé.</div>';return;}
+  const brands=[...new Set(filtered.map(p=>p.brand))].sort((a,b)=>{if(a==='Apple')return -1;if(b==='Apple')return 1;if(a==='Samsung')return -1;if(b==='Samsung')return 1;return a.localeCompare(b);});
+  catalog.innerHTML=brands.map(brand=>{
+    const bPhones=filtered.filter(p=>p.brand===brand).sort((a,b)=>a.annonce-b.annonce);
+    const cards=bPhones.map(p=>{
+      const hex=getColorHex(p.color);
+      const colorSpec=p.color?`<span class="spec">${hex?`<span class="color-dot" style="background:${hex}"></span>`:''} ${p.color}</span>`:'';
+      return`<div class="card"><div class="card-top"><div class="card-brand-lbl">${p.brand}</div><span class="badge">Disponible</span></div><div class="card-name">${p.model}</div><div class="card-specs"><span class="spec">${p.storage}</span>${colorSpec}</div><div class="card-footer"><div class="price">${p.annonce}$<small> CAD</small></div><button class="wa-btn" onclick="askWA('${p._id}')">Info</button></div></div>`;
+    }).join('');
+    return`<div class="brand-section"><div class="brand-header"><div class="brand-title">${brand}<span class="brand-count">${bPhones.length}</span></div><button class="see-all" onclick="filterBrand('${brand.toLowerCase()}')">Voir tout</button></div><div class="grid">${cards}</div></div>`;
+  }).join('');
+}
+
+window.filterBrand = function(b){
+  activeFilter=b==='apple'?'apple':b==='samsung'?'samsung':'all';
+  document.querySelectorAll('.fbtn').forEach(btn=>{const t=btn.textContent.toLowerCase();btn.classList.toggle('active',t===b||(b==='all'&&t==='tous'));});
+  renderCat();window.scrollTo({top:0,behavior:'smooth'});
+}
+
+window.askWA = function(id){
+  const p=phones.find(x=>x._id===id);if(!p)return;
+  const msg=encodeURIComponent(`Bonjour! Je suis intéressé(e) par le ${p.brand} ${p.model} ${p.storage}${p.color?' '+p.color:''} à ${p.annonce}$. Est-il encore disponible?`);
+  window.open(`https://wa.me/${cfg.wa}?text=${msg}`,'_blank');
+}
+window.openWA = function(){window.open(`https://wa.me/${cfg.wa}`,'_blank');}
+
+let ageFilter='all';
+
+function renderInvFilters(){
+  // Populate consigne dropdown dynamically
+  const consignes=[...new Set(phones.map(p=>p.consigne).filter(c=>c&&c.trim()!==''))].sort();
+  const sel=document.getElementById('inv-f-consigne');
+  if(sel){
+    const current=sel.value;
+    sel.innerHTML='<option value="">Tous</option><option value="mine">Mes téléphones</option>'+consignes.map(c=>`<option value="${c}">${c}</option>`).join('');
+    sel.value=current;
+  }
+}
+
+window.setAgeFilter=function(f,btn){
+  ageFilter=f;
+  document.querySelectorAll('#age-all,#age-old').forEach(b=>b.classList.remove('active','active-green'));
+  if(f==='all')btn.classList.add('active-green'); else btn.classList.add('active');
+  renderInv();
+}
+
+window.resetInvFilters=function(){
+  document.getElementById('inv-f-brand').value='';
+  document.getElementById('inv-f-model').value='';
+  document.getElementById('inv-f-status').value='';
+  document.getElementById('inv-f-consigne').value='';
+  ageFilter='all';
+  document.getElementById('age-all').classList.add('active-green');
+  document.getElementById('age-old').classList.remove('active');
+  renderInv();
+}
+
+function applyInvFilter(list){
+  const brand=document.getElementById('inv-f-brand')?.value||'';
+  const model=(document.getElementById('inv-f-model')?.value||'').toLowerCase();
+  const status=document.getElementById('inv-f-status')?.value||'';
+  const consigne=document.getElementById('inv-f-consigne')?.value||'';
+  return list.filter(p=>{
+    if(brand&&p.brand!==brand)return false;
+    if(model&&!(p.brand+' '+p.model+' '+p.storage).toLowerCase().includes(model))return false;
+    if(status&&p.status!==status)return false;
+    // Filtre consigne : "mine" = seulement mes téléphones (sans consigne), sinon filtre par nom
+    if(consigne==='mine'){
+      if(p.consigne&&p.consigne.trim()!=='')return false;
+    } else if(consigne!==''){
+      if(p.consigne!==consigne)return false;
+    }
+    if(ageFilter==='old'&&!(p.status==='dispo'&&daysSince(p.dateEntree)>30))return false;
+    return true;
+  });
+}
+
+function renderInv(){
+  renderInvFilters();
+  const filtered=applyInvFilter(phones);
+  // Sort: dispo first then vendu, then by price
+  filtered.sort((a,b)=>{
+    if(a.status==='dispo'&&b.status!=='dispo')return -1;
+    if(a.status!=='dispo'&&b.status==='dispo')return 1;
+    return (a.brand+a.model).localeCompare(b.brand+b.model);
+  });
+  document.getElementById('inv-count').textContent=filtered.length;
+  const old=phones.filter(p=>p.status==='dispo'&&daysSince(p.dateEntree)>30&&(!p.consigne||p.consigne.trim()===''));
+  const alertEl=document.getElementById('alert-old');
+  if(old.length&&ageFilter!=='old'){alertEl.innerHTML=`<div class="alert-box"><div class="alert-title">${old.length} téléphone${old.length>1?'s':''} en stock depuis plus de 30 jours</div>${old.map(p=>`<div class="alert-item">${p.brand} ${p.model} · ${daysSince(p.dateEntree)} jours</div>`).join('')}</div>`;}
+  else{alertEl.innerHTML='';}
+  const el=document.getElementById('inv-list');
+  if(!filtered.length){el.innerHTML='<div class="empty-state">Aucun appareil correspondant aux filtres.</div>';return;}
+  el.innerHTML=filtered.map(p=>{
+    const isC=p.consigne&&p.consigne.trim()!=='';
+    const days=daysSince(p.dateEntree);
+    const isOld=p.status==='dispo'&&days>30;
+    return`<div class="inv-item${isC?' is-consigne':''}${isOld?' is-old':''}">
+      <div style="flex:1;min-width:0">
+        <div class="iname">${p.brand} ${p.model} · ${p.storage}${p.color?' · '+p.color:''}${p.battery&&p.brand==='Apple'?` · 🔋${p.battery}%`:''}${isC?`<span class="consigne-tag">${p.consigne}</span>`:''}${isOld?`<span class="old-tag">${days}j</span>`:''}</div>
+        <div class="imeta">Achat: <strong>${p.achat}$</strong> · Annoncé: <strong>${p.annonce}$</strong> · Marge: <strong style="color:var(--green)">${(p.annonce-p.achat).toFixed(0)}$</strong>${p.dateEntree?' · Entrée: '+p.dateEntree:''}</div>
+      </div>
+      <div class="inv-actions">
+        ${p.status==='dispo'?`<button class="btn-status st-dispo" onclick="openVenteModal('${p._id}')">Vendre</button>`:`<button class="btn-status st-vendu" onclick="remettreDispo('${p._id}')">Remettre</button>`}
+        <button class="btn-edit" onclick="openEditModal('${p._id}')">Modifier</button>
+        <button class="btn-del" onclick="delPhone('${p._id}')">✕</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+window.openVenteModal = function(id){
+  const p=phones.find(x=>x._id===id);if(!p)return;
+  pendingId=id;
+  document.getElementById('modal-info').textContent=`${p.brand} ${p.model} ${p.storage} — Prix annoncé: ${p.annonce}$`;
+  document.getElementById('m-reel').value=p.annonce;
+  document.getElementById('m-annonce').value=p.annonce;
+  updateProfit();
+  document.getElementById('modal-vente').classList.add('open');
+}
+
+window.updateProfit = function(){
+  const p=phones.find(x=>x._id===pendingId);if(!p)return;
+  const reel=parseFloat(document.getElementById('m-reel').value)||0;
+  const profit=reel-p.achat;
+  const el=document.getElementById('profit-preview');
+  el.textContent=`Profit: ${profit>=0?'+':''}${profit.toFixed(2)}$`;
+  el.style.color=profit>=0?'var(--green)':'var(--red)';
+}
+document.getElementById('m-reel').addEventListener('input',updateProfit);
+
+window.confirmVente = async function(){
+  const p=phones.find(x=>x._id===pendingId);if(!p)return;
+  const reel=parseFloat(document.getElementById('m-reel').value)||p.annonce;
+  const imei=document.getElementById('m-imei').value.trim();
+  const garantie=document.getElementById('m-garantie').value;
+  const dateVente=new Date().toLocaleDateString('fr-CA');
+  const joursStock=daysSince(p.dateEntree);
+  await addDoc(collection(db,'ventes'),{
+    brand:p.brand,model:p.model,storage:p.storage,color:p.color||'',
+    achat:p.achat,annonce:p.annonce,reel,profit:reel-p.achat,
+    consigne:p.consigne||'',dateEntree:p.dateEntree||'',dateVente,joursStock,
+    imei:imei||'',garantie:garantie||'30 jours'
+  });
+  await updateDoc(doc(db,'phones',pendingId),{status:'vendu'});
+  document.getElementById('m-imei').value='';
+  document.getElementById('m-garantie').value='30 jours';
+  closeModal('modal-vente');
+  toast(`Vendu! Profit: ${(reel-p.achat).toFixed(2)}$`);
+}
+
+window.remettreDispo = async function(id){
+  await updateDoc(doc(db,'phones',id),{status:'dispo'});
+  toast('Remis en stock');
+}
+
+window.openEditModal = function(id){
+  const p=phones.find(x=>x._id===id);if(!p)return;
+  editingId=id;
+  document.getElementById('e-brand').value=p.brand;
+  document.getElementById('e-model').value=p.model;
+  document.getElementById('e-storage').value=p.storage;
+  document.getElementById('e-color').value=p.color||'';
+  document.getElementById('e-battery').value=p.battery||'';
+  document.getElementById('e-battery-wrap').style.opacity=p.brand==='Apple'?'1':'0.3';
+  document.getElementById('e-achat').value=p.achat;
+  document.getElementById('e-annonce').value=p.annonce;
+  document.getElementById('e-status').value=p.status;
+  document.getElementById('e-consigne').value=p.consigne||'';
+  document.getElementById('modal-edit').classList.add('open');
+}
+
+window.saveEdit = async function(){
+  if(!editingId)return;
+  const eBrand=document.getElementById('e-brand').value;
+  const eBattery=document.getElementById('e-battery').value;
+  await updateDoc(doc(db,'phones',editingId),{
+    brand:eBrand,
+    model:document.getElementById('e-model').value,
+    storage:document.getElementById('e-storage').value,
+    color:document.getElementById('e-color').value.trim(),
+    battery:eBattery?parseInt(eBattery):'',
+    achat:parseFloat(document.getElementById('e-achat').value)||0,
+    annonce:parseFloat(document.getElementById('e-annonce').value)||0,
+    status:document.getElementById('e-status').value,
+    consigne:document.getElementById('e-consigne').value.trim()
+  });
+  closeModal('modal-edit');toast('Modifié!');
+}
+
+window.closeModal = function(id){document.getElementById(id).classList.remove('open');pendingId=null;editingId=null;}
+
+window.delPhone = async function(id){
+  if(!confirm('Supprimer?'))return;
+  await deleteDoc(doc(db,'phones',id));
+  toast('Supprimé');
+}
+
+window.addPhone = async function(){
+  const model=document.getElementById('f-model').value.trim();
+  const annonce=parseFloat(document.getElementById('f-annonce').value);
+  if(!model||!annonce){toast('Modèle et prix annoncé requis');return;}
+  const fBrand=document.getElementById('f-brand').value;
+  const fBattery=document.getElementById('f-battery').value;
+  await addDoc(collection(db,'phones'),{
+    brand:fBrand,model,
+    storage:document.getElementById('f-storage').value,
+    color:document.getElementById('f-color').value.trim(),
+    battery:fBattery?parseInt(fBattery):'',
+    achat:parseFloat(document.getElementById('f-achat').value)||0,
+    annonce,status:'dispo',
+    consigne:document.getElementById('f-consigne').value.trim(),
+    dateEntree:TODAY
+  });
+  clearForm();toast('Ajouté!');
+}
+
+window.clearForm = function(){['f-model','f-color','f-battery','f-achat','f-annonce','f-consigne'].forEach(id=>document.getElementById(id).value='');}
+window.toggleBattery = function(){
+  const isApple=document.getElementById('f-brand').value==='Apple';
+  document.getElementById('f-battery-wrap').style.opacity=isApple?'1':'0.3';
+  if(!isApple)document.getElementById('f-battery').value='';
+}
+window.toggleEditBattery = function(){
+  const isApple=document.getElementById('e-brand').value==='Apple';
+  document.getElementById('e-battery-wrap').style.opacity=isApple?'1':'0.3';
+}
+
+function loadCfgForm(){document.getElementById('s-name').value=cfg.name;document.getElementById('s-wa').value=cfg.wa;}
+
+window.saveSettings = async function(){
+  cfg.name=document.getElementById('s-name').value||cfg.name;
+  cfg.wa=document.getElementById('s-wa').value||cfg.wa;
+  await setDoc(doc(db,'config','main'),cfg);
+  document.getElementById('hdr-name').textContent=cfg.name;
+  toast('Sauvegardé!');
+}
+
+let currentPeriod='all';
+
+window.setPeriod=function(p,btn){
+  currentPeriod=p;
+  document.querySelectorAll('#view-ventes .ifbtn').forEach(b=>b.classList.remove('active','active-green'));
+  btn.classList.add('active-green');
+  const cp=document.getElementById('custom-period');
+  if(cp) cp.style.display=p==='custom'?'grid':'none';
+  renderVentes();
+}
+
+function getVentesPeriod(){
+  const now=new Date();
+  if(currentPeriod==='all')return ventes;
+  if(currentPeriod==='2w'){
+    const cutoff=new Date(now-14*24*60*60*1000);
+    return ventes.filter(v=>v.dateVente&&new Date(v.dateVente)>=cutoff);
+  }
+  if(currentPeriod==='month'){
+    const m=now.toISOString().substring(0,7);
+    return ventes.filter(v=>v.dateVente&&v.dateVente.substring(0,7)===m);
+  }
+  if(currentPeriod==='3m'){
+    const cutoff=new Date(now-90*24*60*60*1000);
+    return ventes.filter(v=>v.dateVente&&new Date(v.dateVente)>=cutoff);
+  }
+  if(currentPeriod==='custom'){
+    const s=document.getElementById('period-start')?.value;
+    const e=document.getElementById('period-end')?.value;
+    return ventes.filter(v=>{
+      if(!v.dateVente)return false;
+      if(s&&v.dateVente<s)return false;
+      if(e&&v.dateVente>e)return false;
+      return true;
+    });
+  }
+  return ventes;
+}
+
+function renderVentes(){
+  const filtered=getVentesPeriod();
+  const mine=filtered.filter(v=>!v.consigne||v.consigne.trim()==='');
+  const consignes=filtered.filter(v=>v.consigne&&v.consigne.trim()!=='');
+  const totalProfitMine=mine.reduce((s,v)=>s+v.profit,0);
+  const totalProfitCon=consignes.reduce((s,v)=>s+v.profit,0);
+  const totalVentes=mine.length+consignes.length;
+  const avgJours=filtered.length?Math.round(filtered.reduce((s,v)=>s+(v.joursStock||0),0)/filtered.length):0;
+
+  // Stock actuel valeur d'achat
+  const stockDispo=phones.filter(p=>p.status==='dispo'&&(!p.consigne||p.consigne.trim()===''));
+  const valStockAchat=stockDispo.reduce((s,p)=>s+p.achat,0);
+  const valStockAnnonce=stockDispo.reduce((s,p)=>s+p.annonce,0);
+
+  document.getElementById('stats-ventes').innerHTML=`
+    <div class="stat"><div class="stat-num" style="color:var(--green)">${totalVentes}</div><div class="stat-lbl">Téléphones vendus</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--green)">${totalProfitMine.toFixed(0)}$</div><div class="stat-lbl">Profit net (moi)</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--amber)">${totalProfitCon.toFixed(0)}$</div><div class="stat-lbl">Profit consignes</div></div>
+    <div class="stat"><div class="stat-num" style="color:#4338CA">${(totalProfitMine+totalProfitCon).toFixed(0)}$</div><div class="stat-lbl">Profit total période</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--blue)">${avgJours}j</div><div class="stat-lbl">Rotation moy.</div></div>
+  `;
+
+  // Stock summary
+  document.getElementById('stock-summary').innerHTML=`
+    <div style="background:var(--blue-light);border:1px solid #B5D4F4;border-radius:10px;padding:14px 16px;margin-bottom:16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px">
+      <div><div style="font-size:10px;color:#185FA5;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px">Stock actuel (mes cells)</div><div style="font-size:22px;font-weight:700;color:#185FA5">${stockDispo.length} unités</div></div>
+      <div><div style="font-size:10px;color:#185FA5;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px">Valeur coût (achat)</div><div style="font-size:22px;font-weight:700;color:#185FA5">${valStockAchat.toFixed(0)}$</div></div>
+      <div><div style="font-size:10px;color:#185FA5;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px">Valeur annoncée</div><div style="font-size:22px;font-weight:700;color:#185FA5">${valStockAnnonce.toFixed(0)}$</div></div>
+      <div><div style="font-size:10px;color:#185FA5;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px">Marge potentielle</div><div style="font-size:22px;font-weight:700;color:var(--green)">${(valStockAnnonce-valStockAchat).toFixed(0)}$</div></div>
+    </div>`;
+
+  const byMonth={};
+  filtered.forEach(v=>{const m=v.dateVente?v.dateVente.substring(0,7):'Sans date';if(!byMonth[m])byMonth[m]={count:0,profit:0,revenus:0,consigneProfit:0};if(!v.consigne||v.consigne.trim()===''){byMonth[m].profit+=v.profit;byMonth[m].revenus+=v.reel;}else{byMonth[m].consigneProfit+=v.profit;}byMonth[m].count++;});
+  const months=Object.keys(byMonth).sort().reverse();
+  document.getElementById('rapport-mensuel').innerHTML=months.length?`<div class="section-label">Rapport par période</div>`+months.map(m=>`<div class="month-row"><div><div style="font-size:14px;font-weight:600">${m}</div><div style="font-size:12px;color:var(--text-muted);margin-top:2px">${byMonth[m].count} vente${byMonth[m].count>1?'s':''} · Revenus: ${byMonth[m].revenus.toFixed(0)}$</div></div><div style="display:flex;gap:6px;flex-wrap:wrap"><span class="profit-badge">Moi: +${byMonth[m].profit.toFixed(0)}$</span>${byMonth[m].consigneProfit>0?`<span class="profit-badge" style="background:var(--amber-light);color:var(--amber)">Consignes: +${byMonth[m].consigneProfit.toFixed(0)}$</span>`:''}</div></div>`).join(''):'';
+  document.getElementById('ventes-mine-block').innerHTML=`<div class="vente-section-title mine">Mes ventes (${mine.length})</div>`+(mine.length?[...mine].reverse().map(v=>`<div class="vente-item"><div><div class="vname">${v.brand} ${v.model} · ${v.storage}${v.color?' · '+v.color:''}</div><div class="vmeta">Achat: ${v.achat}$ · Annoncé: ${v.annonce}$ · <strong>Vendu: ${v.reel}$</strong>${v.dateVente?' · '+v.dateVente:''}${v.joursStock!=null?` · <span class="rotation-badge">${v.joursStock}j</span>`:''}${v.garantie?` · Garantie: <strong>${v.garantie}</strong>`:''}${v.imei?` · IMEI: ${v.imei}`:''}</div></div><div class="profit-badge ${v.profit<0?'profit-neg':''}">${v.profit>=0?'+':''}${v.profit.toFixed(2)}$</div></div>`).join(''):'<div class="empty-state">Aucune vente personnelle dans cette période.</div>');
+  document.getElementById('ventes-consigne-block').innerHTML=`<div class="vente-section-title consigne" style="margin-top:8px">Ventes en consigne (${consignes.length})</div>`+(consignes.length?[...consignes].reverse().map(v=>`<div class="vente-item"><div><div class="vname">${v.brand} ${v.model} · ${v.storage}${v.color?' · '+v.color:''} <span class="consigne-tag">${v.consigne}</span></div><div class="vmeta">Achat: ${v.achat}$ · Annoncé: ${v.annonce}$ · <strong>Vendu: ${v.reel}$</strong>${v.dateVente?' · '+v.dateVente:''}${v.joursStock!=null?` · <span class="rotation-badge">${v.joursStock}j</span>`:''}${v.garantie?` · Garantie: <strong>${v.garantie}</strong>`:''}${v.imei?` · IMEI: ${v.imei}`:''}</div></div><div class="profit-badge ${v.profit<0?'profit-neg':''}">${v.profit>=0?'+':''}${v.profit.toFixed(2)}$</div></div>`).join(''):'<div class="empty-state">Aucune vente en consigne dans cette période.</div>');
+}
+
+function renderJustino(){
+  const justinoPhones=phones.filter(p=>p.consigne==='Justino'||p.consigne==='Justino-propre');
+  const justinoVentes=ventes.filter(v=>v.consigne==='Justino'||v.consigne==='Justino-propre');
+  const enStock=justinoPhones.filter(p=>p.status==='dispo');
+  const valAchat=enStock.reduce((s,p)=>s+p.achat,0);
+  const valAnnonce=enStock.reduce((s,p)=>s+p.annonce,0);
+  const profitTotal=justinoVentes.reduce((s,v)=>s+v.profit,0);
+
+  document.getElementById('justino-stats').innerHTML=`
+    <div class="stat"><div class="stat-num" style="color:var(--blue)">${enStock.length}</div><div class="stat-lbl">En stock</div></div>
+    <div class="stat"><div class="stat-num">${valAchat.toFixed(0)}$</div><div class="stat-lbl">Coût total</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--blue)">${valAnnonce.toFixed(0)}$</div><div class="stat-lbl">Valeur annoncée</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--green)">${profitTotal.toFixed(0)}$</div><div class="stat-lbl">Profit vendu</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--green)">${(valAnnonce-valAchat).toFixed(0)}$</div><div class="stat-lbl">Marge potentielle</div></div>
+  `;
+
+  const stockEl=document.getElementById('justino-stock');
+  if(!enStock.length){stockEl.innerHTML='<div class="empty-state">Aucun téléphone en stock.</div>';}
+  else{
+    stockEl.innerHTML=enStock.sort((a,b)=>a.annonce-b.annonce).map(p=>`
+      <div class="inv-item">
+        <div style="flex:1;min-width:0">
+          <div class="iname">${p.brand} ${p.model} · ${p.storage}${p.color?' · '+p.color:''}${p.battery?' · Batterie: '+p.battery+'%':''}</div>
+          <div class="imeta">Achat: <strong>${p.achat}$</strong> · Annoncé: <strong>${p.annonce}$</strong> · Marge: <strong style="color:var(--green)">${(p.annonce-p.achat).toFixed(0)}$</strong>${p.dateEntree?' · Entrée: '+p.dateEntree:''}</div>
+        </div>
+        <div class="inv-actions">
+          <button class="btn-edit" onclick="openEditModal('${p._id}')">Modifier</button>
+          <button class="btn-del" onclick="delPhone('${p._id}')">✕</button>
+        </div>
+      </div>`).join('');
+  }
+
+  const ventesEl=document.getElementById('justino-ventes');
+  if(!justinoVentes.length){ventesEl.innerHTML='<div class="empty-state">Aucune vente enregistrée.</div>';}
+  else{
+    ventesEl.innerHTML=[...justinoVentes].reverse().map(v=>`
+      <div class="vente-item">
+        <div>
+          <div class="vname">${v.brand} ${v.model} · ${v.storage}${v.color?' · '+v.color:''}</div>
+          <div class="vmeta">Achat: ${v.achat}$ · Annoncé: ${v.annonce}$ · <strong>Vendu: ${v.reel}$</strong>${v.dateVente?' · '+v.dateVente:''}${v.garantie?' · Garantie: '+v.garantie:''}${v.imei?' · IMEI: '+v.imei:''}</div>
+        </div>
+        <div class="profit-badge ${v.profit<0?'profit-neg':''}">${v.profit>=0?'+':''}${v.profit.toFixed(2)}$</div>
+      </div>`).join('');
+  }
+}
+
+function renderShare(){
+  const dispo=phones.filter(p=>p.status==='dispo'&&(!p.consigne||p.consigne.trim()==='')).sort((a,b)=>a.annonce-b.annonce);
+  let m=`Inventaire disponible\n━━━━━━━━━━━━━━━\n\n`;
+  if(!dispo.length){m+='Aucun téléphone disponible en ce moment.\n';}
+  else{const brands=[...new Set(dispo.map(p=>p.brand))].sort((a,b)=>{if(a==='Apple')return -1;if(b==='Apple')return 1;return a.localeCompare(b);});brands.forEach(b=>{m+=`*${b.toUpperCase()}*\n`;dispo.filter(p=>p.brand===b).forEach(p=>{m+=`  ${p.model} ${p.storage}${p.color?' · '+p.color:''} — *${p.annonce}$*\n`;});m+='\n';});}
+  m+=`━━━━━━━━━━━━━━━\nEcrivez-moi pour réserver!\nwa.me/${cfg.wa}`;
+  document.getElementById('wa-prev').textContent=m;
+}
+
+window.copyMsg = function(){const t=document.getElementById('wa-prev').textContent;if(navigator.clipboard){navigator.clipboard.writeText(t).then(()=>toast('Copié!'));}else{const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);toast('Copié!');}}
+
+function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2800);}
+
+loadCfg();
+</script>
+</body>
+</html>
