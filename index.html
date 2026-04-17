@@ -84,6 +84,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .imeta{font-size:11px;color:var(--text-muted);margin-top:3px}
 .consigne-tag{display:inline-block;background:var(--amber-light);color:var(--amber);font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;text-transform:uppercase}
 .old-tag{display:inline-block;background:#FCEBEB;color:var(--red);font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px}
+.note-tag{display:inline-block;background:#EEF2FF;color:#4338CA;font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;letter-spacing:0.5px}
 .inv-actions{display:flex;gap:6px;align-items:center;flex-shrink:0;flex-wrap:wrap}
 .btn-status{font-size:11px;padding:5px 10px;border-radius:5px;border:none;cursor:pointer;font-weight:500;white-space:nowrap}
 .st-dispo{background:var(--green-light);color:var(--green-dark)}
@@ -124,6 +125,18 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
 .empty-state{text-align:center;padding:30px;color:var(--text-muted);font-size:13px}
 .month-row{background:var(--white);border:1px solid var(--border);border-radius:9px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+/* Note chips */
+.note-chips-wrap{margin-bottom:10px}
+.note-chips-wrap label{display:block;font-size:11px;color:var(--text-muted);font-weight:500;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px}
+.note-chips-group{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:5px}
+.note-chips-legend{font-size:10px;color:var(--text-muted);margin-bottom:3px;font-weight:600;text-transform:uppercase;letter-spacing:0.4px}
+.note-chip{font-size:11px;font-weight:700;padding:5px 10px;border-radius:5px;border:1.5px solid var(--border);background:var(--bg);color:var(--text-muted);cursor:pointer;transition:all 0.15s;user-select:none;display:flex;align-items:center;gap:4px}
+.note-chip:hover{border-color:var(--green-mid);color:var(--green)}
+.note-chip.active{background:var(--green);border-color:var(--green);color:#fff}
+.note-chip.grade{border-color:#C7D2FE;color:#4338CA;background:#EEF2FF}
+.note-chip.grade:hover{border-color:#818CF8;color:#3730A3}
+.note-chip.grade.active{background:#4338CA;border-color:#4338CA;color:#fff}
+.note-chip .chip-desc{font-size:9px;font-weight:400;opacity:0.8}
 @media(max-width:520px){.grid{grid-template-columns:1fr}.row{grid-template-columns:1fr}.tab{padding:11px 8px;font-size:11px}}
 </style>
 </head>
@@ -175,11 +188,18 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
     <div class="section-label">Ajouter un téléphone</div>
     <div class="row">
       <div class="fg"><label>Marque</label>
-        <select id="f-brand" onchange="toggleBattery()"><option>Apple</option><option>Samsung</option><option>Google</option><option>OnePlus</option><option>Xiaomi</option><option>Motorola</option><option>Microsoft</option><option>Autre</option></select>
+        <select id="f-brand" onchange="toggleBattery();updateModelOptions('f-brand','f-model','f-model-other-wrap')">
+          <option>Apple</option><option>Samsung</option><option>Google</option><option>OnePlus</option><option>Xiaomi</option><option>Motorola</option><option>Microsoft</option><option>Autre</option>
+        </select>
       </div>
-      <div class="fg"><label>Modèle</label><input id="f-model" placeholder="ex: Galaxy S24"></div>
+      <div class="fg"><label>Modèle</label>
+        <select id="f-model" onchange="toggleModelOther('f-model','f-model-other-wrap')"></select>
+        <div id="f-model-other-wrap" style="display:none;margin-top:6px">
+          <input id="f-model-other" placeholder="Entrer le modèle...">
+        </div>
+      </div>
       <div class="fg"><label>Stockage</label>
-        <select id="f-storage"><option>64 Go</option><option>128 Go</option><option>256 Go</option><option>512 Go</option><option>1 To</option><option>—</option></select>
+        <select id="f-storage"><option>64 Go</option><option>128 Go</option><option selected>256 Go</option><option>512 Go</option><option>1 To</option><option>—</option></select>
       </div>
     </div>
     <div class="row">
@@ -188,6 +208,27 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
       <div class="fg"><label>Prix d'achat ($)</label><input id="f-achat" type="number" placeholder="ex: 400"></div>
       <div class="fg"><label>Prix annoncé ($)</label><input id="f-annonce" type="number" placeholder="ex: 475"></div>
       <div class="fg consigne-field"><label>Consigne — nom proprio</label><input id="f-consigne" placeholder="ex: Justin, Sandaga..."></div>
+    </div>
+    <!-- NOTE CHIPS -->
+    <div class="note-chips-wrap">
+      <label>Note — état &amp; grade</label>
+      <div class="note-chips-legend">Réparations effectuées</div>
+      <div class="note-chips-group" id="f-note-repair">
+        <div class="note-chip" onclick="toggleChip(this,'f-note')" data-code="S" title="Écran changé">S <span class="chip-desc">Écran</span></div>
+        <div class="note-chip" onclick="toggleChip(this,'f-note')" data-code="B" title="Batterie changée">B <span class="chip-desc">Batterie</span></div>
+        <div class="note-chip" onclick="toggleChip(this,'f-note')" data-code="C" title="Coque changée">C <span class="chip-desc">Coque</span></div>
+        <div class="note-chip" onclick="toggleChip(this,'f-note')" data-code="F" title="Face/Touch ID réparé">F <span class="chip-desc">Face ID</span></div>
+        <div class="note-chip" onclick="toggleChip(this,'f-note')" data-code="P" title="Port de charge changé">P <span class="chip-desc">Port</span></div>
+        <div class="note-chip" onclick="toggleChip(this,'f-note')" data-code="H" title="Haut-parleur réparé">H <span class="chip-desc">HP</span></div>
+        <div class="note-chip" onclick="toggleChip(this,'f-note')" data-code="CA" title="Caméra changée">CA <span class="chip-desc">Caméra</span></div>
+      </div>
+      <div class="note-chips-legend">Grade</div>
+      <div class="note-chips-group" id="f-note-grade">
+        <div class="note-chip grade" onclick="toggleGradeChip(this,'f-note','f-note-grade')" data-code="X" title="Grade A — comme neuf">X <span class="chip-desc">Grade A</span></div>
+        <div class="note-chip grade" onclick="toggleGradeChip(this,'f-note','f-note-grade')" data-code="Y" title="Grade B — légères traces">Y <span class="chip-desc">Grade B</span></div>
+        <div class="note-chip grade" onclick="toggleGradeChip(this,'f-note','f-note-grade')" data-code="Z" title="Grade C — usures visibles">Z <span class="chip-desc">Grade C</span></div>
+      </div>
+      <input type="hidden" id="f-note" value="">
     </div>
     <div style="display:flex;gap:8px;flex-wrap:wrap">
       <button class="btn-green" onclick="addPhone()">Ajouter</button>
@@ -204,7 +245,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
         </select>
       </div>
       <div class="fg"><label>Recherche modèle</label>
-        <input type="text" id="inv-f-model" placeholder="ex: S23 FE, iPhone 15..." oninput="renderInv()">
+        <input type="text" id="inv-f-model" placeholder="ex: S23, iPhone 15..." oninput="renderInv()">
       </div>
       <div class="fg"><label>Statut</label>
         <select id="inv-f-status" onchange="renderInv()">
@@ -247,7 +288,6 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 
 <!-- VENTES -->
 <div class="view" id="view-ventes">
-  <!-- SÉLECTEUR DE PÉRIODE -->
   <div style="background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:16px">
     <div style="font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px">Période d'analyse</div>
     <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">
@@ -262,13 +302,8 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
       <div class="fg"><label>Date fin</label><input type="date" id="period-end" onchange="renderVentes()"></div>
     </div>
   </div>
-
-  <!-- TABLEAU DE BORD -->
   <div class="stats-grid" id="stats-ventes"></div>
-
-  <!-- STOCK ACTUEL -->
   <div id="stock-summary"></div>
-
   <div id="rapport-mensuel"></div>
   <div id="ventes-mine-block"></div>
   <div id="ventes-consigne-block"></div>
@@ -299,7 +334,6 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
     <button class="copy-btn" onclick="copyMsg()">Copier</button>
     <button class="btn-ghost" onclick="openWA()">Ouvrir WhatsApp</button>
   </div>
-
   <div class="card-form">
     <div class="section-label" style="margin-bottom:6px">Sauvegarde des données</div>
     <p style="font-size:12px;color:var(--text-muted);margin-bottom:16px;line-height:1.6">Une sauvegarde complète se télécharge automatiquement chaque fois que tu ouvres l'admin. Tu peux aussi en faire une manuelle ici, ou restaurer une ancienne sauvegarde.</p>
@@ -311,7 +345,6 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   </div>
 </div>
 
-<!-- JUSTINO INVENTAIRE -->
 <!-- MODAL VENTE -->
 <div class="modal-bg" id="modal-vente">
   <div class="modal">
@@ -348,9 +381,16 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
     <div class="modal-title">Modifier le téléphone</div>
     <div class="row">
       <div class="fg"><label>Marque</label>
-        <select id="e-brand" onchange="toggleEditBattery()"><option>Apple</option><option>Samsung</option><option>Google</option><option>OnePlus</option><option>Xiaomi</option><option>Motorola</option><option>Microsoft</option><option>Autre</option></select>
+        <select id="e-brand" onchange="toggleEditBattery();updateModelOptions('e-brand','e-model','e-model-other-wrap')">
+          <option>Apple</option><option>Samsung</option><option>Google</option><option>OnePlus</option><option>Xiaomi</option><option>Motorola</option><option>Microsoft</option><option>Autre</option>
+        </select>
       </div>
-      <div class="fg"><label>Modèle</label><input id="e-model"></div>
+      <div class="fg"><label>Modèle</label>
+        <select id="e-model" onchange="toggleModelOther('e-model','e-model-other-wrap')"></select>
+        <div id="e-model-other-wrap" style="display:none;margin-top:6px">
+          <input id="e-model-other" placeholder="Entrer le modèle...">
+        </div>
+      </div>
       <div class="fg"><label>Stockage</label>
         <select id="e-storage"><option>64 Go</option><option>128 Go</option><option>256 Go</option><option>512 Go</option><option>1 To</option><option>—</option></select>
       </div>
@@ -367,6 +407,27 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
       </div>
       <div class="fg consigne-field"><label>Consigne — nom proprio</label><input id="e-consigne"></div>
     </div>
+    <!-- NOTE CHIPS EDIT -->
+    <div class="note-chips-wrap">
+      <label>Note — état &amp; grade</label>
+      <div class="note-chips-legend">Réparations effectuées</div>
+      <div class="note-chips-group" id="e-note-repair">
+        <div class="note-chip" onclick="toggleChip(this,'e-note')" data-code="S" title="Écran changé">S <span class="chip-desc">Écran</span></div>
+        <div class="note-chip" onclick="toggleChip(this,'e-note')" data-code="B" title="Batterie changée">B <span class="chip-desc">Batterie</span></div>
+        <div class="note-chip" onclick="toggleChip(this,'e-note')" data-code="C" title="Coque changée">C <span class="chip-desc">Coque</span></div>
+        <div class="note-chip" onclick="toggleChip(this,'e-note')" data-code="F" title="Face/Touch ID réparé">F <span class="chip-desc">Face ID</span></div>
+        <div class="note-chip" onclick="toggleChip(this,'e-note')" data-code="P" title="Port de charge changé">P <span class="chip-desc">Port</span></div>
+        <div class="note-chip" onclick="toggleChip(this,'e-note')" data-code="H" title="Haut-parleur réparé">H <span class="chip-desc">HP</span></div>
+        <div class="note-chip" onclick="toggleChip(this,'e-note')" data-code="CA" title="Caméra changée">CA <span class="chip-desc">Caméra</span></div>
+      </div>
+      <div class="note-chips-legend">Grade</div>
+      <div class="note-chips-group" id="e-note-grade">
+        <div class="note-chip grade" onclick="toggleGradeChip(this,'e-note','e-note-grade')" data-code="X" title="Grade A — comme neuf">X <span class="chip-desc">Grade A</span></div>
+        <div class="note-chip grade" onclick="toggleGradeChip(this,'e-note','e-note-grade')" data-code="Y" title="Grade B — légères traces">Y <span class="chip-desc">Grade B</span></div>
+        <div class="note-chip grade" onclick="toggleGradeChip(this,'e-note','e-note-grade')" data-code="Z" title="Grade C — usures visibles">Z <span class="chip-desc">Grade C</span></div>
+      </div>
+      <input type="hidden" id="e-note" value="">
+    </div>
     <div class="modal-actions">
       <button class="btn-green" onclick="saveEdit()">Sauvegarder</button>
       <button class="btn-ghost" onclick="closeModal('modal-edit')">Annuler</button>
@@ -380,7 +441,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 <!-- FIREBASE -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, doc, addDoc, updateDoc, deleteDoc, onSnapshot, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, collection, doc, addDoc, updateDoc, deleteDoc, onSnapshot, setDoc, getDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDEuNfVvNRUR8F7Xrz6qDom58-k6DSTPl0",
@@ -406,6 +467,98 @@ let tapTimer = null;
 let activeFilter = 'all';
 let invFilter = 'all';
 
+// ── MODÈLES PAR MARQUE ──────────────────────────────────────
+const MODELS = {
+  'Apple': [
+    'iPhone 13','iPhone 13 Mini','iPhone 13 Pro','iPhone 13 Pro Max',
+    'iPhone 14','iPhone 14 Plus','iPhone 14 Pro','iPhone 14 Pro Max',
+    'iPhone 15','iPhone 15 Plus','iPhone 15 Pro','iPhone 15 Pro Max',
+    'iPhone 16','iPhone 16 Plus','iPhone 16 Pro','iPhone 16 Pro Max',
+    'iPhone 17','iPhone 17 Pro','iPhone 17 Pro Max'
+  ],
+  'Samsung': [
+    'Samsung Galaxy S23','Samsung Galaxy S23+','Samsung Galaxy S23 Ultra',
+    'Samsung Galaxy S24','Samsung Galaxy S24+','Samsung Galaxy S24 Ultra',
+    'Samsung Galaxy S25','Samsung Galaxy S25+','Samsung Galaxy S25 Ultra',
+    'Samsung Galaxy A54','Samsung Galaxy A55',
+    'Samsung Galaxy Z Fold 5','Samsung Galaxy Z Fold 6',
+    'Samsung Galaxy Z Flip 5','Samsung Galaxy Z Flip 6'
+  ],
+  'Google': [
+    'Google Pixel 7','Google Pixel 7 Pro',
+    'Google Pixel 8','Google Pixel 8 Pro',
+    'Google Pixel 9','Google Pixel 9 Pro','Google Pixel 9 Pro XL'
+  ]
+};
+
+// Populate model select based on brand
+window.updateModelOptions = function(brandId, modelId, otherWrapId, currentVal='') {
+  const brand = document.getElementById(brandId).value;
+  const sel = document.getElementById(modelId);
+  const otherWrap = document.getElementById(otherWrapId);
+  const models = MODELS[brand] || [];
+  if (models.length) {
+    sel.innerHTML = models.map(m => `<option value="${m}"${m===currentVal?' selected':''}>${m}</option>`).join('') + '<option value="__autre__">Autre / Manuel...</option>';
+    // If current value not in list, select Autre
+    if (currentVal && !models.includes(currentVal)) {
+      sel.value = '__autre__';
+      document.getElementById(modelId.replace('model','model-other')).value = currentVal;
+      otherWrap.style.display = 'block';
+    } else {
+      otherWrap.style.display = 'none';
+    }
+  } else {
+    sel.innerHTML = '<option value="__autre__">Entrer manuellement</option>';
+    otherWrap.style.display = 'block';
+    if (currentVal) document.getElementById(modelId.replace('model','model-other')).value = currentVal;
+  }
+}
+
+window.toggleModelOther = function(modelId, otherWrapId) {
+  const sel = document.getElementById(modelId);
+  document.getElementById(otherWrapId).style.display = sel.value === '__autre__' ? 'block' : 'none';
+}
+
+function getModelValue(modelId, modelOtherId) {
+  const sel = document.getElementById(modelId);
+  if (!sel || sel.value === '__autre__') {
+    return (document.getElementById(modelOtherId)?.value || '').trim();
+  }
+  return sel.value;
+}
+
+// ── NOTE CHIPS ───────────────────────────────────────────────
+window.toggleChip = function(chip, noteInputId) {
+  chip.classList.toggle('active');
+  syncNoteInput(chip.closest('.note-chips-wrap'), noteInputId);
+}
+
+window.toggleGradeChip = function(chip, noteInputId, groupId) {
+  // Only one grade active at a time
+  document.querySelectorAll('#'+groupId+' .note-chip').forEach(c => c.classList.remove('active'));
+  chip.classList.add('active');
+  syncNoteInput(chip.closest('.note-chips-wrap'), noteInputId);
+}
+
+function syncNoteInput(wrap, noteInputId) {
+  const codes = [...wrap.querySelectorAll('.note-chip.active')].map(c => c.dataset.code);
+  document.getElementById(noteInputId).value = codes.join(' ');
+}
+
+function loadNoteChips(noteValue, repairGroupId, gradeGroupId, noteInputId) {
+  const codes = (noteValue || '').split(' ').filter(Boolean);
+  document.querySelectorAll('#'+repairGroupId+' .note-chip, #'+gradeGroupId+' .note-chip').forEach(c => {
+    c.classList.toggle('active', codes.includes(c.dataset.code));
+  });
+  document.getElementById(noteInputId).value = noteValue || '';
+}
+
+function clearNoteChips(repairGroupId, gradeGroupId, noteInputId) {
+  document.querySelectorAll('#'+repairGroupId+' .note-chip, #'+gradeGroupId+' .note-chip').forEach(c => c.classList.remove('active'));
+  document.getElementById(noteInputId).value = '';
+}
+
+// ── COLORS ──────────────────────────────────────────────────
 const colorMap = {'noir':'#1a1a1a','black':'#1a1a1a','blanc':'#f5f5f5','white':'#f5f5f5','bleu':'#3B82F6','blue':'#3B82F6','rouge':'#EF4444','vert':'#22C55E','or':'#F59E0B','rose':'#EC4899','violet':'#8B5CF6','gris':'#9CA3AF','grey':'#9CA3AF','gray':'#9CA3AF','argent':'#C0C0C0','silver':'#C0C0C0','crème':'#FEF3C7','creme':'#FEF3C7','charbon':'#374151','titane':'#8D8D8D','minuit':'#1e293b','lumière':'#F8FAFC'};
 function getColorHex(c){if(!c)return null;const k=c.toLowerCase().trim();for(const[key,val]of Object.entries(colorMap)){if(k.includes(key))return val;}return null;}
 function daysSince(d){if(!d)return 0;return Math.floor((new Date()-new Date(d))/(1000*60*60*24));}
@@ -437,10 +590,14 @@ window.handleLogoTap = function(){
   if(rem>0){hint.textContent=`${rem} clic${rem>1?'s':''} pour accéder à l'admin`;hint.classList.add('show');tapTimer=setTimeout(()=>{tapCount=0;hint.classList.remove('show');},2000);}
   if(tapCount>=5){tapCount=0;hint.classList.remove('show');unlockAdmin();}
 }
+
 function unlockAdmin(){
   isAdmin=true;
   document.getElementById('tabs').classList.add('show');
   document.getElementById('admin-banner').classList.add('show');
+  // Init model dropdowns
+  updateModelOptions('f-brand','f-model','f-model-other-wrap');
+  updateModelOptions('e-brand','e-model','e-model-other-wrap');
   renderInvFilters();renderInv();renderVentes();
   toast('Admin déverrouillé! Sauvegarde en cours...');
   setTimeout(autoBackup, 2000);
@@ -468,7 +625,7 @@ window.importBackup=async function(event){
   reader.onload=async e=>{
     try{
       const data=JSON.parse(e.target.result);
-      if(!confirm('Restaurer '+( data.phones?.length||0)+' téléphones et '+(data.ventes?.length||0)+' ventes? Les données actuelles seront remplacées.'))return;
+      if(!confirm('Restaurer '+(data.phones?.length||0)+' téléphones et '+(data.ventes?.length||0)+' ventes? Les données actuelles seront remplacées.'))return;
       const allPhones=await getDocs(collection(db,'phones'));
       const allVentes=await getDocs(collection(db,'ventes'));
       for(const d of allPhones.docs)await deleteDoc(doc(db,'phones',d.id));
@@ -481,6 +638,7 @@ window.importBackup=async function(event){
   };
   reader.readAsText(file);event.target.value='';
 }
+
 window.lockAdmin = function(){
   isAdmin=false;
   document.getElementById('tabs').classList.remove('show');
@@ -553,7 +711,6 @@ window.openWA = function(){window.open(`https://wa.me/${cfg.wa}`,'_blank');}
 let ageFilter='all';
 
 function renderInvFilters(){
-  // Populate consigne dropdown dynamically
   const consignes=[...new Set(phones.map(p=>p.consigne).filter(c=>c&&c.trim()!==''))].sort();
   const sel=document.getElementById('inv-f-consigne');
   if(sel){
@@ -590,12 +747,8 @@ function applyInvFilter(list){
     if(brand&&p.brand!==brand)return false;
     if(model&&!(p.brand+' '+p.model+' '+p.storage).toLowerCase().includes(model))return false;
     if(status&&p.status!==status)return false;
-    // Filtre consigne : "mine" = seulement mes téléphones (sans consigne), sinon filtre par nom
-    if(consigne==='mine'){
-      if(p.consigne&&p.consigne.trim()!=='')return false;
-    } else if(consigne!==''){
-      if(p.consigne!==consigne)return false;
-    }
+    if(consigne==='mine'){if(p.consigne&&p.consigne.trim()!=='')return false;}
+    else if(consigne!==''){if(p.consigne!==consigne)return false;}
     if(ageFilter==='old'&&!(p.status==='dispo'&&daysSince(p.dateEntree)>30))return false;
     return true;
   });
@@ -604,7 +757,6 @@ function applyInvFilter(list){
 function renderInv(){
   renderInvFilters();
   const filtered=applyInvFilter(phones);
-  // Sort: dispo first then vendu, then by price
   filtered.sort((a,b)=>{
     if(a.status==='dispo'&&b.status!=='dispo')return -1;
     if(a.status!=='dispo'&&b.status==='dispo')return 1;
@@ -621,9 +773,10 @@ function renderInv(){
     const isC=p.consigne&&p.consigne.trim()!=='';
     const days=daysSince(p.dateEntree);
     const isOld=p.status==='dispo'&&days>30;
+    const noteTag=p.note?`<span class="note-tag">${p.note}</span>`:'';
     return`<div class="inv-item${isC?' is-consigne':''}${isOld?' is-old':''}">
       <div style="flex:1;min-width:0">
-        <div class="iname">${p.brand} ${p.model} · ${p.storage}${p.color?' · '+p.color:''}${p.battery&&p.brand==='Apple'?` · 🔋${p.battery}%`:''}${isC?`<span class="consigne-tag">${p.consigne}</span>`:''}${isOld?`<span class="old-tag">${days}j</span>`:''}</div>
+        <div class="iname">${p.brand} ${p.model} · ${p.storage}${p.color?' · '+p.color:''}${p.battery&&p.brand==='Apple'?` · 🔋${p.battery}%`:''}${noteTag}${isC?`<span class="consigne-tag">${p.consigne}</span>`:''}${isOld?`<span class="old-tag">${days}j</span>`:''}</div>
         <div class="imeta">Achat: <strong>${p.achat}$</strong> · Annoncé: <strong>${p.annonce}$</strong> · Marge: <strong style="color:var(--green)">${(p.annonce-p.achat).toFixed(0)}$</strong>${p.dateEntree?' · Entrée: '+p.dateEntree:''}</div>
       </div>
       <div class="inv-actions">
@@ -666,7 +819,7 @@ window.confirmVente = async function(){
     brand:p.brand,model:p.model,storage:p.storage,color:p.color||'',
     achat:p.achat,annonce:p.annonce,reel,profit:reel-p.achat,
     consigne:p.consigne||'',dateEntree:p.dateEntree||'',dateVente,joursStock,
-    imei:imei||'',garantie:garantie||'30 jours'
+    imei:imei||'',garantie:garantie||'30 jours',note:p.note||''
   });
   await updateDoc(doc(db,'phones',pendingId),{status:'vendu'});
   document.getElementById('m-imei').value='';
@@ -684,7 +837,8 @@ window.openEditModal = function(id){
   const p=phones.find(x=>x._id===id);if(!p)return;
   editingId=id;
   document.getElementById('e-brand').value=p.brand;
-  document.getElementById('e-model').value=p.model;
+  // Update model dropdown then set value
+  updateModelOptions('e-brand','e-model','e-model-other-wrap', p.model);
   document.getElementById('e-storage').value=p.storage;
   document.getElementById('e-color').value=p.color||'';
   document.getElementById('e-battery').value=p.battery||'';
@@ -693,6 +847,8 @@ window.openEditModal = function(id){
   document.getElementById('e-annonce').value=p.annonce;
   document.getElementById('e-status').value=p.status;
   document.getElementById('e-consigne').value=p.consigne||'';
+  // Load note chips
+  loadNoteChips(p.note||'','e-note-repair','e-note-grade','e-note');
   document.getElementById('modal-edit').classList.add('open');
 }
 
@@ -700,16 +856,18 @@ window.saveEdit = async function(){
   if(!editingId)return;
   const eBrand=document.getElementById('e-brand').value;
   const eBattery=document.getElementById('e-battery').value;
+  const eModel=getModelValue('e-model','e-model-other');
   await updateDoc(doc(db,'phones',editingId),{
     brand:eBrand,
-    model:document.getElementById('e-model').value,
+    model:eModel,
     storage:document.getElementById('e-storage').value,
     color:document.getElementById('e-color').value.trim(),
     battery:eBattery?parseInt(eBattery):'',
     achat:parseFloat(document.getElementById('e-achat').value)||0,
     annonce:parseFloat(document.getElementById('e-annonce').value)||0,
     status:document.getElementById('e-status').value,
-    consigne:document.getElementById('e-consigne').value.trim()
+    consigne:document.getElementById('e-consigne').value.trim(),
+    note:document.getElementById('e-note').value.trim()
   });
   closeModal('modal-edit');toast('Modifié!');
 }
@@ -723,7 +881,7 @@ window.delPhone = async function(id){
 }
 
 window.addPhone = async function(){
-  const model=document.getElementById('f-model').value.trim();
+  const model=getModelValue('f-model','f-model-other');
   const annonce=parseFloat(document.getElementById('f-annonce').value);
   if(!model||!annonce){toast('Modèle et prix annoncé requis');return;}
   const fBrand=document.getElementById('f-brand').value;
@@ -736,12 +894,21 @@ window.addPhone = async function(){
     achat:parseFloat(document.getElementById('f-achat').value)||0,
     annonce,status:'dispo',
     consigne:document.getElementById('f-consigne').value.trim(),
+    note:document.getElementById('f-note').value.trim(),
     dateEntree:TODAY
   });
   clearForm();toast('Ajouté!');
 }
 
-window.clearForm = function(){['f-model','f-color','f-battery','f-achat','f-annonce','f-consigne'].forEach(id=>document.getElementById(id).value='');}
+window.clearForm = function(){
+  ['f-color','f-battery','f-achat','f-annonce','f-consigne'].forEach(id=>document.getElementById(id).value='');
+  // Reset model select to first option
+  updateModelOptions('f-brand','f-model','f-model-other-wrap');
+  document.getElementById('f-model-other').value='';
+  // Reset note chips
+  clearNoteChips('f-note-repair','f-note-grade','f-note');
+}
+
 window.toggleBattery = function(){
   const isApple=document.getElementById('f-brand').value==='Apple';
   document.getElementById('f-battery-wrap').style.opacity=isApple?'1':'0.3';
@@ -776,27 +943,13 @@ window.setPeriod=function(p,btn){
 function getVentesPeriod(){
   const now=new Date();
   if(currentPeriod==='all')return ventes;
-  if(currentPeriod==='2w'){
-    const cutoff=new Date(now-14*24*60*60*1000);
-    return ventes.filter(v=>v.dateVente&&new Date(v.dateVente)>=cutoff);
-  }
-  if(currentPeriod==='month'){
-    const m=now.toISOString().substring(0,7);
-    return ventes.filter(v=>v.dateVente&&v.dateVente.substring(0,7)===m);
-  }
-  if(currentPeriod==='3m'){
-    const cutoff=new Date(now-90*24*60*60*1000);
-    return ventes.filter(v=>v.dateVente&&new Date(v.dateVente)>=cutoff);
-  }
+  if(currentPeriod==='2w'){const cutoff=new Date(now-14*24*60*60*1000);return ventes.filter(v=>v.dateVente&&new Date(v.dateVente)>=cutoff);}
+  if(currentPeriod==='month'){const m=now.toISOString().substring(0,7);return ventes.filter(v=>v.dateVente&&v.dateVente.substring(0,7)===m);}
+  if(currentPeriod==='3m'){const cutoff=new Date(now-90*24*60*60*1000);return ventes.filter(v=>v.dateVente&&new Date(v.dateVente)>=cutoff);}
   if(currentPeriod==='custom'){
     const s=document.getElementById('period-start')?.value;
     const e=document.getElementById('period-end')?.value;
-    return ventes.filter(v=>{
-      if(!v.dateVente)return false;
-      if(s&&v.dateVente<s)return false;
-      if(e&&v.dateVente>e)return false;
-      return true;
-    });
+    return ventes.filter(v=>{if(!v.dateVente)return false;if(s&&v.dateVente<s)return false;if(e&&v.dateVente>e)return false;return true;});
   }
   return ventes;
 }
@@ -809,8 +962,6 @@ function renderVentes(){
   const totalProfitCon=consignes.reduce((s,v)=>s+v.profit,0);
   const totalVentes=mine.length+consignes.length;
   const avgJours=filtered.length?Math.round(filtered.reduce((s,v)=>s+(v.joursStock||0),0)/filtered.length):0;
-
-  // Stock actuel valeur d'achat
   const stockDispo=phones.filter(p=>p.status==='dispo'&&(!p.consigne||p.consigne.trim()===''));
   const valStockAchat=stockDispo.reduce((s,p)=>s+p.achat,0);
   const valStockAnnonce=stockDispo.reduce((s,p)=>s+p.annonce,0);
@@ -820,10 +971,8 @@ function renderVentes(){
     <div class="stat"><div class="stat-num" style="color:var(--green)">${totalProfitMine.toFixed(0)}$</div><div class="stat-lbl">Profit net (moi)</div></div>
     <div class="stat"><div class="stat-num" style="color:var(--amber)">${totalProfitCon.toFixed(0)}$</div><div class="stat-lbl">Profit consignes</div></div>
     <div class="stat"><div class="stat-num" style="color:#4338CA">${(totalProfitMine+totalProfitCon).toFixed(0)}$</div><div class="stat-lbl">Profit total période</div></div>
-    <div class="stat"><div class="stat-num" style="color:var(--blue)">${avgJours}j</div><div class="stat-lbl">Rotation moy.</div></div>
-  `;
+    <div class="stat"><div class="stat-num" style="color:var(--blue)">${avgJours}j</div><div class="stat-lbl">Rotation moy.</div></div>`;
 
-  // Stock summary
   document.getElementById('stock-summary').innerHTML=`
     <div style="background:var(--blue-light);border:1px solid #B5D4F4;border-radius:10px;padding:14px 16px;margin-bottom:16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px">
       <div><div style="font-size:10px;color:#185FA5;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px">Stock actuel (mes cells)</div><div style="font-size:22px;font-weight:700;color:#185FA5">${stockDispo.length} unités</div></div>
@@ -836,8 +985,10 @@ function renderVentes(){
   filtered.forEach(v=>{const m=v.dateVente?v.dateVente.substring(0,7):'Sans date';if(!byMonth[m])byMonth[m]={count:0,profit:0,revenus:0,consigneProfit:0};if(!v.consigne||v.consigne.trim()===''){byMonth[m].profit+=v.profit;byMonth[m].revenus+=v.reel;}else{byMonth[m].consigneProfit+=v.profit;}byMonth[m].count++;});
   const months=Object.keys(byMonth).sort().reverse();
   document.getElementById('rapport-mensuel').innerHTML=months.length?`<div class="section-label">Rapport par période</div>`+months.map(m=>`<div class="month-row"><div><div style="font-size:14px;font-weight:600">${m}</div><div style="font-size:12px;color:var(--text-muted);margin-top:2px">${byMonth[m].count} vente${byMonth[m].count>1?'s':''} · Revenus: ${byMonth[m].revenus.toFixed(0)}$</div></div><div style="display:flex;gap:6px;flex-wrap:wrap"><span class="profit-badge">Moi: +${byMonth[m].profit.toFixed(0)}$</span>${byMonth[m].consigneProfit>0?`<span class="profit-badge" style="background:var(--amber-light);color:var(--amber)">Consignes: +${byMonth[m].consigneProfit.toFixed(0)}$</span>`:''}</div></div>`).join(''):'';
-  document.getElementById('ventes-mine-block').innerHTML=`<div class="vente-section-title mine">Mes ventes (${mine.length})</div>`+(mine.length?[...mine].reverse().map(v=>`<div class="vente-item"><div><div class="vname">${v.brand} ${v.model} · ${v.storage}${v.color?' · '+v.color:''}</div><div class="vmeta">Achat: ${v.achat}$ · Annoncé: ${v.annonce}$ · <strong>Vendu: ${v.reel}$</strong>${v.dateVente?' · '+v.dateVente:''}${v.joursStock!=null?` · <span class="rotation-badge">${v.joursStock}j</span>`:''}${v.garantie?` · Garantie: <strong>${v.garantie}</strong>`:''}${v.imei?` · IMEI: ${v.imei}`:''}</div></div><div class="profit-badge ${v.profit<0?'profit-neg':''}">${v.profit>=0?'+':''}${v.profit.toFixed(2)}$</div></div>`).join(''):'<div class="empty-state">Aucune vente personnelle dans cette période.</div>');
-  document.getElementById('ventes-consigne-block').innerHTML=`<div class="vente-section-title consigne" style="margin-top:8px">Ventes en consigne (${consignes.length})</div>`+(consignes.length?[...consignes].reverse().map(v=>`<div class="vente-item"><div><div class="vname">${v.brand} ${v.model} · ${v.storage}${v.color?' · '+v.color:''} <span class="consigne-tag">${v.consigne}</span></div><div class="vmeta">Achat: ${v.achat}$ · Annoncé: ${v.annonce}$ · <strong>Vendu: ${v.reel}$</strong>${v.dateVente?' · '+v.dateVente:''}${v.joursStock!=null?` · <span class="rotation-badge">${v.joursStock}j</span>`:''}${v.garantie?` · Garantie: <strong>${v.garantie}</strong>`:''}${v.imei?` · IMEI: ${v.imei}`:''}</div></div><div class="profit-badge ${v.profit<0?'profit-neg':''}">${v.profit>=0?'+':''}${v.profit.toFixed(2)}$</div></div>`).join(''):'<div class="empty-state">Aucune vente en consigne dans cette période.</div>');
+
+  document.getElementById('ventes-mine-block').innerHTML=`<div class="vente-section-title mine">Mes ventes (${mine.length})</div>`+(mine.length?[...mine].reverse().map(v=>`<div class="vente-item"><div><div class="vname">${v.brand} ${v.model} · ${v.storage}${v.color?' · '+v.color:''}${v.note?` <span class="note-tag">${v.note}</span>`:''}</div><div class="vmeta">Achat: ${v.achat}$ · Annoncé: ${v.annonce}$ · <strong>Vendu: ${v.reel}$</strong>${v.dateVente?' · '+v.dateVente:''}${v.joursStock!=null?` · <span class="rotation-badge">${v.joursStock}j</span>`:''}${v.garantie?` · Garantie: <strong>${v.garantie}</strong>`:''}${v.imei?` · IMEI: ${v.imei}`:''}</div></div><div class="profit-badge ${v.profit<0?'profit-neg':''}">${v.profit>=0?'+':''}${v.profit.toFixed(2)}$</div></div>`).join(''):'<div class="empty-state">Aucune vente personnelle dans cette période.</div>');
+
+  document.getElementById('ventes-consigne-block').innerHTML=`<div class="vente-section-title consigne" style="margin-top:8px">Ventes en consigne (${consignes.length})</div>`+(consignes.length?[...consignes].reverse().map(v=>`<div class="vente-item"><div><div class="vname">${v.brand} ${v.model} · ${v.storage}${v.color?' · '+v.color:''} <span class="consigne-tag">${v.consigne}</span>${v.note?` <span class="note-tag">${v.note}</span>`:''}</div><div class="vmeta">Achat: ${v.achat}$ · Annoncé: ${v.annonce}$ · <strong>Vendu: ${v.reel}$</strong>${v.dateVente?' · '+v.dateVente:''}${v.joursStock!=null?` · <span class="rotation-badge">${v.joursStock}j</span>`:''}${v.garantie?` · Garantie: <strong>${v.garantie}</strong>`:''}${v.imei?` · IMEI: ${v.imei}`:''}</div></div><div class="profit-badge ${v.profit<0?'profit-neg':''}">${v.profit>=0?'+':''}${v.profit.toFixed(2)}$</div></div>`).join(''):'<div class="empty-state">Aucune vente en consigne dans cette période.</div>');
 }
 
 function renderJustino(){
@@ -847,43 +998,18 @@ function renderJustino(){
   const valAchat=enStock.reduce((s,p)=>s+p.achat,0);
   const valAnnonce=enStock.reduce((s,p)=>s+p.annonce,0);
   const profitTotal=justinoVentes.reduce((s,v)=>s+v.profit,0);
-
   document.getElementById('justino-stats').innerHTML=`
     <div class="stat"><div class="stat-num" style="color:var(--blue)">${enStock.length}</div><div class="stat-lbl">En stock</div></div>
     <div class="stat"><div class="stat-num">${valAchat.toFixed(0)}$</div><div class="stat-lbl">Coût total</div></div>
     <div class="stat"><div class="stat-num" style="color:var(--blue)">${valAnnonce.toFixed(0)}$</div><div class="stat-lbl">Valeur annoncée</div></div>
     <div class="stat"><div class="stat-num" style="color:var(--green)">${profitTotal.toFixed(0)}$</div><div class="stat-lbl">Profit vendu</div></div>
-    <div class="stat"><div class="stat-num" style="color:var(--green)">${(valAnnonce-valAchat).toFixed(0)}$</div><div class="stat-lbl">Marge potentielle</div></div>
-  `;
-
+    <div class="stat"><div class="stat-num" style="color:var(--green)">${(valAnnonce-valAchat).toFixed(0)}$</div><div class="stat-lbl">Marge potentielle</div></div>`;
   const stockEl=document.getElementById('justino-stock');
   if(!enStock.length){stockEl.innerHTML='<div class="empty-state">Aucun téléphone en stock.</div>';}
-  else{
-    stockEl.innerHTML=enStock.sort((a,b)=>a.annonce-b.annonce).map(p=>`
-      <div class="inv-item">
-        <div style="flex:1;min-width:0">
-          <div class="iname">${p.brand} ${p.model} · ${p.storage}${p.color?' · '+p.color:''}${p.battery?' · Batterie: '+p.battery+'%':''}</div>
-          <div class="imeta">Achat: <strong>${p.achat}$</strong> · Annoncé: <strong>${p.annonce}$</strong> · Marge: <strong style="color:var(--green)">${(p.annonce-p.achat).toFixed(0)}$</strong>${p.dateEntree?' · Entrée: '+p.dateEntree:''}</div>
-        </div>
-        <div class="inv-actions">
-          <button class="btn-edit" onclick="openEditModal('${p._id}')">Modifier</button>
-          <button class="btn-del" onclick="delPhone('${p._id}')">✕</button>
-        </div>
-      </div>`).join('');
-  }
-
+  else{stockEl.innerHTML=enStock.sort((a,b)=>a.annonce-b.annonce).map(p=>`<div class="inv-item"><div style="flex:1;min-width:0"><div class="iname">${p.brand} ${p.model} · ${p.storage}${p.color?' · '+p.color:''}${p.battery?' · Batterie: '+p.battery+'%':''}${p.note?` <span class="note-tag">${p.note}</span>`:''}</div><div class="imeta">Achat: <strong>${p.achat}$</strong> · Annoncé: <strong>${p.annonce}$</strong> · Marge: <strong style="color:var(--green)">${(p.annonce-p.achat).toFixed(0)}$</strong>${p.dateEntree?' · Entrée: '+p.dateEntree:''}</div></div><div class="inv-actions"><button class="btn-edit" onclick="openEditModal('${p._id}')">Modifier</button><button class="btn-del" onclick="delPhone('${p._id}')">✕</button></div></div>`).join('');}
   const ventesEl=document.getElementById('justino-ventes');
   if(!justinoVentes.length){ventesEl.innerHTML='<div class="empty-state">Aucune vente enregistrée.</div>';}
-  else{
-    ventesEl.innerHTML=[...justinoVentes].reverse().map(v=>`
-      <div class="vente-item">
-        <div>
-          <div class="vname">${v.brand} ${v.model} · ${v.storage}${v.color?' · '+v.color:''}</div>
-          <div class="vmeta">Achat: ${v.achat}$ · Annoncé: ${v.annonce}$ · <strong>Vendu: ${v.reel}$</strong>${v.dateVente?' · '+v.dateVente:''}${v.garantie?' · Garantie: '+v.garantie:''}${v.imei?' · IMEI: '+v.imei:''}</div>
-        </div>
-        <div class="profit-badge ${v.profit<0?'profit-neg':''}">${v.profit>=0?'+':''}${v.profit.toFixed(2)}$</div>
-      </div>`).join('');
-  }
+  else{ventesEl.innerHTML=[...justinoVentes].reverse().map(v=>`<div class="vente-item"><div><div class="vname">${v.brand} ${v.model} · ${v.storage}${v.color?' · '+v.color:''}</div><div class="vmeta">Achat: ${v.achat}$ · Annoncé: ${v.annonce}$ · <strong>Vendu: ${v.reel}$</strong>${v.dateVente?' · '+v.dateVente:''}${v.garantie?' · Garantie: '+v.garantie:''}${v.imei?' · IMEI: '+v.imei:''}</div></div><div class="profit-badge ${v.profit<0?'profit-neg':''}">${v.profit>=0?'+':''}${v.profit.toFixed(2)}$</div></div>`).join('');}
 }
 
 function renderShare(){
@@ -898,6 +1024,9 @@ function renderShare(){
 window.copyMsg = function(){const t=document.getElementById('wa-prev').textContent;if(navigator.clipboard){navigator.clipboard.writeText(t).then(()=>toast('Copié!'));}else{const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);toast('Copié!');}}
 
 function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2800);}
+
+// Init model dropdowns on page load (for when admin is unlocked)
+updateModelOptions('f-brand','f-model','f-model-other-wrap');
 
 loadCfg();
 </script>
