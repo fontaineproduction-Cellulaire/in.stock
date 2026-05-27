@@ -33,7 +33,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .header-name{font-size:17px;font-weight:700}
 .header-sub{font-size:12px;color:var(--text-muted)}
 .logout-btn{background:var(--blue-light);color:var(--blue);border:1px solid #B5D4F4;padding:7px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer}
-.tabs{display:flex;background:var(--white);border-bottom:1px solid var(--border);padding:0 16px}
+.tabs{display:flex;background:var(--white);border-bottom:1px solid var(--border);padding:0 16px;overflow-x:auto}
 .tab{padding:12px 16px;font-size:13px;font-weight:500;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;white-space:nowrap}
 .tab.active{color:var(--blue);border-bottom-color:var(--blue)}
 .view{display:none;padding:16px;max-width:900px;margin:0 auto}
@@ -60,6 +60,12 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .rapport-item{background:var(--white);border:1px solid var(--border);border-radius:9px;padding:12px 16px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
 .empty-state{text-align:center;padding:40px 20px;color:var(--text-muted);font-size:13px}
 .loading{text-align:center;padding:40px;color:var(--text-muted)}
+.wa-preview{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:16px;font-size:13px;color:var(--text);line-height:1.75;white-space:pre-wrap;word-break:break-word;margin-bottom:14px;font-family:'Courier New',monospace}
+.copy-btn{background:var(--green);color:#fff;border:none;padding:12px 24px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;width:100%}
+.copy-btn:active{background:var(--green-dark)}
+.info-box{background:var(--blue-light);border:1px solid #B5D4F4;border-radius:8px;padding:12px 14px;font-size:12px;color:var(--blue-dark);margin-bottom:16px;line-height:1.5}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a1a1a;color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;opacity:0;transition:all 0.3s;pointer-events:none;z-index:999}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 @media(max-width:480px){.stats{grid-template-columns:repeat(2,1fr)}.phone-details{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
@@ -107,19 +113,31 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   <div class="tabs">
     <div class="tab active" id="tab-stock" onclick="goTab('stock')">En stock</div>
     <div class="tab" id="tab-ventes" onclick="goTab('ventes')">Mes ventes</div>
+    <div class="tab" id="tab-partager" onclick="goTab('partager')">📋 Partager</div>
   </div>
+
   <div class="view active" id="view-stock">
     <div class="stats" id="stats-stock"></div>
     <div class="section-label">Vos téléphones en stock</div>
     <div id="stock-list"><div class="loading">Chargement...</div></div>
   </div>
+
   <div class="view" id="view-ventes">
     <div class="stats" id="stats-ventes"></div>
     <div id="rapport-block"></div>
     <div class="section-label" style="margin-top:16px">Historique des ventes</div>
     <div id="ventes-list"><div class="loading">Chargement...</div></div>
   </div>
+
+  <div class="view" id="view-partager">
+    <div class="info-box">Ce message affiche seulement tes téléphones disponibles. Aucun prix d'achat n'est visible. Tu peux le copier et le coller sur Facebook Marketplace, WhatsApp ou n'importe où.</div>
+    <div class="section-label">Ton inventaire prêt à partager</div>
+    <div class="wa-preview" id="share-preview">Chargement...</div>
+    <button class="copy-btn" onclick="copyShare()">📋 Copier le message</button>
+  </div>
 </div>
+
+<div class="toast" id="toast"></div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -174,21 +192,25 @@ window.logout = function(){
 function startListeners(){
   onSnapshot(collection(db,'phones'), snap => {
     phones = snap.docs.map(d=>({...d.data(),_id:d.id})).filter(p=>p.consigne==='Axell');
-    if(document.getElementById('view-stock').classList.contains('active')) renderStock();
+    const tab = document.querySelector('.tab.active')?.id?.replace('tab-','');
+    if(tab==='stock') renderStock();
+    if(tab==='partager') renderShare();
   });
   onSnapshot(collection(db,'ventes'), snap => {
     ventes = snap.docs.map(d=>({...d.data(),_id:d.id})).filter(v=>v.consigne==='Axell');
-    if(document.getElementById('view-ventes').classList.contains('active')) renderVentes();
+    const tab = document.querySelector('.tab.active')?.id?.replace('tab-','');
+    if(tab==='ventes') renderVentes();
   });
 }
 
 window.goTab = function(tab){
-  ['stock','ventes'].forEach(t=>{
+  ['stock','ventes','partager'].forEach(t=>{
     document.getElementById('tab-'+t).classList.toggle('active',t===tab);
     document.getElementById('view-'+t).classList.toggle('active',t===tab);
   });
-  if(tab==='stock')renderStock();
-  if(tab==='ventes')renderVentes();
+  if(tab==='stock') renderStock();
+  if(tab==='ventes') renderVentes();
+  if(tab==='partager') renderShare();
 }
 
 function renderStock(){
@@ -240,6 +262,39 @@ function renderVentes(){
       <div class="profit-badge">${v.profit>=0?'+':''}${v.profit.toFixed(2)}$</div>
     </div>`).join('');
 }
+
+function renderShare(){
+  const dispo=phones.filter(p=>p.status==='dispo').sort((a,b)=>a.annonce-b.annonce);
+  let m='📱 CELLULAIRES DISPONIBLES\n━━━━━━━━━━━━━━━━━━━━\n\n';
+  if(!dispo.length){
+    m+='Aucun téléphone disponible en ce moment.\n';
+  } else {
+    const brands=[...new Set(dispo.map(p=>p.brand))].sort((a,b)=>{
+      if(a==='Apple')return -1;if(b==='Apple')return 1;return a.localeCompare(b);
+    });
+    brands.forEach(b=>{
+      m+=`*${b.toUpperCase()}*\n`;
+      dispo.filter(p=>p.brand===b).forEach(p=>{
+        const bat=p.battery&&p.brand==='Apple'?` 🔋${p.battery}%`:'';
+        m+=`  • ${p.model} ${p.storage}${p.color?' · '+p.color:''}${bat} — *${p.annonce}$*\n`;
+      });
+      m+='\n';
+    });
+  }
+  m+='━━━━━━━━━━━━━━━━━━━━\n💬 Écris-moi pour réserver!';
+  document.getElementById('share-preview').textContent=m;
+}
+
+window.copyShare = function(){
+  const t=document.getElementById('share-preview').textContent;
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(t).then(()=>toast('✅ Copié!'));
+  } else {
+    const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);toast('✅ Copié!');
+  }
+}
+
+function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2500);}
 </script>
 </body>
 </html>
