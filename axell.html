@@ -14,6 +14,8 @@
   --text:#1a1a1a;--text-muted:#6b7280;--border:#e5e7eb;--bg:#f9fafb;--white:#fff;
 }
 body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh}
+
+/* PIN */
 .pin-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:var(--blue-light)}
 .pin-box{background:var(--white);border-radius:20px;padding:40px 28px;width:100%;max-width:340px;text-align:center;box-shadow:0 8px 40px rgba(24,95,165,0.12)}
 .pin-title{font-size:20px;font-weight:700;color:var(--text);margin-bottom:6px}
@@ -24,8 +26,9 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .pin-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
 .pin-key{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:18px;font-size:22px;font-weight:600;cursor:pointer;transition:all 0.15s;user-select:none;color:var(--text)}
 .pin-key:active{background:var(--blue-light);border-color:var(--blue);transform:scale(0.95)}
-.pin-key.del{font-size:18px;color:var(--text-muted)}
 .pin-error{color:var(--red);font-size:13px;margin-top:4px;min-height:20px;font-weight:500}
+
+/* APP */
 .app{display:none}
 .header{background:var(--white);border-bottom:1.5px solid var(--border);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .header-left{display:flex;align-items:center;gap:10px}
@@ -33,25 +36,44 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .header-name{font-size:17px;font-weight:700}
 .header-sub{font-size:12px;color:var(--text-muted)}
 .logout-btn{background:var(--blue-light);color:var(--blue);border:1px solid #B5D4F4;padding:7px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer}
-.tabs{display:flex;background:var(--white);border-bottom:1px solid var(--border);padding:0 16px;overflow-x:auto}
-.tab{padding:12px 16px;font-size:13px;font-weight:500;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;white-space:nowrap}
+.tabs{display:flex;background:var(--white);border-bottom:1px solid var(--border);padding:0 12px;overflow-x:auto}
+.tab{padding:12px 14px;font-size:13px;font-weight:500;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;white-space:nowrap}
 .tab.active{color:var(--blue);border-bottom-color:var(--blue)}
 .view{display:none;padding:16px;max-width:900px;margin:0 auto}
 .view.active{display:block}
+
+/* STATS */
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:20px}
 .stat{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center}
 .stat-num{font-size:24px;font-weight:700}
 .stat-lbl{font-size:10px;color:var(--text-muted);margin-top:2px;text-transform:uppercase;letter-spacing:0.5px}
 .section-label{font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px}
-.phone-item{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:8px}
+
+/* PHONE ITEMS */
+.phone-item{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:10px}
 .phone-name{font-size:14px;font-weight:600;margin-bottom:8px}
-.phone-details{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-top:8px}
+.phone-details{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px;margin-bottom:10px}
 .detail-box{background:var(--bg);border-radius:8px;padding:8px 12px}
 .detail-label{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px}
 .detail-value{font-size:15px;font-weight:700}
 .detail-value.green{color:var(--green)}
 .detail-value.blue{color:var(--blue)}
-.date-tag{display:inline-block;font-size:11px;color:var(--text-muted);background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:2px 8px;margin-top:8px}
+.date-tag{display:inline-block;font-size:11px;color:var(--text-muted);background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:2px 8px;margin-bottom:10px}
+
+/* ACTION BUTTONS */
+.phone-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn-edit{background:var(--blue-light);color:var(--blue);border:1px solid #B5D4F4;padding:7px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer}
+.btn-vendre{background:var(--green);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer}
+.btn-edit:active{opacity:0.8}
+.btn-vendre:active{background:var(--green-dark)}
+
+/* INLINE EDIT PRICE */
+.edit-price-row{display:flex;gap:8px;align-items:center;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
+.edit-price-row input{flex:1;border:1.5px solid var(--blue);border-radius:8px;padding:8px 12px;font-size:14px;font-weight:600;color:var(--text);outline:none}
+.btn-save{background:var(--green);color:#fff;border:none;padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer}
+.btn-cancel{background:var(--bg);color:var(--text-muted);border:1px solid var(--border);padding:8px 12px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer}
+
+/* VENTE ITEMS */
 .vente-item{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
 .vname{font-size:14px;font-weight:600}
 .vmeta{font-size:11px;color:var(--text-muted);margin-top:3px}
@@ -60,17 +82,39 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .rapport-item{background:var(--white);border:1px solid var(--border);border-radius:9px;padding:12px 16px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
 .empty-state{text-align:center;padding:40px 20px;color:var(--text-muted);font-size:13px}
 .loading{text-align:center;padding:40px;color:var(--text-muted)}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:100;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal{background:var(--white);border-radius:16px;padding:24px;width:100%;max-width:380px;box-shadow:0 20px 60px rgba(0,0,0,0.2)}
+.modal-title{font-size:16px;font-weight:700;margin-bottom:4px}
+.modal-sub{font-size:12px;color:var(--text-muted);margin-bottom:20px}
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:5px}
+.fg input,.fg select{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px;color:var(--text);outline:none}
+.fg input:focus,.fg select:focus{border-color:var(--blue)}
+.profit-preview{font-size:15px;font-weight:700;margin:4px 0 16px;min-height:22px}
+.modal-actions{display:flex;gap:8px}
+.btn-confirm{flex:1;background:var(--green);color:#fff;border:none;padding:12px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}
+.btn-confirm:active{background:var(--green-dark)}
+.btn-annuler{background:var(--bg);color:var(--text-muted);border:1px solid var(--border);padding:12px 16px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}
+
+/* PARTAGER */
 .wa-preview{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:16px;font-size:13px;color:var(--text);line-height:1.75;white-space:pre-wrap;word-break:break-word;margin-bottom:14px;font-family:'Courier New',monospace}
 .copy-btn{background:var(--green);color:#fff;border:none;padding:12px 24px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;width:100%}
 .copy-btn:active{background:var(--green-dark)}
 .info-box{background:var(--blue-light);border:1px solid #B5D4F4;border-radius:8px;padding:12px 14px;font-size:12px;color:var(--blue-dark);margin-bottom:16px;line-height:1.5}
+
+/* TOAST */
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a1a1a;color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;opacity:0;transition:all 0.3s;pointer-events:none;z-index:999}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
 @media(max-width:480px){.stats{grid-template-columns:repeat(2,1fr)}.phone-details{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
 
+<!-- PIN -->
 <div class="pin-screen" id="pin-screen">
   <div class="pin-box">
     <div class="pin-title">Bonjour Axell!</div>
@@ -93,12 +137,13 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
       <div class="pin-key" onclick="pinKey('9')">9</div>
       <div class="pin-key" style="font-size:13px;color:var(--text-muted)"></div>
       <div class="pin-key" onclick="pinKey('0')">0</div>
-      <div class="pin-key del" onclick="pinDel()">⌫</div>
+      <div class="pin-key" onclick="pinDel()">⌫</div>
     </div>
     <div class="pin-error" id="pin-error"></div>
   </div>
 </div>
 
+<!-- APP -->
 <div class="app" id="app">
   <div class="header">
     <div class="header-left">
@@ -116,12 +161,14 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
     <div class="tab" id="tab-partager" onclick="goTab('partager')">📋 Partager</div>
   </div>
 
+  <!-- EN STOCK -->
   <div class="view active" id="view-stock">
     <div class="stats" id="stats-stock"></div>
     <div class="section-label">Vos téléphones en stock</div>
     <div id="stock-list"><div class="loading">Chargement...</div></div>
   </div>
 
+  <!-- MES VENTES -->
   <div class="view" id="view-ventes">
     <div class="stats" id="stats-ventes"></div>
     <div id="rapport-block"></div>
@@ -129,11 +176,44 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
     <div id="ventes-list"><div class="loading">Chargement...</div></div>
   </div>
 
+  <!-- PARTAGER -->
   <div class="view" id="view-partager">
-    <div class="info-box">Ce message affiche seulement tes téléphones disponibles. Aucun prix d'achat n'est visible. Tu peux le copier et le coller sur Facebook Marketplace, WhatsApp ou n'importe où.</div>
+    <div class="info-box">Ce message affiche seulement tes téléphones disponibles. Aucun prix d'achat visible. Copie-colle sur WhatsApp, Marketplace, n'importe où.</div>
     <div class="section-label">Ton inventaire prêt à partager</div>
     <div class="wa-preview" id="share-preview">Chargement...</div>
     <button class="copy-btn" onclick="copyShare()">📋 Copier le message</button>
+  </div>
+</div>
+
+<!-- MODAL VENTE -->
+<div class="modal-overlay" id="modal-vente">
+  <div class="modal">
+    <div class="modal-title">Enregistrer une vente</div>
+    <div class="modal-sub" id="modal-phone-name"></div>
+    <div class="fg">
+      <label>Prix de vente réel ($)</label>
+      <input type="number" id="m-reel" placeholder="ex: 450" oninput="updateProfit()">
+    </div>
+    <div class="profit-preview" id="profit-preview"></div>
+    <div class="fg">
+      <label>IMEI (optionnel)</label>
+      <input type="text" id="m-imei" placeholder="ex: 356938035643809">
+    </div>
+    <div class="fg">
+      <label>Garantie</label>
+      <select id="m-garantie">
+        <option value="Aucune">Aucune</option>
+        <option value="7 jours">7 jours</option>
+        <option value="14 jours">14 jours</option>
+        <option value="30 jours" selected>30 jours</option>
+        <option value="60 jours">60 jours</option>
+        <option value="90 jours">90 jours</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-annuler" onclick="closeModal()">Annuler</button>
+      <button class="btn-confirm" onclick="confirmVente()">✅ Confirmer la vente</button>
+    </div>
   </div>
 </div>
 
@@ -141,7 +221,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, collection, doc, addDoc, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDEuNfVvNRUR8F7Xrz6qDom58-k6DSTPl0",
@@ -159,9 +239,12 @@ const PIN = '8888';
 let pinBuffer = '';
 let phones = [];
 let ventes = [];
+let pendingId = null;
+let editingPriceId = null;
 
 function daysSince(d){if(!d)return 0;return Math.floor((new Date()-new Date(d))/(1000*60*60*24));}
 
+// ── PIN ──
 window.pinKey = function(k){
   if(pinBuffer.length>=4)return;
   pinBuffer+=k;
@@ -181,7 +264,6 @@ function unlock(){
   document.getElementById('app').style.display='block';
   startListeners();
 }
-
 window.logout = function(){
   document.getElementById('app').style.display='none';
   document.getElementById('pin-screen').style.display='flex';
@@ -189,20 +271,23 @@ window.logout = function(){
   document.getElementById('pin-error').textContent='';
 }
 
+// ── FIREBASE ──
 function startListeners(){
   onSnapshot(collection(db,'phones'), snap => {
     phones = snap.docs.map(d=>({...d.data(),_id:d.id})).filter(p=>p.consigne==='Axell');
-    const tab = document.querySelector('.tab.active')?.id?.replace('tab-','');
+    const tab=activeTab();
     if(tab==='stock') renderStock();
     if(tab==='partager') renderShare();
   });
   onSnapshot(collection(db,'ventes'), snap => {
     ventes = snap.docs.map(d=>({...d.data(),_id:d.id})).filter(v=>v.consigne==='Axell');
-    const tab = document.querySelector('.tab.active')?.id?.replace('tab-','');
-    if(tab==='ventes') renderVentes();
+    if(activeTab()==='ventes') renderVentes();
   });
 }
 
+function activeTab(){return document.querySelector('.tab.active')?.id?.replace('tab-','');}
+
+// ── TABS ──
 window.goTab = function(tab){
   ['stock','ventes','partager'].forEach(t=>{
     document.getElementById('tab-'+t).classList.toggle('active',t===tab);
@@ -213,6 +298,7 @@ window.goTab = function(tab){
   if(tab==='partager') renderShare();
 }
 
+// ── EN STOCK ──
 function renderStock(){
   const enStock=phones.filter(p=>p.status==='dispo');
   const valStock=enStock.reduce((s,p)=>s+p.annonce,0);
@@ -226,7 +312,7 @@ function renderStock(){
   const el=document.getElementById('stock-list');
   if(!enStock.length){el.innerHTML='<div class="empty-state">Aucun téléphone en stock actuellement.</div>';return;}
   el.innerHTML=enStock.sort((a,b)=>a.annonce-b.annonce).map(p=>`
-    <div class="phone-item">
+    <div class="phone-item" id="item-${p._id}">
       <div class="phone-name">${p.brand} ${p.model} · ${p.storage}${p.color?' · '+p.color:''}</div>
       <div class="phone-details">
         <div class="detail-box"><div class="detail-label">Prix d'achat</div><div class="detail-value">${p.achat}$</div></div>
@@ -234,9 +320,85 @@ function renderStock(){
         <div class="detail-box"><div class="detail-label">Marge</div><div class="detail-value green">${(p.annonce-p.achat).toFixed(0)}$</div></div>
       </div>
       ${p.dateEntree?`<div class="date-tag">En stock depuis le ${p.dateEntree}</div>`:''}
+      <div class="phone-actions">
+        <button class="btn-edit" onclick="startEditPrice('${p._id}',${p.annonce})">✏️ Changer le prix</button>
+        <button class="btn-vendre" onclick="openVente('${p._id}')">💰 Vendre</button>
+      </div>
+      <div class="edit-price-row" id="edit-row-${p._id}" style="display:none">
+        <input type="number" id="edit-input-${p._id}" placeholder="Nouveau prix ($)" value="${p.annonce}">
+        <button class="btn-save" onclick="savePrice('${p._id}')">Sauvegarder</button>
+        <button class="btn-cancel" onclick="cancelEdit('${p._id}')">Annuler</button>
+      </div>
     </div>`).join('');
 }
 
+// ── EDIT PRICE ──
+window.startEditPrice = function(id, currentPrice){
+  if(editingPriceId && editingPriceId!==id) cancelEdit(editingPriceId);
+  editingPriceId=id;
+  document.getElementById('edit-row-'+id).style.display='flex';
+  const input=document.getElementById('edit-input-'+id);
+  input.value=currentPrice;
+  input.focus();
+}
+window.cancelEdit = function(id){
+  document.getElementById('edit-row-'+id).style.display='none';
+  editingPriceId=null;
+}
+window.savePrice = async function(id){
+  const val=parseFloat(document.getElementById('edit-input-'+id).value);
+  if(!val||val<=0){toast('Prix invalide');return;}
+  try{
+    await updateDoc(doc(db,'phones',id),{annonce:val});
+    editingPriceId=null;
+    toast('✅ Prix mis à jour!');
+  }catch(e){toast('Erreur: '+e.message);}
+}
+
+// ── MODAL VENTE ──
+window.openVente = function(id){
+  const p=phones.find(x=>x._id===id);if(!p)return;
+  pendingId=id;
+  document.getElementById('modal-phone-name').textContent=`${p.brand} ${p.model} ${p.storage}${p.color?' · '+p.color:''}`;
+  document.getElementById('m-reel').value=p.annonce;
+  document.getElementById('m-imei').value='';
+  document.getElementById('m-garantie').value='30 jours';
+  updateProfit();
+  document.getElementById('modal-vente').classList.add('open');
+}
+window.closeModal = function(){
+  document.getElementById('modal-vente').classList.remove('open');
+  pendingId=null;
+}
+window.updateProfit = function(){
+  const p=phones.find(x=>x._id===pendingId);if(!p)return;
+  const reel=parseFloat(document.getElementById('m-reel').value)||0;
+  const profit=reel-p.achat;
+  const el=document.getElementById('profit-preview');
+  el.textContent=reel>0?`Profit: ${profit>=0?'+':''}${profit.toFixed(2)}$`:'';
+  el.style.color=profit>=0?'var(--green)':'var(--red)';
+}
+window.confirmVente = async function(){
+  const p=phones.find(x=>x._id===pendingId);if(!p)return;
+  const reel=parseFloat(document.getElementById('m-reel').value)||p.annonce;
+  const imei=document.getElementById('m-imei').value.trim();
+  const garantie=document.getElementById('m-garantie').value;
+  const dateVente=new Date().toLocaleDateString('fr-CA');
+  const joursStock=daysSince(p.dateEntree);
+  try{
+    await addDoc(collection(db,'ventes'),{
+      brand:p.brand,model:p.model,storage:p.storage,color:p.color||'',
+      achat:p.achat,annonce:p.annonce,reel,profit:reel-p.achat,
+      consigne:'Axell',dateEntree:p.dateEntree||'',dateVente,joursStock,
+      imei:imei||'',garantie,note:p.note||''
+    });
+    await updateDoc(doc(db,'phones',pendingId),{status:'vendu'});
+    closeModal();
+    toast(`✅ Vendu! Profit: ${(reel-p.achat).toFixed(2)}$`);
+  }catch(e){toast('Erreur: '+e.message);}
+}
+
+// ── MES VENTES ──
 function renderVentes(){
   const totalProfit=ventes.reduce((s,v)=>s+v.profit,0);
   const totalRev=ventes.reduce((s,v)=>s+v.reel,0);
@@ -263,6 +425,7 @@ function renderVentes(){
     </div>`).join('');
 }
 
+// ── PARTAGER ──
 function renderShare(){
   const dispo=phones.filter(p=>p.status==='dispo').sort((a,b)=>a.annonce-b.annonce);
   let m='📱 CELLULAIRES DISPONIBLES\n━━━━━━━━━━━━━━━━━━━━\n\n';
@@ -284,17 +447,13 @@ function renderShare(){
   m+='━━━━━━━━━━━━━━━━━━━━\n💬 Écris-moi pour réserver!';
   document.getElementById('share-preview').textContent=m;
 }
-
 window.copyShare = function(){
   const t=document.getElementById('share-preview').textContent;
-  if(navigator.clipboard){
-    navigator.clipboard.writeText(t).then(()=>toast('✅ Copié!'));
-  } else {
-    const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);toast('✅ Copié!');
-  }
+  if(navigator.clipboard){navigator.clipboard.writeText(t).then(()=>toast('✅ Copié!'));}
+  else{const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);toast('✅ Copié!');}
 }
 
-function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2500);}
+function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2800);}
 </script>
 </body>
 </html>
