@@ -89,9 +89,10 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .btn-ajouter:active{background:var(--purple-dark)}
 
 /* VENTE ITEMS */
-.vente-item{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.vente-item{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:8px}
+.vente-item-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
 .vente-item.perso{border-left:3px solid var(--purple)}
-.vname{font-size:14px;font-weight:600}
+.vente-item-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px}
 .vmeta{font-size:11px;color:var(--text-muted);margin-top:3px}
 .profit-badge{background:var(--green-light);color:var(--green-dark);font-size:13px;font-weight:700;padding:5px 12px;border-radius:8px}
 .revenue-badge{background:var(--purple-light);color:var(--purple-dark);font-size:13px;font-weight:700;padding:5px 12px;border-radius:8px}
@@ -476,9 +477,7 @@ function renderStock(){
       <div class="phone-actions">
         <button class="btn-edit" onclick="startEditPrice('${p._id}',${p.annonce})">✏️ Changer le prix</button>
         <button class="btn-vendre" onclick="openVente('${p._id}')">💰 Vendre</button>
-        <button class="btn-paiement" onclick="openPaiement('${p._id}')">💵 Paiement reçu</button>
       </div>
-      ${p.paiementRecu?`<div class="paiement-badge">✅ Paiement: ${p.paiementRecu}$${p.paiementNote?' · '+p.paiementNote:''} · ${p.paiementDate||''}</div>`:''}
       <div class="edit-price-row" id="edit-row-${p._id}" style="display:none">
         <input type="number" id="edit-input-${p._id}" placeholder="Nouveau prix ($)" value="${p.annonce}">
         <button class="btn-save" onclick="savePrice('${p._id}')">Sauvegarder</button>
@@ -512,11 +511,11 @@ window.savePrice = async function(id){
 
 // ── MODAL PAIEMENT ──
 window.openPaiement = function(id){
-  const p=phones.find(x=>x._id===id);if(!p)return;
+  const v=ventes.find(x=>x._id===id);if(!v)return;
   pendingId=id;
-  document.getElementById('modal-paiement-phone').textContent=`${p.brand} ${p.model} ${p.storage}${p.color?' · '+p.color:''}`;
-  document.getElementById('m-paiement').value=p.paiementRecu||'';
-  document.getElementById('m-paiement-note').value=p.paiementNote||'';
+  document.getElementById('modal-paiement-phone').textContent=`${v.brand} ${v.model} ${v.storage}${v.color?' · '+v.color:''}`;
+  document.getElementById('m-paiement').value=v.paiementRecu||'';
+  document.getElementById('m-paiement-note').value=v.paiementNote||'';
   document.getElementById('modal-paiement').classList.add('open');
 }
 window.closePaiement = function(){
@@ -529,7 +528,7 @@ window.confirmPaiement = async function(){
   const note=document.getElementById('m-paiement-note').value.trim();
   const date=new Date().toLocaleDateString('fr-CA');
   try{
-    await updateDoc(doc(db,'phones',pendingId),{paiementRecu:val,paiementNote:note,paiementDate:date});
+    await updateDoc(doc(db,'ventes',pendingId),{paiementRecu:val,paiementNote:note,paiementDate:date});
     closePaiement();
     toast(`✅ Paiement de ${val}$ enregistré!`);
   }catch(e){toast('Erreur: '+e.message);}
@@ -597,11 +596,17 @@ function renderVentes(){
   if(!ventes.length){el.innerHTML='<div class="empty-state">Aucune vente enregistrée encore.</div>';return;}
   el.innerHTML=[...ventes].reverse().map(v=>`
     <div class="vente-item">
-      <div>
-        <div class="vname">${v.brand} ${v.model} · ${v.storage}${v.color?' · '+v.color:''}</div>
-        <div class="vmeta">Achat: ${v.achat}$ · Annoncé: ${v.annonce}$ · <strong>Vendu: ${v.reel}$</strong>${v.dateVente?' · '+v.dateVente:''}${v.joursStock!=null?`<span class="rotation-tag">${v.joursStock}j en stock</span>`:''}</div>
+      <div class="vente-item-top">
+        <div>
+          <div class="vname">${v.brand} ${v.model} · ${v.storage}${v.color?' · '+v.color:''}</div>
+          <div class="vmeta">Achat: ${v.achat}$ · Annoncé: ${v.annonce}$ · <strong>Vendu: ${v.reel}$</strong>${v.dateVente?' · '+v.dateVente:''}${v.joursStock!=null?`<span class="rotation-tag">${v.joursStock}j en stock</span>`:''}</div>
+        </div>
+        <div class="profit-badge">${v.profit>=0?'+':''}${v.profit.toFixed(2)}$</div>
       </div>
-      <div class="profit-badge">${v.profit>=0?'+':''}${v.profit.toFixed(2)}$</div>
+      <div class="vente-item-actions">
+        <button class="btn-paiement" onclick="openPaiement('${v._id}')">💵 Paiement reçu</button>
+        ${v.paiementRecu?`<div class="paiement-badge">✅ ${v.paiementRecu}$${v.paiementNote?' · '+v.paiementNote:''} · ${v.paiementDate||''}</div>`:''}
+      </div>
     </div>`).join('');
 }
 
