@@ -10,6 +10,7 @@
   --blue:#185FA5;--blue-light:#E6F1FB;--blue-dark:#0C447C;
   --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#0F6E56;
   --amber:#BA7517;--amber-light:#FAEEDA;
+  --purple:#6D28D9;--purple-light:#EDE9FE;--purple-dark:#4C1D95;
   --red:#A32D2D;--red-light:#FCEBEB;
   --text:#1a1a1a;--text-muted:#6b7280;--border:#e5e7eb;--bg:#f9fafb;--white:#fff;
 }
@@ -31,14 +32,16 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 /* APP */
 .app{display:none}
 .header{background:var(--white);border-bottom:1.5px solid var(--border);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.header-left{display:flex;align-items:center;gap:10px}
-.header-dot{width:10px;height:10px;background:var(--blue);border-radius:50%}
+.header-left{display:flex;align-items:center;gap:10px;cursor:default;-webkit-user-select:none;user-select:none}
+.header-dot{width:10px;height:10px;background:var(--blue);border-radius:50%;transition:background 0.3s}
+.header-dot.admin{background:var(--amber)}
 .header-name{font-size:17px;font-weight:700}
 .header-sub{font-size:12px;color:var(--text-muted)}
 .logout-btn{background:var(--blue-light);color:var(--blue);border:1px solid #B5D4F4;padding:7px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer}
 .tabs{display:flex;background:var(--white);border-bottom:1px solid var(--border);padding:0 12px;overflow-x:auto}
 .tab{padding:12px 14px;font-size:13px;font-weight:500;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;white-space:nowrap}
 .tab.active{color:var(--blue);border-bottom-color:var(--blue)}
+.tab-perso.active{color:var(--purple);border-bottom-color:var(--purple)}
 .view{display:none;padding:16px;max-width:900px;margin:0 auto}
 .view.active{display:block}
 
@@ -51,6 +54,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 
 /* PHONE ITEMS */
 .phone-item{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:10px}
+.phone-item.perso{border-left:3px solid var(--purple)}
 .phone-name{font-size:14px;font-weight:600;margin-bottom:8px}
 .phone-details{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px;margin-bottom:10px}
 .detail-box{background:var(--bg);border-radius:8px;padding:8px 12px}
@@ -58,6 +62,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .detail-value{font-size:15px;font-weight:700}
 .detail-value.green{color:var(--green)}
 .detail-value.blue{color:var(--blue)}
+.detail-value.purple{color:var(--purple)}
 .date-tag{display:inline-block;font-size:11px;color:var(--text-muted);background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:2px 8px;margin-bottom:10px}
 
 /* ACTION BUTTONS */
@@ -66,6 +71,12 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .btn-vendre{background:var(--green);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer}
 .btn-edit:active{opacity:0.8}
 .btn-vendre:active{background:var(--green-dark)}
+.btn-suppr{background:var(--red-light);color:var(--red);border:1px solid #F5C6C6;padding:7px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer}
+.btn-suppr:active{opacity:0.8}
+.btn-paiement{display:none;background:var(--amber-light);color:var(--amber);border:1px solid #F0C070;padding:7px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer}
+.btn-paiement:active{background:#F0C070}
+.admin-mode .btn-paiement{display:inline-block}
+.paiement-badge{display:inline-flex;align-items:center;gap:5px;background:var(--green-light);color:var(--green-dark);font-size:11px;font-weight:600;padding:4px 10px;border-radius:6px;margin-top:6px}
 
 /* INLINE EDIT PRICE */
 .edit-price-row{display:flex;gap:8px;align-items:center;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
@@ -73,11 +84,17 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .btn-save{background:var(--green);color:#fff;border:none;padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer}
 .btn-cancel{background:var(--bg);color:var(--text-muted);border:1px solid var(--border);padding:8px 12px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer}
 
+/* AJOUTER PERSO */
+.btn-ajouter{background:var(--purple);color:#fff;border:none;padding:11px 18px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;margin-bottom:16px;width:100%}
+.btn-ajouter:active{background:var(--purple-dark)}
+
 /* VENTE ITEMS */
 .vente-item{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.vente-item.perso{border-left:3px solid var(--purple)}
 .vname{font-size:14px;font-weight:600}
 .vmeta{font-size:11px;color:var(--text-muted);margin-top:3px}
 .profit-badge{background:var(--green-light);color:var(--green-dark);font-size:13px;font-weight:700;padding:5px 12px;border-radius:8px}
+.revenue-badge{background:var(--purple-light);color:var(--purple-dark);font-size:13px;font-weight:700;padding:5px 12px;border-radius:8px}
 .rotation-tag{display:inline-block;background:#EEF2FF;color:#4338CA;font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;margin-left:4px}
 .rapport-item{background:var(--white);border:1px solid var(--border);border-radius:9px;padding:12px 16px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
 .empty-state{text-align:center;padding:40px 20px;color:var(--text-muted);font-size:13px}
@@ -86,7 +103,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 /* MODAL */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:100;align-items:center;justify-content:center;padding:20px}
 .modal-overlay.open{display:flex}
-.modal{background:var(--white);border-radius:16px;padding:24px;width:100%;max-width:380px;box-shadow:0 20px 60px rgba(0,0,0,0.2)}
+.modal{background:var(--white);border-radius:16px;padding:24px;width:100%;max-width:380px;box-shadow:0 20px 60px rgba(0,0,0,0.2);max-height:90vh;overflow-y:auto}
 .modal-title{font-size:16px;font-weight:700;margin-bottom:4px}
 .modal-sub{font-size:12px;color:var(--text-muted);margin-bottom:20px}
 .fg{margin-bottom:14px}
@@ -96,7 +113,9 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .profit-preview{font-size:15px;font-weight:700;margin:4px 0 16px;min-height:22px}
 .modal-actions{display:flex;gap:8px}
 .btn-confirm{flex:1;background:var(--green);color:#fff;border:none;padding:12px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}
+.btn-confirm.purple{background:var(--purple)}
 .btn-confirm:active{background:var(--green-dark)}
+.btn-confirm.purple:active{background:var(--purple-dark)}
 .btn-annuler{background:var(--bg);color:var(--text-muted);border:1px solid var(--border);padding:12px 16px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}
 
 /* PARTAGER */
@@ -137,7 +156,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
       <div class="pin-key" onclick="pinKey('9')">9</div>
       <div class="pin-key" style="font-size:13px;color:var(--text-muted)"></div>
       <div class="pin-key" onclick="pinKey('0')">0</div>
-      <div class="pin-key" onclick="pinDel()">⌫</div>
+      <div class="pin-key" onclick="pinDel()">&#9003;</div>
     </div>
     <div class="pin-error" id="pin-error"></div>
   </div>
@@ -146,8 +165,8 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 <!-- APP -->
 <div class="app" id="app">
   <div class="header">
-    <div class="header-left">
-      <div class="header-dot"></div>
+    <div class="header-left" id="header-left-trigger">
+      <div class="header-dot" id="header-dot"></div>
       <div>
         <div class="header-name">Mon inventaire</div>
         <div class="header-sub">Espace consignateur — Axell</div>
@@ -158,22 +177,33 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   <div class="tabs">
     <div class="tab active" id="tab-stock" onclick="goTab('stock')">En stock</div>
     <div class="tab" id="tab-ventes" onclick="goTab('ventes')">Mes ventes</div>
+    <div class="tab tab-perso" id="tab-perso" onclick="goTab('perso')">📱 Mes perso</div>
     <div class="tab" id="tab-partager" onclick="goTab('partager')">📋 Partager</div>
   </div>
 
-  <!-- EN STOCK -->
+  <!-- EN STOCK (consignes) -->
   <div class="view active" id="view-stock">
     <div class="stats" id="stats-stock"></div>
-    <div class="section-label">Vos téléphones en stock</div>
+    <div class="section-label">Vos téléphones en consigne</div>
     <div id="stock-list"><div class="loading">Chargement...</div></div>
   </div>
 
-  <!-- MES VENTES -->
+  <!-- MES VENTES (consignes) -->
   <div class="view" id="view-ventes">
     <div class="stats" id="stats-ventes"></div>
     <div id="rapport-block"></div>
-    <div class="section-label" style="margin-top:16px">Historique des ventes</div>
+    <div class="section-label" style="margin-top:16px">Historique des ventes — Consignes</div>
     <div id="ventes-list"><div class="loading">Chargement...</div></div>
+  </div>
+
+  <!-- MES PERSO -->
+  <div class="view" id="view-perso">
+    <div class="stats" id="stats-perso"></div>
+    <button class="btn-ajouter" onclick="openAjouterPerso()">+ Ajouter un téléphone perso</button>
+    <div class="section-label">En stock — Mes perso</div>
+    <div id="perso-stock-list"><div class="loading">Chargement...</div></div>
+    <div class="section-label" style="margin-top:20px">Historique des ventes — Mes perso</div>
+    <div id="perso-ventes-list"><div class="loading">Chargement...</div></div>
   </div>
 
   <!-- PARTAGER -->
@@ -185,7 +215,27 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   </div>
 </div>
 
-<!-- MODAL VENTE -->
+<!-- MODAL PAIEMENT (admin only) -->
+<div class="modal-overlay" id="modal-paiement">
+  <div class="modal">
+    <div class="modal-title">💵 Paiement reçu</div>
+    <div class="modal-sub" id="modal-paiement-phone"></div>
+    <div class="fg">
+      <label>Montant reçu ($)</label>
+      <input type="number" id="m-paiement" placeholder="ex: 225">
+    </div>
+    <div class="fg">
+      <label>Note (optionnel)</label>
+      <input type="text" id="m-paiement-note" placeholder="ex: cash, virement...">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-annuler" onclick="closePaiement()">Annuler</button>
+      <button class="btn-confirm" onclick="confirmPaiement()">✅ Confirmer</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL VENTE (consignes) -->
 <div class="modal-overlay" id="modal-vente">
   <div class="modal">
     <div class="modal-title">Enregistrer une vente</div>
@@ -217,11 +267,87 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   </div>
 </div>
 
+<!-- MODAL AJOUTER PERSO -->
+<div class="modal-overlay" id="modal-ajout-perso">
+  <div class="modal">
+    <div class="modal-title">📱 Ajouter un téléphone perso</div>
+    <div class="modal-sub">Cet appareil sera dans ton espace personnel, séparé des consignes.</div>
+    <div class="fg">
+      <label>Marque</label>
+      <select id="ap-brand">
+        <option value="Apple">Apple</option>
+        <option value="Samsung">Samsung</option>
+        <option value="Google">Google</option>
+        <option value="Autre">Autre</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label>Modèle</label>
+      <input type="text" id="ap-model" placeholder="ex: iPhone 14 Pro, Galaxy S23...">
+    </div>
+    <div class="fg">
+      <label>Stockage</label>
+      <select id="ap-storage">
+        <option>64Go</option>
+        <option>128Go</option>
+        <option selected>256Go</option>
+        <option>512Go</option>
+        <option>1To</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label>Couleur (optionnel)</label>
+      <input type="text" id="ap-color" placeholder="ex: Noir, Blanc...">
+    </div>
+    <div class="fg">
+      <label>Prix payé ($)</label>
+      <input type="number" id="ap-achat" placeholder="ex: 300">
+    </div>
+    <div class="fg">
+      <label>Prix demandé ($)</label>
+      <input type="number" id="ap-annonce" placeholder="ex: 400">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-annuler" onclick="closeAjouterPerso()">Annuler</button>
+      <button class="btn-confirm purple" onclick="confirmAjouterPerso()">+ Ajouter</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL VENTE PERSO -->
+<div class="modal-overlay" id="modal-vente-perso">
+  <div class="modal">
+    <div class="modal-title">💰 Vendre — Perso</div>
+    <div class="modal-sub" id="modal-perso-phone-name"></div>
+    <div class="fg">
+      <label>Prix de vente ($)</label>
+      <input type="number" id="mp-reel" placeholder="ex: 380" oninput="updateProfitPerso()">
+    </div>
+    <div class="profit-preview" id="profit-preview-perso"></div>
+    <div class="fg">
+      <label>IMEI (optionnel)</label>
+      <input type="text" id="mp-imei" placeholder="ex: 356938035643809">
+    </div>
+    <div class="fg">
+      <label>Garantie</label>
+      <select id="mp-garantie">
+        <option value="Aucune">Aucune</option>
+        <option value="7 jours">7 jours</option>
+        <option value="30 jours" selected>30 jours</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-annuler" onclick="closeVentePerso()">Annuler</button>
+      <button class="btn-confirm purple" onclick="confirmVentePerso()">✅ Confirmer</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, doc, addDoc, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, collection, doc, addDoc, updateDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDEuNfVvNRUR8F7Xrz6qDom58-k6DSTPl0",
@@ -237,10 +363,15 @@ const db = getFirestore(app);
 
 const PIN = '8888';
 let pinBuffer = '';
-let phones = [];
-let ventes = [];
+let phones = [];       // consignes Axell
+let ventes = [];       // ventes consignes Axell
+let persoPhones = [];  // perso Axell en stock
+let persoVentes = [];  // ventes perso Axell
 let pendingId = null;
+let pendingPersoId = null;
 let editingPriceId = null;
+let isAdmin = false;
+let lpTimer = null;
 
 function daysSince(d){if(!d)return 0;return Math.floor((new Date()-new Date(d))/(1000*60*60*24));}
 
@@ -263,12 +394,25 @@ function unlock(){
   document.getElementById('pin-screen').style.display='none';
   document.getElementById('app').style.display='block';
   startListeners();
+  const trigger = document.getElementById('header-left-trigger');
+  trigger.addEventListener('touchstart', ()=>{ lpTimer=setTimeout(toggleAdmin, 2000); }, {passive:true});
+  trigger.addEventListener('touchend', ()=>{ clearTimeout(lpTimer); });
+  trigger.addEventListener('touchmove', ()=>{ clearTimeout(lpTimer); });
+  trigger.addEventListener('mousedown', ()=>{ lpTimer=setTimeout(toggleAdmin, 2000); });
+  trigger.addEventListener('mouseup', ()=>{ clearTimeout(lpTimer); });
+}
+function toggleAdmin(){
+  isAdmin = !isAdmin;
+  document.getElementById('app').classList.toggle('admin-mode', isAdmin);
+  document.getElementById('header-dot').classList.toggle('admin', isAdmin);
+  toast(isAdmin ? '🔐 Mode admin activé' : '🔒 Mode admin désactivé');
 }
 window.logout = function(){
   document.getElementById('app').style.display='none';
   document.getElementById('pin-screen').style.display='flex';
   pinBuffer='';updateDots();
   document.getElementById('pin-error').textContent='';
+  isAdmin=false;
 }
 
 // ── FIREBASE ──
@@ -283,22 +427,31 @@ function startListeners(){
     ventes = snap.docs.map(d=>({...d.data(),_id:d.id})).filter(v=>v.consigne==='Axell');
     if(activeTab()==='ventes') renderVentes();
   });
+  onSnapshot(collection(db,'axell_perso'), snap => {
+    persoPhones = snap.docs.map(d=>({...d.data(),_id:d.id})).filter(p=>p.status==='dispo');
+    if(activeTab()==='perso') renderPerso();
+  });
+  onSnapshot(collection(db,'axell_perso_ventes'), snap => {
+    persoVentes = snap.docs.map(d=>({...d.data(),_id:d.id}));
+    if(activeTab()==='perso') renderPerso();
+  });
 }
 
 function activeTab(){return document.querySelector('.tab.active')?.id?.replace('tab-','');}
 
 // ── TABS ──
 window.goTab = function(tab){
-  ['stock','ventes','partager'].forEach(t=>{
+  ['stock','ventes','perso','partager'].forEach(t=>{
     document.getElementById('tab-'+t).classList.toggle('active',t===tab);
     document.getElementById('view-'+t).classList.toggle('active',t===tab);
   });
   if(tab==='stock') renderStock();
   if(tab==='ventes') renderVentes();
+  if(tab==='perso') renderPerso();
   if(tab==='partager') renderShare();
 }
 
-// ── EN STOCK ──
+// ── EN STOCK (consignes) ──
 function renderStock(){
   const enStock=phones.filter(p=>p.status==='dispo');
   const valStock=enStock.reduce((s,p)=>s+p.annonce,0);
@@ -310,7 +463,7 @@ function renderStock(){
     <div class="stat"><div class="stat-num" style="color:var(--green)">${(valStock-valAchat).toFixed(0)}$</div><div class="stat-lbl">Marge totale</div></div>
   `;
   const el=document.getElementById('stock-list');
-  if(!enStock.length){el.innerHTML='<div class="empty-state">Aucun téléphone en stock actuellement.</div>';return;}
+  if(!enStock.length){el.innerHTML='<div class="empty-state">Aucun téléphone en consigne actuellement.</div>';return;}
   el.innerHTML=enStock.sort((a,b)=>a.annonce-b.annonce).map(p=>`
     <div class="phone-item" id="item-${p._id}">
       <div class="phone-name">${p.brand} ${p.model} · ${p.storage}${p.color?' · '+p.color:''}</div>
@@ -323,7 +476,9 @@ function renderStock(){
       <div class="phone-actions">
         <button class="btn-edit" onclick="startEditPrice('${p._id}',${p.annonce})">✏️ Changer le prix</button>
         <button class="btn-vendre" onclick="openVente('${p._id}')">💰 Vendre</button>
+        <button class="btn-paiement" onclick="openPaiement('${p._id}')">💵 Paiement reçu</button>
       </div>
+      ${p.paiementRecu?`<div class="paiement-badge">✅ Paiement: ${p.paiementRecu}$${p.paiementNote?' · '+p.paiementNote:''} · ${p.paiementDate||''}</div>`:''}
       <div class="edit-price-row" id="edit-row-${p._id}" style="display:none">
         <input type="number" id="edit-input-${p._id}" placeholder="Nouveau prix ($)" value="${p.annonce}">
         <button class="btn-save" onclick="savePrice('${p._id}')">Sauvegarder</button>
@@ -355,7 +510,32 @@ window.savePrice = async function(id){
   }catch(e){toast('Erreur: '+e.message);}
 }
 
-// ── MODAL VENTE ──
+// ── MODAL PAIEMENT ──
+window.openPaiement = function(id){
+  const p=phones.find(x=>x._id===id);if(!p)return;
+  pendingId=id;
+  document.getElementById('modal-paiement-phone').textContent=`${p.brand} ${p.model} ${p.storage}${p.color?' · '+p.color:''}`;
+  document.getElementById('m-paiement').value=p.paiementRecu||'';
+  document.getElementById('m-paiement-note').value=p.paiementNote||'';
+  document.getElementById('modal-paiement').classList.add('open');
+}
+window.closePaiement = function(){
+  document.getElementById('modal-paiement').classList.remove('open');
+  pendingId=null;
+}
+window.confirmPaiement = async function(){
+  const val=parseFloat(document.getElementById('m-paiement').value);
+  if(!val||val<=0){toast('Montant invalide');return;}
+  const note=document.getElementById('m-paiement-note').value.trim();
+  const date=new Date().toLocaleDateString('fr-CA');
+  try{
+    await updateDoc(doc(db,'phones',pendingId),{paiementRecu:val,paiementNote:note,paiementDate:date});
+    closePaiement();
+    toast(`✅ Paiement de ${val}$ enregistré!`);
+  }catch(e){toast('Erreur: '+e.message);}
+}
+
+// ── MODAL VENTE (consignes) ──
 window.openVente = function(id){
   const p=phones.find(x=>x._id===id);if(!p)return;
   pendingId=id;
@@ -398,7 +578,7 @@ window.confirmVente = async function(){
   }catch(e){toast('Erreur: '+e.message);}
 }
 
-// ── MES VENTES ──
+// ── MES VENTES (consignes) ──
 function renderVentes(){
   const totalProfit=ventes.reduce((s,v)=>s+v.profit,0);
   const totalRev=ventes.reduce((s,v)=>s+v.reel,0);
@@ -423,6 +603,164 @@ function renderVentes(){
       </div>
       <div class="profit-badge">${v.profit>=0?'+':''}${v.profit.toFixed(2)}$</div>
     </div>`).join('');
+}
+
+// ── MES PERSO ──
+function renderPerso(){
+  const enStock=persoPhones;
+  const totalVentes=persoVentes.length;
+  const totalRev=persoVentes.reduce((s,v)=>s+v.reel,0);
+  const totalProfit=persoVentes.reduce((s,v)=>s+(v.profit||0),0);
+  document.getElementById('stats-perso').innerHTML=`
+    <div class="stat"><div class="stat-num" style="color:var(--purple)">${enStock.length}</div><div class="stat-lbl">En stock</div></div>
+    <div class="stat"><div class="stat-num">${enStock.reduce((s,p)=>s+p.annonce,0).toFixed(0)}$</div><div class="stat-lbl">Valeur annoncée</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--green)">${totalVentes}</div><div class="stat-lbl">Vendus</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--green)">${totalProfit.toFixed(0)}$</div><div class="stat-lbl">Profit total</div></div>
+  `;
+
+  // Stock perso
+  const stockEl=document.getElementById('perso-stock-list');
+  if(!enStock.length){
+    stockEl.innerHTML='<div class="empty-state">Aucun téléphone perso en stock.<br>Ajoute le tien avec le bouton ci-dessus!</div>';
+  } else {
+    stockEl.innerHTML=enStock.sort((a,b)=>a.annonce-b.annonce).map(p=>`
+      <div class="phone-item perso" id="perso-item-${p._id}">
+        <div class="phone-name">📱 ${p.brand} ${p.model} · ${p.storage}${p.color?' · '+p.color:''}</div>
+        <div class="phone-details">
+          <div class="detail-box"><div class="detail-label">Payé</div><div class="detail-value">${p.achat}$</div></div>
+          <div class="detail-box"><div class="detail-label">Annoncé</div><div class="detail-value purple">${p.annonce}$</div></div>
+          <div class="detail-box"><div class="detail-label">Profit visé</div><div class="detail-value green">${(p.annonce-p.achat).toFixed(0)}$</div></div>
+        </div>
+        ${p.dateEntree?`<div class="date-tag">Ajouté le ${p.dateEntree}</div>`:''}
+        <div class="phone-actions">
+          <button class="btn-edit" onclick="startEditPrixPerso('${p._id}',${p.annonce})">✏️ Changer le prix</button>
+          <button class="btn-vendre" onclick="openVentePerso('${p._id}')">💰 Vendre</button>
+          <button class="btn-suppr" onclick="supprimerPerso('${p._id}')">🗑 Supprimer</button>
+        </div>
+        <div class="edit-price-row" id="edit-perso-row-${p._id}" style="display:none">
+          <input type="number" id="edit-perso-input-${p._id}" placeholder="Nouveau prix ($)" value="${p.annonce}">
+          <button class="btn-save" onclick="savePrixPerso('${p._id}')">Sauvegarder</button>
+          <button class="btn-cancel" onclick="cancelEditPerso('${p._id}')">Annuler</button>
+        </div>
+      </div>`).join('');
+  }
+
+  // Ventes perso
+  const ventesEl=document.getElementById('perso-ventes-list');
+  if(!persoVentes.length){
+    ventesEl.innerHTML='<div class="empty-state">Aucune vente perso enregistrée.</div>';
+  } else {
+    ventesEl.innerHTML=[...persoVentes].reverse().map(v=>`
+      <div class="vente-item perso">
+        <div>
+          <div class="vname">📱 ${v.brand} ${v.model} · ${v.storage}${v.color?' · '+v.color:''}</div>
+          <div class="vmeta">Payé: ${v.achat}$ · <strong>Vendu: ${v.reel}$</strong>${v.dateVente?' · '+v.dateVente:''}${v.joursStock!=null?`<span class="rotation-tag">${v.joursStock}j</span>`:''}</div>
+        </div>
+        <div class="revenue-badge">${(v.profit||0)>=0?'+':''}${(v.profit||0).toFixed(2)}$</div>
+      </div>`).join('');
+  }
+}
+
+// ── AJOUTER PERSO ──
+window.openAjouterPerso = function(){
+  document.getElementById('ap-brand').value='Apple';
+  document.getElementById('ap-model').value='';
+  document.getElementById('ap-storage').value='256Go';
+  document.getElementById('ap-color').value='';
+  document.getElementById('ap-achat').value='';
+  document.getElementById('ap-annonce').value='';
+  document.getElementById('modal-ajout-perso').classList.add('open');
+}
+window.closeAjouterPerso = function(){
+  document.getElementById('modal-ajout-perso').classList.remove('open');
+}
+window.confirmAjouterPerso = async function(){
+  const brand=document.getElementById('ap-brand').value;
+  const model=document.getElementById('ap-model').value.trim();
+  const storage=document.getElementById('ap-storage').value;
+  const color=document.getElementById('ap-color').value.trim();
+  const achat=parseFloat(document.getElementById('ap-achat').value);
+  const annonce=parseFloat(document.getElementById('ap-annonce').value);
+  if(!model){toast('Modèle requis');return;}
+  if(!achat||achat<=0){toast('Prix payé requis');return;}
+  if(!annonce||annonce<=0){toast('Prix annoncé requis');return;}
+  try{
+    await addDoc(collection(db,'axell_perso'),{
+      brand,model,storage,color,achat,annonce,
+      status:'dispo',
+      dateEntree:new Date().toLocaleDateString('fr-CA')
+    });
+    closeAjouterPerso();
+    toast('✅ Téléphone ajouté!');
+  }catch(e){toast('Erreur: '+e.message);}
+}
+
+// ── EDIT PRIX PERSO ──
+window.startEditPrixPerso = function(id, currentPrice){
+  document.getElementById('edit-perso-row-'+id).style.display='flex';
+  document.getElementById('edit-perso-input-'+id).value=currentPrice;
+  document.getElementById('edit-perso-input-'+id).focus();
+}
+window.cancelEditPerso = function(id){
+  document.getElementById('edit-perso-row-'+id).style.display='none';
+}
+window.savePrixPerso = async function(id){
+  const val=parseFloat(document.getElementById('edit-perso-input-'+id).value);
+  if(!val||val<=0){toast('Prix invalide');return;}
+  try{
+    await updateDoc(doc(db,'axell_perso',id),{annonce:val});
+    toast('✅ Prix mis à jour!');
+  }catch(e){toast('Erreur: '+e.message);}
+}
+window.supprimerPerso = async function(id){
+  if(!confirm('Supprimer ce téléphone?')) return;
+  try{
+    await deleteDoc(doc(db,'axell_perso',id));
+    toast('🗑 Supprimé');
+  }catch(e){toast('Erreur: '+e.message);}
+}
+
+// ── VENTE PERSO ──
+window.openVentePerso = function(id){
+  const p=persoPhones.find(x=>x._id===id);if(!p)return;
+  pendingPersoId=id;
+  document.getElementById('modal-perso-phone-name').textContent=`${p.brand} ${p.model} ${p.storage}${p.color?' · '+p.color:''}`;
+  document.getElementById('mp-reel').value=p.annonce;
+  document.getElementById('mp-imei').value='';
+  document.getElementById('mp-garantie').value='30 jours';
+  updateProfitPerso();
+  document.getElementById('modal-vente-perso').classList.add('open');
+}
+window.closeVentePerso = function(){
+  document.getElementById('modal-vente-perso').classList.remove('open');
+  pendingPersoId=null;
+}
+window.updateProfitPerso = function(){
+  const p=persoPhones.find(x=>x._id===pendingPersoId);if(!p)return;
+  const reel=parseFloat(document.getElementById('mp-reel').value)||0;
+  const profit=reel-p.achat;
+  const el=document.getElementById('profit-preview-perso');
+  el.textContent=reel>0?`Profit: ${profit>=0?'+':''}${profit.toFixed(2)}$`:'';
+  el.style.color=profit>=0?'var(--purple)':'var(--red)';
+}
+window.confirmVentePerso = async function(){
+  const p=persoPhones.find(x=>x._id===pendingPersoId);if(!p)return;
+  const reel=parseFloat(document.getElementById('mp-reel').value)||p.annonce;
+  const imei=document.getElementById('mp-imei').value.trim();
+  const garantie=document.getElementById('mp-garantie').value;
+  const dateVente=new Date().toLocaleDateString('fr-CA');
+  const joursStock=daysSince(p.dateEntree);
+  try{
+    await addDoc(collection(db,'axell_perso_ventes'),{
+      brand:p.brand,model:p.model,storage:p.storage,color:p.color||'',
+      achat:p.achat,annonce:p.annonce,reel,profit:reel-p.achat,
+      dateEntree:p.dateEntree||'',dateVente,joursStock,
+      imei:imei||'',garantie
+    });
+    await updateDoc(doc(db,'axell_perso',pendingPersoId),{status:'vendu'});
+    closeVentePerso();
+    toast(`✅ Vendu! Profit: ${(reel-p.achat).toFixed(2)}$`);
+  }catch(e){toast('Erreur: '+e.message);}
 }
 
 // ── PARTAGER ──
