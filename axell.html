@@ -419,13 +419,13 @@ window.logout = function(){
 // ── FIREBASE ──
 function startListeners(){
   onSnapshot(collection(db,'phones'), snap => {
-    phones = snap.docs.map(d=>({...d.data(),_id:d.id})).filter(p=>p.consigne==='Axell');
+    phones = snap.docs.map(d=>({...d.data(),_id:d.id})).filter(p=>p.consigne?.trim().toLowerCase()==='axell');
     const tab=activeTab();
     if(tab==='stock') renderStock();
-    if(tab==='partager') renderShare();
+    renderShare(); // toujours à jour en arrière-plan
   });
   onSnapshot(collection(db,'ventes'), snap => {
-    ventes = snap.docs.map(d=>({...d.data(),_id:d.id})).filter(v=>v.consigne==='Axell');
+    ventes = snap.docs.map(d=>({...d.data(),_id:d.id})).filter(v=>v.consigne?.trim().toLowerCase()==='axell');
     if(activeTab()==='ventes') renderVentes();
   });
   onSnapshot(collection(db,'axell_perso'), snap => {
