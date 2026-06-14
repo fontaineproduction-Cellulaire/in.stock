@@ -95,6 +95,17 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .vente-item-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px}
 .vmeta{font-size:11px;color:var(--text-muted);margin-top:3px}
 .profit-badge{background:var(--green-light);color:var(--green-dark);font-size:13px;font-weight:700;padding:5px 12px;border-radius:8px}
+.balance-card{display:none;background:linear-gradient(135deg,#1a1a1a,#2d2d2d);color:#fff;border-radius:16px;padding:20px;margin:4px 0 16px;box-shadow:0 6px 24px rgba(0,0,0,0.18)}
+.admin-mode .balance-card{display:block}
+.balance-title{font-size:12px;text-transform:uppercase;letter-spacing:0.8px;color:#F0C070;font-weight:700;margin-bottom:14px}
+.balance-row{display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;font-size:14px}
+.balance-row .lbl{color:#bbb}
+.balance-row .val{font-weight:600}
+.balance-sep{height:1px;background:rgba(255,255,255,0.12);margin:8px 0}
+.balance-due{display:flex;justify-content:space-between;align-items:baseline;padding-top:10px;margin-top:4px;border-top:2px solid #F0C070}
+.balance-due .lbl{font-size:15px;font-weight:700;color:#fff}
+.balance-due .val{font-size:24px;font-weight:800;color:#F0C070}
+.balance-paid{color:var(--green)!important}
 .revenue-badge{background:var(--purple-light);color:var(--purple-dark);font-size:13px;font-weight:700;padding:5px 12px;border-radius:8px}
 .rotation-tag{display:inline-block;background:#EEF2FF;color:#4338CA;font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;margin-left:4px}
 .rapport-item{background:var(--white);border:1px solid var(--border);border-radius:9px;padding:12px 16px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
@@ -192,6 +203,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   <!-- MES VENTES (consignes) -->
   <div class="view" id="view-ventes">
     <div class="stats" id="stats-ventes"></div>
+    <div id="balance-block"></div>
     <div id="rapport-block"></div>
     <div class="section-label" style="margin-top:16px">Historique des ventes — Consignes</div>
     <div id="ventes-list"><div class="loading">Chargement...</div></div>
@@ -396,11 +408,18 @@ function unlock(){
   document.getElementById('app').style.display='block';
   startListeners();
   const trigger = document.getElementById('header-left-trigger');
-  trigger.addEventListener('touchstart', ()=>{ lpTimer=setTimeout(toggleAdmin, 2000); }, {passive:true});
+  trigger.addEventListener('touchstart', ()=>{ lpTimer=setTimeout(toggleAdmin, 1200); }, {passive:true});
   trigger.addEventListener('touchend', ()=>{ clearTimeout(lpTimer); });
-  trigger.addEventListener('touchmove', ()=>{ clearTimeout(lpTimer); });
-  trigger.addEventListener('mousedown', ()=>{ lpTimer=setTimeout(toggleAdmin, 2000); });
+  trigger.addEventListener('mousedown', ()=>{ lpTimer=setTimeout(toggleAdmin, 1200); });
   trigger.addEventListener('mouseup', ()=>{ clearTimeout(lpTimer); });
+  // Triple-tap rapide = bascule mode admin (plus fiable sur mobile)
+  let tapCount=0, tapTimer=null;
+  trigger.addEventListener('click', ()=>{
+    tapCount++;
+    clearTimeout(tapTimer);
+    if(tapCount>=3){ tapCount=0; toggleAdmin(); return; }
+    tapTimer=setTimeout(()=>{ tapCount=0; }, 600);
+  });
 }
 function toggleAdmin(){
   isAdmin = !isAdmin;
@@ -588,6 +607,22 @@ function renderVentes(){
     <div class="stat"><div class="stat-num" style="color:var(--green)">${totalProfit.toFixed(0)}$</div><div class="stat-lbl">Profit total</div></div>
     <div class="stat"><div class="stat-num" style="color:#4338CA">${avgJours}j</div><div class="stat-lbl">Rotation moy.</div></div>
   `;
+  // ── BALANCE : ce qu'Axell doit à Stéphanie (achat complet + 50% profit − déjà payé) ──
+  const totalAchat=ventes.reduce((s,v)=>s+(v.achat||0),0);
+  const maPartProfit=totalProfit/2;
+  const totalDu=totalAchat+maPartProfit;
+  const totalPaye=ventes.reduce((s,v)=>s+(v.paiementRecu||0),0);
+  const solde=totalDu-totalPaye;
+  document.getElementById('balance-block').innerHTML=`
+    <div class="balance-card">
+      <div class="balance-title">💰 Balance Axell</div>
+      <div class="balance-row"><span class="lbl">Capital d'achat à rembourser</span><span class="val">${totalAchat.toFixed(2)}$</span></div>
+      <div class="balance-row"><span class="lbl">Ma part des profits (50%)</span><span class="val">${maPartProfit.toFixed(2)}$</span></div>
+      <div class="balance-sep"></div>
+      <div class="balance-row"><span class="lbl">Total dû</span><span class="val">${totalDu.toFixed(2)}$</span></div>
+      <div class="balance-row"><span class="lbl">Déjà reçu</span><span class="val balance-paid">− ${totalPaye.toFixed(2)}$</span></div>
+      <div class="balance-due"><span class="lbl">Reste à recevoir</span><span class="val">${solde.toFixed(2)}$</span></div>
+    </div>`;
   const byMonth={};
   ventes.forEach(v=>{const m=v.dateVente?v.dateVente.substring(0,7):'Sans date';if(!byMonth[m])byMonth[m]={count:0,profit:0,revenus:0};byMonth[m].count++;byMonth[m].profit+=v.profit;byMonth[m].revenus+=v.reel;});
   const months=Object.keys(byMonth).sort().reverse();
